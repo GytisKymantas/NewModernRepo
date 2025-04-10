@@ -1,0 +1,10 @@
+.git
+.gitignore
+.prettierignore
+.idea
+.vscode
+package-lock.json
+dist
+coverage
+
+node_modules

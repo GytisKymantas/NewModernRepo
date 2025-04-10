@@ -1,0 +1,11 @@
+.env
+.git
+**/.gitkeep
+.idea
+.vscode
+
+node_modules
+dist
+
+.eslintrc.cjs
+webpack.config.js

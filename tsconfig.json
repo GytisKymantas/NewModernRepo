@@ -1,0 +1,11 @@
+{
+  "extends": "ts-config-single-spa",
+  "typeRoots": [
+    "./@types"
+  ],
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*", "@types/**/*", "node_modules/@types"],
+  "exclude": ["src/**/*.test*"]
+}
