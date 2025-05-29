@@ -1,5 +1,6 @@
 const { merge }  = require("webpack-merge");
 const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
+const path = require("path");
 
 /*
  * @MICROFRONTEND
@@ -29,11 +30,12 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   return merge(defaultConfig, {
-    externals: [
-      /^@rc-ses\/.+/,
-      "react",
-      "react-dom"
-    ],
+    externals: {},
+    resolve: {
+      alias: {
+        "@rc-ses/mfe-host": path.resolve(__dirname, "modules/mfe-host/index.js"),
+      }
+    },
     module: {
       rules: [
         {
