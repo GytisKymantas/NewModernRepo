@@ -29,7 +29,7 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "5.16.7",
     "@mui/system": "5.16.7",
-    "@registrucentras/rc-ses-react-components": "github:registrucentras/rc-ses-react-components#v0.0.30",
+    "@registrucentras/rc-ses-react-components": "github:registrucentras/rc-ses-react-components#v1.0.1",
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/node": "^20.10.6",
     "axios": "^1.6.3",
