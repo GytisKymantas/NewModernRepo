@@ -6,7 +6,7 @@
   "repository": {
     "type": "git",
     "url": "https://gitlab.cgidevlabs.com/rc-ses/demo-providers/self-service-provider-demo-react-ui"
-  },
+  },  
   "scripts": {
     "dev": "webpack serve --port 9101",
     "dev:standalone": "webpack serve --env standalone",

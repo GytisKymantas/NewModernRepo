@@ -32,7 +32,7 @@ function ServiceDetailsForm() {
 
   return (
     // eslint-disable-next-line no-console
-    <form onSubmit={handleSubmit(console.debug)} noValidate>
+    <form onSubmit={handleSubmit(console.log)} noValidate>
       <RcSesSelect
         id='purpose'
         name='purpose'
@@ -60,18 +60,7 @@ function ServiceDetailsForm() {
           { value: 'teisinisPagrindas3', label: 'Teisinis pagrindas 3' },
         ]}
       />
-
-      <RcSesCheckbox
-        id='agreement'
-        name='agreement'
-        control={control}
-        errors={errors?.agreement}
-        rules={{ required: true }}
-        label='Sutikimas'
-      >
-        Pagal užsakymą gautus duomenis naudosiu nurodytam duomenų tikslui ir šių duomenų
-        neatskleisiu tretiesiems asmenims.
-      </RcSesCheckbox>
+   
 
       <RcSesSelect
         id='deadline'

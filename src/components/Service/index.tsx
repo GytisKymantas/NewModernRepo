@@ -18,11 +18,7 @@ import { redirectToSelfServiceDashboard, redirectToServiceDescriptionPage } from
 function Service() {
   const accordionController = useAccordionController({
     initialState: {
-      basicInformation: {
-        expanded: false,
-        state: 'completed',
-        title: 'Bazinė informacija',
-      },
+     
       serviceDetails: {
         expanded: true,
         state: 'active',
@@ -31,18 +27,14 @@ function Service() {
       serviceIssuance: {
         expanded: false,
         state: 'pending',
-        title: 'Išdavimas',
+        title: 'Dokumentų pasirašymas',
       },
       additionalServices: {
         expanded: false,
         state: 'pending',
-        title: 'Reikalingos papildomos paslaugos',
+        title: 'Prašymo peržiūra',
       },
-      termsAndConditions: {
-        expanded: false,
-        state: 'pending',
-        title: 'Terminai ir sąlygos',
-      },
+   
     },
   })
 
