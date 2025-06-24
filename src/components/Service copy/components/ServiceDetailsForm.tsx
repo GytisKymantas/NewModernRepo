@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
-import { Divider } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import {
   RcSesAlert,
   RcSesCheckbox,
@@ -11,10 +10,9 @@ import {
   RcSesSelect,
   RcSesTextField,
 } from '@registrucentras/rc-ses-react-components';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Info } from '@mui/icons-material';
 import InfoIcon from '../../../assets/icons/InfoIcon';
-
 
 type FormModel = {
   purpose: string;
@@ -35,7 +33,7 @@ type FormModel = {
   fullName: string;
   email: string;
   formDate: string;
-}; 
+};
 
 const HeaderMain = styled.p`
   font-size: 20px;
@@ -44,21 +42,38 @@ const HeaderMain = styled.p`
   margin: 0;
 `;
 
+const InfoHeader = styled.p`
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f2733;
+  margin: 0 0 4px 0;
+`;
+
+const UnorderedList = styled.ul`
+  max-width: 640px;
+  margin: 0;
+  marginbottom: 4px;
+`;
+
+const ListItem = styled.li`
+  font-size: 15px;
+  font-weight: 400;
+  color: #1f2733;
+`;
+
 const BodyText = styled.p`
   color: #4a5361;
   font-family: 'Public Sans', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
-  max-width: 250px;
-  margin: 0;
+  max-width: 242px;
+  margin: 0 0 0 auto;
 `;
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 16px;
 
   .MuiFormGroup-root {
     display: flex;
@@ -80,6 +95,7 @@ const SectionBox = styled.div`
 `;
 
 const ServiceDetailsForm = () => {
+  const [isSet, setIsSet] = React.useState(false);
   const {
     control,
     handleSubmit,
@@ -110,8 +126,8 @@ const ServiceDetailsForm = () => {
     },
   });
 
-return (
-    <StyledForm onSubmit={handleSubmit(console.debug)} noValidate>
+  return (
+    <StyledForm onSubmit={handleSubmit(console.debug)} noValidate id='testid'>
       <HeaderMain>Prašymo objektas</HeaderMain>
       <Divider />
 
@@ -121,7 +137,14 @@ return (
         control={control}
         placeholder='Pasirinkite teisinę formą'
         rules={{ required: true }}
-        sx={{ backgroundColor: '#f5f5f5' }}
+        sx={{
+          backgroundColor: '#f5f5f5',
+
+          '.MuiInputBase-input::placeholder': {
+            color: '#6B747F',
+            opacity: 1, // Ensure the color isn't faded
+          },
+        }}
         label='Juridinio asmens teisinė forma'
         errors={errors?.purpose}
         options={[
@@ -143,18 +166,29 @@ return (
       <RcSesAlert
         severity='info'
         icon={
-        <InfoIcon />
+          <Box sx={{ marginBottom: '110px' }}>
+            <InfoIcon />
+          </Box>
         }
+        sx={{ borderRadius: '6px' }}
       >
-        <p style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>
-          Reikalavimai pavadinimui
-        </p>
-        <ul style={{ maxWidth: '640px', margin: 0, marginBottom: '4px' }}>
-          <li>Teisinės formos žodžiai ar jų trumpiniai (pvz., IĮ)</li>
-          <li>Simbolinis pavadinimas turi būti kabutėse</li>
-          <li>Neturi būti klaidinantis ar per daug panašus į kitus</li>
-          <li>Filialo pavadinime turi būti žodis „filialas“</li>
-        </ul>
+        <InfoHeader>Reikalavimai pavadinimui</InfoHeader>
+        <UnorderedList>
+          <ListItem>
+            pavadinime turi būti teisinę formą nusakantys žodžiai arba jų trumpiniai
+            (pvz., individuali įmonė arba IĮ);
+          </ListItem>
+          <ListItem>simbolinis pavadinimas turi būti išskirtas kabutėmis;</ListItem>
+          <ListItem>
+            pavadinimas neturi būti klaidinantis ar panašus į kitų juridinių asmenų
+            pavadinimus, žinomesnių užsienio įmonių, įstaigų ar organizacijų vardus,
+            prekių ir paslaugų ženklus;
+          </ListItem>
+          <ListItem>
+            filialo pavadinime privalo būti juridinio asmens (steigėjo) pavadinimas ir
+            žodis „filialas“.
+          </ListItem>
+        </UnorderedList>
       </RcSesAlert>
 
       <SectionBox>
@@ -208,6 +242,7 @@ return (
         name='agreement'
         control={control}
         errors={errors?.agreement}
+        variant='flat'
         label={
           <>
             <strong>Sutikimas naudoti prekinį ženklą</strong>
@@ -217,7 +252,9 @@ return (
             </BodyText>
           </>
         }
-      />
+      >
+        Pridedamas
+      </RcSesCheckbox>
 
       <Divider />
 
@@ -230,16 +267,17 @@ return (
             <strong>Sutikimas naudoti juridinio asmens pavadinimą</strong>
             <br />
             <BodyText>
-              Pažymėkite, jei naudojate juridinio asmens pavadinimą ar jo dalį
+              Pažymėkite, jei naudojate Lietuvos ar užsienio juridinio asmens pavadinimą
+              ar jo dalį
             </BodyText>
           </>
         }
         errors={errors?.radioSelection1}
         className='custom-flex-radio-group'
         options={[
-          { label: 'El. paštu', value: 'email' },
-          { label: 'Padalinyje', value: 'branch' },
-          { label: 'Paštu užsienyje', value: 'mail-abroad' },
+          { label: 'Nepridedamas', value: 'Nepridedamas' },
+          { label: 'Pridedamas Lietuvos juridinio asmens', value: 'JA' },
+          { label: 'Pridedamas užsienio juridinio asmens', value: 'UJA' },
         ]}
       />
 
@@ -250,6 +288,23 @@ return (
         id='personalCode'
         label='Asmens kodas'
         errors={errors?.personalCode}
+        slotProps={{
+          field: {
+            sx: {
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { border: 'none' },
+                '&:hover fieldset': { border: 'none' },
+                '&.Mui-focused fieldset': { border: 'none' },
+              },
+              '& .MuiOutlinedInput-root.Mui-focused': {
+                boxShadow: 'none', // Removes Material UI shadow on focus
+              },
+              '& .MuiOutlinedInput-input': {
+                outline: 'none', // Removes native browser outline inside input
+              },
+            },
+          },
+        }}
         required
         {...register('personalCode', { required: true })}
       />
@@ -259,6 +314,23 @@ return (
         label='Vardas, Pavardė'
         errors={errors?.fullName}
         required
+        slotProps={{
+          field: {
+            sx: {
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { border: 'none' },
+                '&:hover fieldset': { border: 'none' },
+                '&.Mui-focused fieldset': { border: 'none' },
+              },
+              '& .MuiOutlinedInput-root.Mui-focused': {
+                boxShadow: 'none', // Removes Material UI shadow on focus
+              },
+              '& .MuiOutlinedInput-input': {
+                outline: 'none', // Removes native browser outline inside input
+              },
+            },
+          },
+        }}
         InputProps={{ readOnly: true }}
         {...register('fullName', { required: true })}
       />
@@ -284,6 +356,23 @@ return (
         id='formDate'
         label='Prašymo data'
         errors={errors?.formDate}
+        slotProps={{
+          field: {
+            sx: {
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { border: 'none' },
+                '&:hover fieldset': { border: 'none' },
+                '&.Mui-focused fieldset': { border: 'none' },
+              },
+              '& .MuiOutlinedInput-root.Mui-focused': {
+                boxShadow: 'none', // Removes Material UI shadow on focus
+              },
+              '& .MuiOutlinedInput-input': {
+                outline: 'none', // Removes native browser outline inside input
+              },
+            },
+          },
+        }}
         required
         {...register('formDate', { required: true })}
       />
@@ -292,5 +381,3 @@ return (
 };
 
 export default ServiceDetailsForm;
-
-
