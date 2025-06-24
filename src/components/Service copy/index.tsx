@@ -1,3 +1,8 @@
+import { useMediaQuery } from '@mui/material';
+import {
+  redirectToSelfServiceDashboard,
+  redirectToServiceDescriptionPage,
+} from '@rc-ses/mfe-host';
 import {
   RcSesAccordion,
   RcSesServiceFormActions,
@@ -5,15 +10,16 @@ import {
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
-import React from 'react';
-import {
-  redirectToSelfServiceDashboard,
-  redirectToServiceDescriptionPage,
-} from '@rc-ses/mfe-host';
+import theme from '../../theme';
+
 import ServiceDetailsForm from './components/ServiceDetailsForm';
+import ServiceFormContainer from './components/ServiceFormContainer';
 import ServiceHeader from './components/ServiceHeader';
+import React from 'react';
 
 function ServiceCopy() {
+  const upMd = useMediaQuery(theme.breakpoints.up('md'));
+
   const accordionController = useAccordionController({
     initialState: {
       serviceDetails: {
@@ -36,29 +42,30 @@ function ServiceCopy() {
 
   return (
     <RcSesServicePage>
+       
 
-<ServiceHeader
+      <ServiceHeader
         breadcrumbsProps={{
           path: [
-            { label: 'Pagrindinis', path: '/' },
-            { label: 'Formos su vedliu pavyzdys', path: '/sample-form-multiple-steps' },
+            { label: 'Savitarna', path: '/' },
+            {
+              label: 'Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą',
+              path: '/sample-form-multiple-steps',
+            },
           ],
         }}
-        title='Nekilnojamojo turto registro išrašas pagal nurodytą turto adresą'
-       >Šiame puslapyje Jūs galite užsisakyti Nekilnojamojo turto registro išrašus, pažymas bei kitus dokumentus. Užsakytą NTR išrašą, pažymą ar kitą dokumentą galėsite gauti elektroniniu būdu arba atsiimti pasirinktame VĮ Registrų centro padalinyje.
+        title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
+      ></ServiceHeader>
 
-</ServiceHeader>
-      
       <RcSesServiceFormContainer
         accordionController={accordionController}
-        showProgressStepper
+        showProgressStepper={upMd}
       >
- 
+        {!upMd && <ServiceFormContainer steps={accordionController.state} />}
 
         <RcSesAccordion id='serviceDetails' controller={accordionController}>
           <ServiceDetailsForm />
         </RcSesAccordion>
-
 
         <RcSesServiceFormActions
           onDiscard={() =>

@@ -6,16 +6,17 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-
+import './styles.css';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { getMFEBaseUrl, getOwnedPropertiesUrlFragment } from '@rc-ses/mfe-host';
 import { lt } from 'date-fns/locale/lt';
 import OwnedProperties from './components/OwnedProperties';
-import Service from './components/Service';
+// import Service from './components/Service';
 import ServiceCopy from './components/Service copy';
 import Signature from './components/Signature';
 import theme from './theme';
+import Home from './pages/Home';
 
 /*
  * Pavyzdine router'io konfigūracija, jei nėra aktualūs "Mano turtas" micro-frontend'ai.
@@ -38,13 +39,13 @@ import theme from './theme';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path={'/'} element={<ServiceCopy />}>
-        <Route path='09eec1a3-0674-479b-85fe-b9140879de7b' element={<Service />} />
-        <Route path='77ca7f18-07d3-4f4a-8da7-758e4fa7aee1' element={<Service />} />
+      <Route path={'/'} element={<Home />}>
+        <Route path='09eec1a3-0674-479b-85fe-b9140879de7b' element={<Home />} />
+        <Route path='77ca7f18-07d3-4f4a-8da7-758e4fa7aee1' element={<Home />} />
       </Route>
       <Route path={'self-service-dashboard'} element={<Signature />}>
-        <Route path='09eec1a3-0674-479b-85fe-b9140879de7b' element={<Service />} />
-        <Route path='77ca7f18-07d3-4f4a-8da7-758e4fa7aee1' element={<Service />} />
+        <Route path='09eec1a3-0674-479b-85fe-b9140879de7b' element={<Home />} />
+        <Route path='77ca7f18-07d3-4f4a-8da7-758e4fa7aee1' element={<Home />} />
       </Route>
       <Route path={getOwnedPropertiesUrlFragment()} element={<OwnedProperties />}>
         <Route

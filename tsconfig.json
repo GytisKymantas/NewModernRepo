@@ -1,8 +1,6 @@
 {
   "extends": "ts-config-single-spa",
-  "typeRoots": [
-    "./@types"
-  ],
+  "typeRoots": ["./@types"],
   "compilerOptions": {
     "jsx": "react-jsx"
   },

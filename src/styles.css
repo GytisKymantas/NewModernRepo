@@ -1,0 +1,24 @@
+.MuiInputBase-input::placeholder {
+  color: #6b747f !important;
+}
+
+
+
+.MuiFormGroup-root.MuiRadioGroup-root {
+  display: flex;
+  flex-direction: column !important;
+}
+
+
+#personalCode .MuiOutlinedInput-notchedOutline {
+  border: none !important;
+  border-radius:50%;
+}
+
+input[type="radio"] {
+  border-radius: 50%;
+
+}
+input[type="radio" i]:focus-visible  {
+outline:none !important;
+}

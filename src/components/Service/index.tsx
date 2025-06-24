@@ -1,74 +1,74 @@
-import React from 'react'
+// import React from 'react'
 
-import {
-  RcSesAccordion,
-  RcSesServiceFormActions,
-  RcSesServiceFormContainer,
-  RcSesServicePage,
-  useAccordionController
-} from '@registrucentras/rc-ses-react-components'
+// import {
+//   RcSesAccordion,
+//   RcSesServiceFormActions,
+//   RcSesServiceFormContainer,
+//   RcSesServicePage,
+//   useAccordionController
+// } from '@registrucentras/rc-ses-react-components'
 
-import BasicInformationForm from './components/BasicInformationForm'
-import ServiceDetailsForm from './components/ServiceDetailsForm'
-import ServiceIssuanceForm from './components/ServiceIssuanceForm'
-import AdditionalServicesForm from './components/AdditionalServicesForm'
-import TermsAndConditionsForm from './components/TermsAndConditionsForm'
-import { redirectToSelfServiceDashboard, redirectToServiceDescriptionPage } from '@rc-ses/mfe-host'
+// import BasicInformationForm from './components/BasicInformationForm'
+// // import ServiceDetailsForm from './components/ServiceDetailsForm'
+// // import ServiceIssuanceForm from './components/ServiceIssuanceForm'
+// import AdditionalServicesForm from './components/AdditionalServicesForm'
+// import TermsAndConditionsForm from './components/TermsAndConditionsForm'
+// import { redirectToSelfServiceDashboard, redirectToServiceDescriptionPage } from '@rc-ses/mfe-host'
 
-function Service() {
-  const accordionController = useAccordionController({
-    initialState: {
+// function Service() {
+//   const accordionController = useAccordionController({
+//     initialState: {
      
-      serviceDetails: {
-        expanded: true,
-        state: 'active',
-        title: 'Paslaugos užsakymas',
-      },
-      serviceIssuance: {
-        expanded: false,
-        state: 'pending',
-        title: 'Dokumentų pasirašymas',
-      },
-      additionalServices: {
-        expanded: false,
-        state: 'pending',
-        title: 'Prašymo peržiūra',
-      },
+//       serviceDetails: {
+//         expanded: true,
+//         state: 'active',
+//         title: 'Paslaugos užsakymas',
+//       },
+//       serviceIssuance: {
+//         expanded: false,
+//         state: 'pending',
+//         title: 'Dokumentų pasirašymas',
+//       },
+//       additionalServices: {
+//         expanded: false,
+//         state: 'pending',
+//         title: 'Prašymo peržiūra',
+//       },
    
-    },
-  })
+//     },
+//   })
 
-  return (
-    <RcSesServicePage>
-      <RcSesServiceFormContainer accordionController={accordionController} showProgressStepper>
-        <RcSesAccordion id='basicInformation' controller={accordionController}>
-          <BasicInformationForm />
-        </RcSesAccordion>
+//   return (
+//     <RcSesServicePage>
+//       <RcSesServiceFormContainer accordionController={accordionController} showProgressStepper>
+//         <RcSesAccordion id='basicInformation' controller={accordionController}>
+//           <BasicInformationForm />
+//         </RcSesAccordion>
 
-        <RcSesAccordion id='serviceDetails' controller={accordionController}>
-          <ServiceDetailsForm />
-        </RcSesAccordion>
+//         <RcSesAccordion id='serviceDetails' controller={accordionController}>
+//           <ServiceDetailsForm />
+//         </RcSesAccordion>
 
-        <RcSesAccordion id='serviceIssuance' controller={accordionController}>
-          <ServiceIssuanceForm />
-        </RcSesAccordion>
+//         <RcSesAccordion id='serviceIssuance' controller={accordionController}>
+//           <ServiceIssuanceForm />
+//         </RcSesAccordion>
 
-        <RcSesAccordion id='additionalServices' controller={accordionController}>
-          <AdditionalServicesForm />
-        </RcSesAccordion>
+//         <RcSesAccordion id='additionalServices' controller={accordionController}>
+//           <AdditionalServicesForm />
+//         </RcSesAccordion>
 
-        <RcSesAccordion id='termsAndConditions' controller={accordionController}>
-          <TermsAndConditionsForm />
-        </RcSesAccordion>
+//         <RcSesAccordion id='termsAndConditions' controller={accordionController}>
+//           <TermsAndConditionsForm />
+//         </RcSesAccordion>
 
-        <RcSesServiceFormActions
-          onDiscard={() => redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')}
-          onSaveDraft={() => redirectToSelfServiceDashboard()}
-          onSubmit={() => redirectToSelfServiceDashboard()}
-        />
-      </RcSesServiceFormContainer>
-    </RcSesServicePage>
-  )
-}
+//         <RcSesServiceFormActions
+//           onDiscard={() => redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')}
+//           onSaveDraft={() => redirectToSelfServiceDashboard()}
+//           onSubmit={() => redirectToSelfServiceDashboard()}
+//         />
+//       </RcSesServiceFormContainer>
+//     </RcSesServicePage>
+//   )
+// }
 
-export default Service
+// export default Service
