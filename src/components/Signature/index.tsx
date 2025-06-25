@@ -1,21 +1,20 @@
+import styled from '@emotion/styled';
 import {
   redirectToSelfServiceDashboard,
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
-import React from 'react';
 import {
   RcSesAccordion,
   RcSesAlert,
   RcSesServiceFormActions,
   RcSesServiceFormContainer,
   RcSesServicePage,
-  useAccordionController, 
+  useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
-import styled from '@emotion/styled';
+import InfoIcon from '../../assets/icons/InfoIcon';
 import ServiceHeader from '../Service copy/components/ServiceHeader';
 import DocumentInfoSection from './components/DocumentInfoSection';
 import UploadFile from './components/UploadFile';
-import InfoIcon from '../../assets/icons/InfoIcon';
 
 const StyledAlertText = styled.p`
   font-size: 14px;
@@ -24,9 +23,7 @@ const StyledAlertText = styled.p`
   margin: 0;
 `;
 
-const Signature = () => {
-  const [count, setCount] = React.useState(0);
-
+function Signature() {
   const accordionController = useAccordionController({
     initialState: {
       serviceDetails: {
@@ -56,27 +53,25 @@ const Signature = () => {
             { label: 'Formos su vedliu pavyzdys', path: '/sample-form-multiple-steps' },
           ],
         }}
-        title="Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą"
+        title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
       />
 
       <RcSesServiceFormContainer
         accordionController={accordionController}
         showProgressStepper
       >
-        <RcSesAccordion id="serviceDetails" controller={accordionController}>
-          <RcSesAlert icon={<InfoIcon />} severity="info">
+        <RcSesAccordion id='serviceDetails' controller={accordionController}>
+          <RcSesAlert icon={<InfoIcon />} severity='info'>
             <StyledAlertText>
               Visi dokumentai yra pasirašomi eilės tvarka.
             </StyledAlertText>
           </RcSesAlert>
 
           {[...Array(3)].map((_, index) => (
-            <DocumentInfoSection key={index} index={index + 1} />
+            <DocumentInfoSection key={`document-info-${index + 1}`} index={index + 1} />
           ))}
 
-         
-
-            <UploadFile />
+          <UploadFile />
         </RcSesAccordion>
 
         <RcSesServiceFormActions
@@ -89,6 +84,6 @@ const Signature = () => {
       </RcSesServiceFormContainer>
     </RcSesServicePage>
   );
-};
+}
 
 export default Signature;

@@ -14,13 +14,10 @@ type Props = {
   };
 };
 
-function FormContainer({
-  children,
-  slotProps,
-}: Props) {
+function FormContainer({ children, slotProps }: Props) {
   return (
     <Container
-      maxWidth={'md'}
+      maxWidth='md'
       {...slotProps?.container}
       sx={{
         backgroundColor: { xs: 'grey', md: 'white' },

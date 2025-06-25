@@ -3,12 +3,11 @@ import {
   RcSesAccordion,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
-import React from 'react';
+import ColorBallIcon from '../../../assets/icons/ColorBallIcon';
 import DeleteIcon from '../../../assets/icons/DeleteIcon';
 import DownloadIcon from '../../../assets/icons/DownloadIcon';
 import OverviewIcon from '../../../assets/icons/OverviewIcon';
 import DownloadIconLabel from './DownloadIconLabel'; // adjust path if needed
-import ColorBallIcon from '../../../assets/icons/ColorBallIcon';
 
 const Wrapper = styled.div`
   background-color: #f9fafb;
@@ -81,7 +80,7 @@ const PersonStatus = styled.div`
   gap: 6px;
 `;
 
-const DocumentInfoSection = ({ index }: { index: number }) => {
+function DocumentInfoSection({ index }: { index: number }) {
   const accordionController = useAccordionController({
     initialState: {
       basicInformation: {
@@ -116,14 +115,14 @@ const DocumentInfoSection = ({ index }: { index: number }) => {
     <Wrapper>
       <Inner>
         <Title>{index}. Dokumento tipo pavadinimas</Title>
-        <Subtitle></Subtitle>
+        <Subtitle />
         <Row>
           <Left>
             <StatusLabel>Pasirašomas</StatusLabel>
             <Actions>
-              <DownloadIconLabel label="Atsisiųsti" svg={<DownloadIcon />} />
-              <DownloadIconLabel label="Peržiūrėti" svg={<OverviewIcon />} />
-              <DownloadIconLabel label="Ištrinti" svg={<DeleteIcon />} />
+              <DownloadIconLabel label='Atsisiųsti' svg={<DownloadIcon />} />
+              <DownloadIconLabel label='Peržiūrėti' svg={<OverviewIcon />} />
+              <DownloadIconLabel label='Ištrinti' svg={<DeleteIcon />} />
             </Actions>
           </Left>
           <div>
@@ -131,7 +130,7 @@ const DocumentInfoSection = ({ index }: { index: number }) => {
           </div>
         </Row>
         <RcSesAccordion
-          id="basicInformation"
+          id='basicInformation'
           controller={accordionController}
           sx={{ borderWidth: 0, border: 'none' }}
         >
@@ -153,6 +152,6 @@ const DocumentInfoSection = ({ index }: { index: number }) => {
       </Inner>
     </Wrapper>
   );
-};
+}
 
 export default DocumentInfoSection;

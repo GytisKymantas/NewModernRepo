@@ -10,7 +10,6 @@ import {
   RcSesSelect,
   RcSesTextField,
 } from '@registrucentras/rc-ses-react-components';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import InfoIcon from '../../../assets/icons/InfoIcon';
 
@@ -94,8 +93,7 @@ const SectionBox = styled.div`
   margin-bottom: 24px;
 `;
 
-const ServiceDetailsForm = () => {
-  const [isSet, setIsSet] = React.useState(false);
+function ServiceDetailsForm() {
   const {
     control,
     handleSubmit,
@@ -127,7 +125,7 @@ const ServiceDetailsForm = () => {
   });
 
   return (
-    <StyledForm onSubmit={handleSubmit(console.debug)} noValidate id='testid'>
+    <StyledForm onSubmit={handleSubmit(() => {})} noValidate id='testid'>
       <HeaderMain>Prašymo objektas</HeaderMain>
       <Divider />
 
@@ -186,7 +184,7 @@ const ServiceDetailsForm = () => {
           </ListItem>
           <ListItem>
             filialo pavadinime privalo būti juridinio asmens (steigėjo) pavadinimas ir
-            žodis „filialas“.
+            žodis &bdquo;filialas&ldquo;.
           </ListItem>
         </UnorderedList>
       </RcSesAlert>
@@ -220,11 +218,13 @@ const ServiceDetailsForm = () => {
           errors={errors?.fileUpload3}
           slotProps={{
             dropzone: {
-              onDrop: (files: any) => {
-                setValue('deadline', files);
+              onDrop: (files: File[]) => {
+                setValue('fileUpload3', files[0]?.name || '');
                 files.forEach((file: Blob) => {
                   const reader = new FileReader();
-                  reader.onload = () => console.debug(file);
+                  reader.onload = () => {
+                    // File processing logic here
+                  };
                   reader.readAsArrayBuffer(file);
                 });
               },
@@ -378,6 +378,6 @@ const ServiceDetailsForm = () => {
       />
     </StyledForm>
   );
-};
+}
 
 export default ServiceDetailsForm;

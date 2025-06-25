@@ -1,19 +1,16 @@
-import Header from '../components/layout/Header';
-import React from 'react';
 import ServiceCopy from '../components/Service copy';
+import Header from '../components/layout/Header';
 import TopBanner from '../components/layout/components/TopBanner';
 
-
-const Home = () => {
+function Home() {
   return (
     <div>
-             <TopBanner />
-              
-              <Header />
-        <ServiceCopy />
+      <TopBanner />
+
+      <Header />
+      <ServiceCopy />
     </div>
   );
-};
+}
 
 export default Home;
-    

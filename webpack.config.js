@@ -1,6 +1,7 @@
-const { merge }  = require("webpack-merge");
-const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
-const path = require("path");
+const { merge } = require('webpack-merge');
+const singleSpaDefaults = require('webpack-config-single-spa-react-ts');
+const path = require('path');
+const webpack = require('webpack');
 
 /*
  * @MICROFRONTEND
@@ -23,18 +24,34 @@ const path = require("path");
  */
 module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
-    orgName: "rc-ses",
-    projectName: "self-service-provider-demo-react-ui",
+    orgName: 'rc-ses',
+    projectName: 'self-service-provider-demo-react-ui',
     webpackConfigEnv,
     argv,
   });
 
+  const isStandalone = webpackConfigEnv && webpackConfigEnv.standalone;
+
   return merge(defaultConfig, {
-    externals: {},
+    externals: isStandalone
+      ? {}
+      : {
+          // In microfrontend mode, React should be external
+          // In standalone mode, React should be bundled
+        },
+    plugins: [
+      ...(isStandalone
+        ? [
+            new webpack.ProvidePlugin({
+              React: 'react',
+            }),
+          ]
+        : []),
+    ],
     resolve: {
       alias: {
-        "@rc-ses/mfe-host": path.resolve(__dirname, "modules/mfe-host/index.js"),
-      }
+        '@rc-ses/mfe-host': path.resolve(__dirname, 'modules/mfe-host/index.js'),
+      },
     },
     module: {
       rules: [
@@ -51,6 +68,6 @@ module.exports = (webpackConfigEnv, argv) => {
       // https://webpack.js.org/configuration/watch/#watchoptionsignored
       // don't use this pattern, if you have a monorepo with linked packages
       ignored: /node_modules/,
-    }
+    },
   });
 };

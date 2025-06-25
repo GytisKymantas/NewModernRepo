@@ -1,21 +1,17 @@
-import React from 'react'
-import { Box, Container, Typography } from '@mui/material'
-import {
- RcSesBreadcrumbs
-} from '@registrucentras/rc-ses-react-components';
+import { Box, Container, Typography } from '@mui/material';
+import { RcSesBreadcrumbs } from '@registrucentras/rc-ses-react-components';
+import React from 'react';
 import theme from '../../../theme';
 
-
 type Props = {
-  breadcrumbsProps: React.ComponentProps<typeof RcSesBreadcrumbs>
-  children?: React.ReactNode
-  title: string
-}
-const ServiceHeader = ({ breadcrumbsProps, children, title }: Props)  => {
-
-    console.log(theme.palette.primary['50'],'this is theme')
+  breadcrumbsProps: React.ComponentProps<typeof RcSesBreadcrumbs>;
+  children?: React.ReactNode;
+  title: string;
+};
+function ServiceHeader({ breadcrumbsProps, children, title }: Props) {
+  // Theme debug removed for production
   return (
-    <Box sx={{ backgroundColor:theme.palette.primary['50'] }}>
+    <Box sx={{ backgroundColor: theme.palette.primary['50'] }}>
       <Container
         sx={{
           pb: { xs: '2rem', md: '2.25rem' },
@@ -62,7 +58,7 @@ const ServiceHeader = ({ breadcrumbsProps, children, title }: Props)  => {
         )}
       </Container>
     </Box>
-  )
+  );
 }
 
-export default ServiceHeader
+export default ServiceHeader;

@@ -18,7 +18,7 @@
 // function Service() {
 //   const accordionController = useAccordionController({
 //     initialState: {
-     
+
 //       serviceDetails: {
 //         expanded: true,
 //         state: 'active',
@@ -34,7 +34,7 @@
 //         state: 'pending',
 //         title: 'Prašymo peržiūra',
 //       },
-   
+
 //     },
 //   })
 

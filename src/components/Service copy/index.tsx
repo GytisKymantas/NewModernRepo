@@ -15,7 +15,6 @@ import theme from '../../theme';
 import ServiceDetailsForm from './components/ServiceDetailsForm';
 import ServiceFormContainer from './components/ServiceFormContainer';
 import ServiceHeader from './components/ServiceHeader';
-import React from 'react';
 
 function ServiceCopy() {
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -42,8 +41,6 @@ function ServiceCopy() {
 
   return (
     <RcSesServicePage>
-       
-
       <ServiceHeader
         breadcrumbsProps={{
           path: [
@@ -55,7 +52,7 @@ function ServiceCopy() {
           ],
         }}
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
-      ></ServiceHeader>
+      />
 
       <RcSesServiceFormContainer
         accordionController={accordionController}

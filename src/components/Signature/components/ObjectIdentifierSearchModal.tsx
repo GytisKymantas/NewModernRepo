@@ -1,9 +1,8 @@
+import styled from '@emotion/styled';
 import { Button, DialogActions, Divider } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import React from 'react';
-import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -60,18 +59,18 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
   };
 
   return (
-    <Dialog onClose={onClose} open={open} maxWidth="md">
+    <Dialog onClose={onClose} open={open} maxWidth='md'>
       <DialogTitle>Dokumento įkėlimas</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(handleOnSubmit)} noValidate>
           <StyledFormSection>
             <RcSesSelect
-              id="documentType"
-              name="documentType"
+              id='documentType'
+              name='documentType'
               control={control}
-              placeholder="Pasirinkite dokumento tipą"
+              placeholder='Pasirinkite dokumento tipą'
               rules={{ required: true }}
-              label="Dokumento tipas"
+              label='Dokumento tipas'
               errors={errors?.documentType}
               options={[
                 { value: 'tikslas1', label: 'Tikslas 1' },
@@ -81,30 +80,30 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
             />
 
             <RcSesDatepicker
-              id="documentDate"
-              name="documentDate"
+              id='documentDate'
+              name='documentDate'
               clearable
               control={control}
               rules={{ required: true }}
-              label="Data"
+              label='Data'
               errors={errors?.documentDate}
             />
 
             <RcSesTextField
-              id="documentNumber"
-              label="Dokumento numeris"
-              placeholder="Įrašykite dokumento numerį"
+              id='documentNumber'
+              label='Dokumento numeris'
+              placeholder='Įrašykite dokumento numerį'
               required
               {...register('documentNumber', { required: true })}
               errors={errors?.documentNumber}
             />
 
             <RcSesFileDropzone
-              id="documentFile"
-              name="documentFile"
+              id='documentFile'
+              name='documentFile'
               control={control}
               rules={{ required: true }}
-              label="Dokumento įkėlimas"
+              label='Dokumento įkėlimas'
               errors={errors?.documentFile}
               slotProps={{
                 dropzone: {
@@ -112,7 +111,9 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
                     setValue('documentFile', files);
                     files.forEach((file: Blob) => {
                       const reader = new FileReader();
-                      reader.onload = () => console.log(file);
+                      reader.onload = () => {
+                        // File processing logic here
+                      };
                       reader.readAsArrayBuffer(file);
                     });
                   },
@@ -121,8 +122,8 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
             />
           </StyledFormSection>
           <DialogActions>
-            <Button type="submit">Pridėti</Button>
-            <Button color="error" variant="outlined" onClick={onClose}>
+            <Button type='submit'>Pridėti</Button>
+            <Button color='error' variant='outlined' onClick={onClose}>
               Atšaukti
             </Button>
           </DialogActions>

@@ -1,5 +1,5 @@
-import React from 'react';
 import styled from '@emotion/styled';
+import React from 'react';
 import ObjectIdentifierSearchModal from './ObjectIdentifierSearchModal';
 
 const UploadWrapper = styled.div`
@@ -30,7 +30,7 @@ const UploadWrapper = styled.div`
   }
 `;
 
-const UploadFile = () => {
+function UploadFile() {
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const handleOpenModal = () => {
@@ -55,12 +55,9 @@ const UploadFile = () => {
         <p>Įkelti dokumentą</p>
       </UploadWrapper>
 
-      <ObjectIdentifierSearchModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
+      <ObjectIdentifierSearchModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
-};
+}
 
 export default UploadFile;

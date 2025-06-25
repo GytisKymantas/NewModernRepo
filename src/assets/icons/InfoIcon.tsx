@@ -1,5 +1,4 @@
 import IconProps from '../IconProps';
-import React from 'react';
 
 function InfoIcon({ className = undefined }: IconProps) {
   return (
