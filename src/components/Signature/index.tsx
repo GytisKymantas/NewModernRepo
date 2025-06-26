@@ -15,6 +15,8 @@ import InfoIcon from '../../assets/icons/InfoIcon';
 import ServiceHeader from '../Service copy/components/ServiceHeader';
 import DocumentInfoSection from './components/DocumentInfoSection';
 import UploadFile from './components/UploadFile';
+import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
+import AccordionWrapper from '../Service copy/components/AccordionWrapper';
 
 const StyledAlertText = styled.p`
   font-size: 14px;
@@ -28,7 +30,7 @@ function Signature() {
     initialState: {
       serviceDetails: {
         expanded: false,
-        state: 'pending',
+        state: 'completed',
         title: 'Dokumentų pasirašymas',
       },
       serviceIssuance: {
@@ -56,11 +58,11 @@ function Signature() {
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
       />
 
-      <RcSesServiceFormContainer
+      <ServiceFormAccordion
         accordionController={accordionController}
         showProgressStepper
       >
-        <RcSesAccordion id='serviceDetails' controller={accordionController}>
+        <AccordionWrapper id='serviceDetails' controller={accordionController} noPadding>
           <RcSesAlert icon={<InfoIcon />} severity='info'>
             <StyledAlertText>
               Visi dokumentai yra pasirašomi eilės tvarka.
@@ -72,7 +74,7 @@ function Signature() {
           ))}
 
           <UploadFile />
-        </RcSesAccordion>
+        </AccordionWrapper>
 
         <RcSesServiceFormActions
           onDiscard={() =>
@@ -81,7 +83,7 @@ function Signature() {
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceDashboard()}
         />
-      </RcSesServiceFormContainer>
+      </ServiceFormAccordion>
     </RcSesServicePage>
   );
 }

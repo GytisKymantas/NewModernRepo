@@ -46,7 +46,7 @@ const router = createBrowserRouter(
         <Route path='09eec1a3-0674-479b-85fe-b9140879de7b' element={<Home />} />
         <Route path='77ca7f18-07d3-4f4a-8da7-758e4fa7aee1' element={<Home />} />
       </Route>
-      <Route path={getOwnedPropertiesUrlFragment()} element={<OwnedProperties />}>
+      <Route path={'/ricardas'} element={<OwnedProperties />}>
         <Route
           path='177c5181-8710-443e-8335-327365835826'
           element={<OwnedProperties />}

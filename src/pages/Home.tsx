@@ -5,9 +5,9 @@ import TopBanner from '../components/layout/components/TopBanner';
 function Home() {
   return (
     <div>
-      <TopBanner />
+      {/* <TopBanner />
 
-      <Header />
+      <Header /> */}
       <ServiceCopy />
     </div>
   );

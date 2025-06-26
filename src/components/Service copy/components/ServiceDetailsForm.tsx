@@ -41,13 +41,12 @@ const HeaderMain = styled.p`
   margin: 0;
 `;
 
-const InfoHeader = styled.p`
+export const InfoHeader = styled.p<{ noMargin?: boolean }>`
   font-size: 16px;
   font-weight: 500;
   color: #1f2733;
-  margin: 0 0 4px 0;
+  margin: ${({ noMargin }) => (noMargin ? '0' : '0 0 4px 0')};
 `;
-
 const UnorderedList = styled.ul`
   max-width: 640px;
   margin: 0;
@@ -126,6 +125,13 @@ function ServiceDetailsForm() {
 
   return (
     <StyledForm onSubmit={handleSubmit(() => {})} noValidate id='testid'>
+      <RcSesAlert severity='error' sx={{ borderRadius: '6px' }}>
+        <InfoHeader noMargin>
+          Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
+          reikiamą informaciją.
+        </InfoHeader>
+      </RcSesAlert>
+
       <HeaderMain>Prašymo objektas</HeaderMain>
       <Divider />
 

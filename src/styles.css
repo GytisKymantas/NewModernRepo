@@ -2,6 +2,10 @@
   color: #6b747f !important;
 }
 
+.html {
+  font-family: 'Public Sans';
+}
+
 .MuiFormGroup-root.MuiRadioGroup-root {
   display: flex;
   flex-direction: column !important;
@@ -17,4 +21,7 @@ input[type='radio'] {
 }
 input[type='radio' i]:focus-visible {
   outline: none !important;
+}
+.MuiStepLabel-iconContainer {
+  z-index:3;
 }

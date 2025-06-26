@@ -15,6 +15,8 @@ import theme from '../../theme';
 import ServiceDetailsForm from './components/ServiceDetailsForm';
 import ServiceFormContainer from './components/ServiceFormContainer';
 import ServiceHeader from './components/ServiceHeader';
+import ServiceFormAccordion from './components/ServiceFormAccordion';
+import AccordionWrapper from './components/AccordionWrapper';
 
 function ServiceCopy() {
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -54,15 +56,15 @@ function ServiceCopy() {
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
       />
 
-      <RcSesServiceFormContainer
+      <ServiceFormAccordion
         accordionController={accordionController}
         showProgressStepper={upMd}
       >
         {!upMd && <ServiceFormContainer steps={accordionController.state} />}
 
-        <RcSesAccordion id='serviceDetails' controller={accordionController}>
+        <AccordionWrapper id='serviceDetails' controller={accordionController}>
           <ServiceDetailsForm />
-        </RcSesAccordion>
+        </AccordionWrapper>
 
         <RcSesServiceFormActions
           onDiscard={() =>
@@ -71,7 +73,7 @@ function ServiceCopy() {
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceDashboard()}
         />
-      </RcSesServiceFormContainer>
+      </ServiceFormAccordion>
     </RcSesServicePage>
   );
 }
