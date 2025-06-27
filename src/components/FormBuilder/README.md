@@ -693,29 +693,6 @@ const isValid = validateFileAccept(file, 'image/*,.pdf');
 const acceptObject = parseAcceptTypes('image/*,.pdf,.doc');
 ```
 
-## Migration from v1.x
-
-### MIME Type Utilities
-
-The following changes were made to improve performance and reliability:
-
-**Removed:**
-
-- `validateMimeTypes` (legacy alias) - replaced with standard `parseAcceptTypes`
-- `createFileAccept` (deprecated) - replaced with `createFileAcceptPatterns`
-- Large internal MIME type mapping - replaced with `mime` library
-
-**Added:**
-
-- `validateFileAccept()` - File validation using attr-accept
-- Enhanced `isValidMimeType()` and `isValidFileExtension()` using mime library
-- Better error handling and type safety
-
-**Libraries Added:**
-
-- `mime` - Industry standard MIME type detection
-- `attr-accept` - HTML5-compliant file validation from react-dropzone team
-
 ## Usage
 
 ```jsx
