@@ -10,9 +10,8 @@ import DownloadIcon from '../../../assets/icons/DownloadIcon';
 import OverviewIcon from '../../../assets/icons/OverviewIcon';
 import AccordionWrapper from '../../Service copy/components/AccordionWrapper';
 import { InfoHeader } from '../../Service copy/components/ServiceDetailsForm';
-import DownloadIconLabel from './DownloadIconLabel'; // adjust path if needed
-import ObjectIdentifierSearchModal from './ObjectIdentifierSearchModal';
 import DeleteItemModal from './DeleteItemModal';
+import DownloadIconLabel from './DownloadIconLabel'; // adjust path if needed
 
 const Wrapper = styled.div`
   background-color: #f9fafb;
@@ -154,13 +153,19 @@ function DocumentInfoSection({ index }: { index: number }) {
             <Actions>
               <DownloadIconLabel label='Atsisiųsti' svg={<DownloadIcon />} />
               <DownloadIconLabel label='Peržiūrėti' svg={<OverviewIcon />} />
-              <div onClick={handleOpenModal}>
-                {' '}
+              <div
+                onClick={handleOpenModal}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleOpenModal();
+                  }
+                }}
+                role='button'
+                tabIndex={0}
+              >
                 <DownloadIconLabel label='Ištrinti' svg={<DeleteIcon />} />
-                <DeleteItemModal
-                  open={modalOpen}
-                  onClose={() => setModalOpen(false)}
-                />
+                <DeleteItemModal open={modalOpen} onClose={() => setModalOpen(false)} />
               </div>
             </Actions>
           </Left>

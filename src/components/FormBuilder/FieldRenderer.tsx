@@ -1,0 +1,385 @@
+import styled from '@emotion/styled';
+import { Divider, Grid, Typography } from '@mui/material';
+import {
+  RcSesAlert,
+  RcSesCheckbox,
+  RcSesDatepicker,
+  RcSesFileDropzone,
+  RcSesNumberStepper,
+  RcSesPhoneInput,
+  RcSesRadioButtonGroup,
+  RcSesSelect,
+  RcSesTextField,
+} from '@registrucentras/rc-ses-react-components';
+
+import useFormTranslation from './hooks/useFormTranslation';
+import {
+  AlertFieldConfig,
+  CheckboxFieldConfig,
+  CustomFieldConfig,
+  DateFieldConfig,
+  FieldRendererProps,
+  FileFieldConfig,
+  NumberStepperConfig,
+  RadioFieldConfig,
+  SelectFieldConfig,
+  SubgroupRendererProps,
+  TextFieldConfig,
+} from './types';
+import { parseAcceptTypes, useConditionalLogic } from './utils';
+
+// Styled components for subgroups
+const SubgroupContainer = styled.div<{ variant: string }>`
+  ${({ variant }) => {
+    switch (variant) {
+      case 'bordered':
+        return `
+          border: 1px solid #8e959e;
+          background-color: #f9fafb;
+          padding: 16px;
+          border-radius: 4px;
+        `;
+      case 'elevated':
+        return `
+          background-color: #ffffff;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          border-radius: 8px;
+        `;
+      default:
+        return `
+          padding: 0;
+        `;
+    }
+  }}
+`;
+
+const SubgroupHeader = styled.div`
+  margin-bottom: 16px;
+`;
+
+const SubgroupTitle = styled(Typography)`
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px 0;
+`;
+
+const SubgroupDescription = styled(Typography)`
+  color: #4a5361;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+`;
+
+function FieldRenderer({
+  field,
+  control,
+  errors,
+  register,
+  formData,
+}: FieldRendererProps) {
+  const { translateText } = useFormTranslation();
+  const shouldShow = useConditionalLogic(field, formData);
+
+  if (!shouldShow) {
+    return null;
+  }
+
+  const commonProps = {
+    id: field.id,
+    name: field.name,
+    label: translateText(field.label),
+    required: field.required,
+    disabled: field.disabled,
+    slotProps: field.slotProps,
+  };
+
+  // Format errors for RcSes components - they expect a nested errors object
+  const fieldError = errors?.[field.name];
+  const formattedErrors = fieldError ? { [field.name]: fieldError } : undefined;
+
+  const renderField = () => {
+    switch (field.type) {
+      case 'text':
+      case 'email':
+      case 'password': {
+        const textField = field as TextFieldConfig;
+        return (
+          <RcSesTextField
+            {...commonProps}
+            type={field.type}
+            placeholder={translateText(textField.placeholder)}
+            errors={formattedErrors}
+            {...register(field.name, {
+              required: field.required,
+              ...field.validation,
+            })}
+          />
+        );
+      }
+
+      case 'textarea': {
+        const textField = field as TextFieldConfig;
+        return (
+          <RcSesTextField
+            {...commonProps}
+            placeholder={translateText(textField.placeholder)}
+            errors={formattedErrors}
+            {...register(field.name, {
+              required: field.required,
+              ...field.validation,
+            })}
+            slotProps={{
+              ...field.slotProps,
+              field: {
+                ...field.slotProps?.field,
+                InputProps: {
+                  inputComponent: 'textarea',
+                  inputProps: {
+                    rows: textField.rows || 4,
+                  },
+                },
+                slots: {
+                  input: 'textarea',
+                },
+              },
+            }}
+          />
+        );
+      }
+
+      case 'select':
+      case 'multiselect': {
+        const selectField = field as SelectFieldConfig;
+        return (
+          <RcSesSelect
+            {...commonProps}
+            control={control}
+            placeholder={translateText(selectField.placeholder)}
+            errors={formattedErrors}
+            options={selectField.options}
+            multiple={selectField.multiple}
+            rules={{
+              required: field.required,
+              ...field.validation,
+            }}
+          />
+        );
+      }
+
+      case 'radio': {
+        const radioField = field as RadioFieldConfig;
+        return (
+          <RcSesRadioButtonGroup
+            {...commonProps}
+            control={control}
+            errors={formattedErrors}
+            options={radioField.options}
+            hideNativeRadio={radioField.hideNativeRadio}
+            rules={{
+              required: field.required,
+              ...field.validation,
+            }}
+          />
+        );
+      }
+
+      case 'checkbox': {
+        const checkboxField = field as CheckboxFieldConfig;
+        return (
+          <RcSesCheckbox
+            {...commonProps}
+            control={control}
+            errors={formattedErrors}
+            variant={checkboxField.variant}
+            rules={{
+              required: field.required,
+              ...field.validation,
+            }}
+          >
+            {typeof checkboxField.children === 'string'
+              ? translateText(checkboxField.children)
+              : checkboxField.children}
+          </RcSesCheckbox>
+        );
+      }
+
+      case 'date': {
+        const dateField = field as DateFieldConfig;
+        return (
+          <RcSesDatepicker
+            {...commonProps}
+            control={control}
+            errors={formattedErrors}
+            clearable={dateField.clearable}
+            rules={{
+              required: field.required,
+              ...field.validation,
+            }}
+          />
+        );
+      }
+
+      case 'phone': {
+        return (
+          <RcSesPhoneInput
+            {...commonProps}
+            control={control}
+            errors={formattedErrors}
+            rules={{
+              required: field.required,
+              ...field.validation,
+            }}
+          />
+        );
+      }
+
+      case 'numberStepper': {
+        const stepperField = field as NumberStepperConfig;
+        return (
+          <RcSesNumberStepper
+            {...commonProps}
+            control={control}
+            errors={formattedErrors}
+            displayStepperControls={stepperField.displayStepperControls}
+            rules={{
+              required: field.required,
+              min: stepperField.min,
+              max: stepperField.max,
+              ...field.validation,
+            }}
+          />
+        );
+      }
+
+      case 'file': {
+        const fileField = field as FileFieldConfig;
+
+        const validatedAccept = parseAcceptTypes(fileField.accept);
+
+        // Build dropzone props conditionally - only include accept if we have a valid value
+        const dropzoneProps = {
+          maxSize: fileField.maxSize,
+          maxFiles: fileField.maxFiles || 1,
+          multiple: fileField.multiple || false,
+          ...field.slotProps?.dropzone,
+        };
+
+        // Only add accept property if we have a valid value
+        if (validatedAccept) {
+          dropzoneProps.accept = validatedAccept;
+        }
+
+        return (
+          <RcSesFileDropzone
+            {...commonProps}
+            control={control}
+            errors={formattedErrors}
+            rules={{
+              required: field.required,
+              ...field.validation,
+            }}
+            slotProps={{
+              ...field.slotProps,
+              dropzone: dropzoneProps,
+              wrapper: {
+                description: translateText(field.description),
+                ...field.slotProps?.wrapper,
+              },
+            }}
+          />
+        );
+      }
+
+      case 'alert': {
+        const alertField = field as AlertFieldConfig;
+        return (
+          <RcSesAlert
+            severity={alertField.severity || 'info'}
+            icon={alertField.icon}
+            sx={alertField.sx}
+          >
+            {typeof alertField.message === 'string'
+              ? translateText(alertField.message)
+              : alertField.message}
+          </RcSesAlert>
+        );
+      }
+
+      case 'custom': {
+        const customField = field as CustomFieldConfig;
+        const CustomComponent = customField.component;
+        return (
+          <CustomComponent
+            {...commonProps}
+            control={control}
+            errors={formattedErrors}
+            {...customField.props}
+          />
+        );
+      }
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Grid item xs={12} md={field.gridColumn || 12} key={field.id}>
+      {renderField()}
+    </Grid>
+  );
+}
+
+// SubgroupRenderer component
+export function SubgroupRenderer({
+  subgroup,
+  control,
+  errors,
+  register,
+  setValue,
+  watch,
+  formData,
+}: SubgroupRendererProps) {
+  const { translateText } = useFormTranslation();
+
+  return (
+    <SubgroupContainer variant={subgroup.variant || 'default'}>
+      {(subgroup.title || subgroup.description) && (
+        <>
+          <SubgroupHeader>
+            {subgroup.title && (
+              <SubgroupTitle>{translateText(subgroup.title)}</SubgroupTitle>
+            )}
+            {subgroup.description && (
+              <SubgroupDescription>
+                {translateText(subgroup.description)}
+              </SubgroupDescription>
+            )}
+          </SubgroupHeader>
+          {subgroup.variant !== 'bordered' && subgroup.variant !== 'elevated' && (
+            <Divider sx={{ mb: 2 }} />
+          )}
+        </>
+      )}
+
+      <Grid container spacing={0}>
+        {subgroup.fields.map((field) => (
+          <FieldRenderer
+            key={field.id}
+            field={field}
+            control={control}
+            errors={errors}
+            register={register}
+            setValue={setValue}
+            watch={watch}
+            formData={formData}
+          />
+        ))}
+      </Grid>
+    </SubgroupContainer>
+  );
+}
+
+export default FieldRenderer;

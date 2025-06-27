@@ -4,19 +4,17 @@ import {
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
 import {
-  RcSesAccordion,
   RcSesAlert,
   RcSesServiceFormActions,
-  RcSesServiceFormContainer,
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
 import InfoIcon from '../../assets/icons/InfoIcon';
+import AccordionWrapper from '../Service copy/components/AccordionWrapper';
+import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
 import ServiceHeader from '../Service copy/components/ServiceHeader';
 import DocumentInfoSection from './components/DocumentInfoSection';
 import UploadFile from './components/UploadFile';
-import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
-import AccordionWrapper from '../Service copy/components/AccordionWrapper';
 
 const StyledAlertText = styled.p`
   font-size: 14px;
@@ -58,10 +56,7 @@ function Signature() {
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
       />
 
-      <ServiceFormAccordion
-        accordionController={accordionController}
-        showProgressStepper
-      >
+      <ServiceFormAccordion accordionController={accordionController} showProgressStepper>
         <AccordionWrapper id='serviceDetails' controller={accordionController} noPadding>
           <RcSesAlert icon={<InfoIcon />} severity='info'>
             <StyledAlertText>

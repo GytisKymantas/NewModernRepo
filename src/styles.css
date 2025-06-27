@@ -23,5 +23,5 @@ input[type='radio' i]:focus-visible {
   outline: none !important;
 }
 .MuiStepLabel-iconContainer {
-  z-index:3;
+  z-index: 3;
 }

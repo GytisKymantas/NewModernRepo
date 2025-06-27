@@ -1,8 +1,7 @@
-import { Grid, IconProps } from '@mui/material'
+import { Grid, IconProps } from '@mui/material';
 
-import {RcSesButton as Button} from '@registrucentras/rc-ses-react-components'
-import useAccordionController from '../../hooks/useAccordionController'
-
+import { RcSesButton as Button } from '@registrucentras/rc-ses-react-components';
+import useAccordionController from '../../hooks/useAccordionController';
 
 function ExpandChevronsIcon({ className = undefined }: IconProps) {
   return (
@@ -19,7 +18,7 @@ function ExpandChevronsIcon({ className = undefined }: IconProps) {
         fill='#087FB2'
       />
     </svg>
-  )
+  );
 }
 
 function CollapseChevronsIcon({ className = undefined }: IconProps) {
@@ -37,16 +36,14 @@ function CollapseChevronsIcon({ className = undefined }: IconProps) {
         fill='#087FB2'
       />
     </svg>
-  )
+  );
 }
-
-
 
 type Props = {
-  controller: ReturnType<typeof useAccordionController>
-}
+  controller: ReturnType<typeof useAccordionController>;
+};
 function AccordionCollapseControls({ controller }: Props) {
-  const { collapseAll, expandAll } = controller
+  const { collapseAll, expandAll } = controller;
 
   return (
     <Grid
@@ -74,7 +71,7 @@ function AccordionCollapseControls({ controller }: Props) {
         </Button>
       </Grid>
     </Grid>
-  )
+  );
 }
 
-export default AccordionCollapseControls
+export default AccordionCollapseControls;

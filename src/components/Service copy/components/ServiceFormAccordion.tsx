@@ -1,22 +1,20 @@
-import { Container, Grid } from '@mui/material'
-import { ContainerProps } from '@mui/system'
-import React from 'react'
+import { Container, Grid } from '@mui/material';
+import { ContainerProps } from '@mui/system';
+import React from 'react';
 
-
-import theme from '../../../theme'
-import useAccordionController from '../../hooks/useAccordionController'
-import AccordionCollapseControls from './AccordionCollapseControls'
-import ServiceFormContainer from './ServiceFormContainer'
+import useAccordionController from '../../hooks/useAccordionController';
+import AccordionCollapseControls from './AccordionCollapseControls';
+import ServiceFormContainer from './ServiceFormContainer';
 
 type Props = {
-  accordionController: ReturnType<typeof useAccordionController>
-  children: React.ReactNode
-  showAccordionCollapseControls?: boolean
-  showProgressStepper?: boolean
+  accordionController: ReturnType<typeof useAccordionController>;
+  children: React.ReactNode;
+  showAccordionCollapseControls?: boolean;
+  showProgressStepper?: boolean;
   slotProps?: {
-    container: Partial<ContainerProps>
-  }
-}
+    container: Partial<ContainerProps>;
+  };
+};
 
 function ServiceFormAccordion({
   accordionController,
@@ -25,12 +23,12 @@ function ServiceFormAccordion({
   showProgressStepper = false,
   slotProps,
 }: Props) {
-  const { state } = accordionController
+  const { state } = accordionController;
 
   const areAccordionCollapseControlsVisible = React.useMemo(() => {
-    if (Object.keys(state).length <= 1 || !showAccordionCollapseControls) return false
-    return true
-  }, [showAccordionCollapseControls, state])
+    if (Object.keys(state).length <= 1 || !showAccordionCollapseControls) return false;
+    return true;
+  }, [showAccordionCollapseControls, state]);
 
   return (
     <Container
@@ -63,7 +61,7 @@ function ServiceFormAccordion({
         </Grid>
       </Grid>
     </Container>
-  )
+  );
 }
 
-export default ServiceFormAccordion
+export default ServiceFormAccordion;

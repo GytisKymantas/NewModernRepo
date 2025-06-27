@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
+import styled from '@emotion/styled';
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import React from 'react';
 import IconProps from '../../../assets/IconProps';
 import useAccordionController from '../../hooks/useAccordionController';
-import styled from '@emotion/styled';
 
 function CaretDownIcon({ className = undefined }: IconProps) {
   return (
@@ -30,16 +30,15 @@ type Props = React.ComponentProps<typeof Accordion> & {
   noPadding?: boolean;
 };
 
-
 const StyledTitle = styled.h1`
   font-size: 24px;
   font-weight: 600;
   margin: 0;
-letter-spacing: -0.24px;
+  letter-spacing: -0.24px;
 `;
 
 function AccordionWrapper(props: Props) {
-  const { children, controller, id, onChange,titleComponent, ...accordionProps } = props;
+  const { children, controller, id, onChange, titleComponent, ...accordionProps } = props;
   const { toggleAccordion, state } = controller;
 
   const { canToggle, disabled, expanded, title } =
@@ -68,10 +67,13 @@ function AccordionWrapper(props: Props) {
         id={`${id}-header`}
         aria-controls={`${id}-content`}
         expandIcon={canToggle === false ? null : <CaretDownIcon />}
-        sx={{backgroundColor:'white',borderRadius:'8px'}}
-        
+        sx={{ backgroundColor: 'white', borderRadius: '8px' }}
       >
-        {titleComponent? <div style={{margin:'0'}}>{titleComponent}</div>:<StyledTitle>{title}</StyledTitle>}
+        {titleComponent ? (
+          <div style={{ margin: '0' }}>{titleComponent}</div>
+        ) : (
+          <StyledTitle>{title}</StyledTitle>
+        )}
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
