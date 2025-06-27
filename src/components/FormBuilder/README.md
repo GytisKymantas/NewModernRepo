@@ -427,6 +427,7 @@ const MyCustomField: React.FC<CustomFieldProps> = ({
 | `onStepChange?` | (stepIndex: number, data: any) => void | Step change handler                |
 | `onSaveDraft?`  | (data: any) => void \| Promise<void>   | Draft save handler (no validation) |
 | `onLoadDraft?`  | () => any \| Promise<any>              | Draft load handler                 |
+| `onDiscard?`    | () => void \| Promise<void>            | Form discard handler               |
 
 ### FieldConfig
 
@@ -491,39 +492,163 @@ const config: FormBuilderConfig = {
 - **Auto-Loading**: Automatically loads saved drafts when form initializes
 - **Multi-Step Support**: Works seamlessly with multi-step forms
 
-## Examples
+## Discard Functionality
 
-### Working Examples
+The Form Builder includes a discard feature that allows users to cancel form completion and navigate away from the form safely.
 
-Import and use the comprehensive examples:
+### Discard Behavior
+
+- **Single-Step Forms**: Discard button always appears at the bottom and triggers the discard handler
+- **Multi-Step Forms**:
+  - On first step: Shows "Discard" button that triggers the discard handler
+  - On subsequent steps: Shows "Previous" button for navigation back through steps
+- **Custom vs Default**: If no `onDiscard` handler is provided, defaults to `window.history.back()`
+
+### Discard Configuration
 
 ```tsx
-import {
-  SimpleContactFormExample,
-  MultiStepServiceRequestExample,
-  ConditionalFieldsExample,
-  PropertyRegistrationExample,
-} from '../FormBuilder/examples/WorkingExample';
-
-// Use in your component
-function MyFormPage() {
-  return (
-    <div>
-      <h1>Contact Form with Draft Support</h1>
-      <SimpleContactFormExample />
-    </div>
-  );
-}
+const config: FormBuilderConfig = {
+  // ... other config options
+  onDiscard: async () => {
+    // Custom discard logic
+    const shouldDiscard = confirm('Are you sure you want to discard your changes?');
+    if (shouldDiscard) {
+      // Clear any saved drafts
+      localStorage.removeItem('form-draft');
+      // Navigate to a specific page
+      window.location.href = '/dashboard';
+      // Or use router navigation
+      // router.push('/dashboard');
+    }
+  },
+};
 ```
+
+### Discard UI Features
+
+- **Always Visible**: Discard/Previous button is always visible at the bottom of the form
+- **Smart Labels**: Shows appropriate text based on form type and current step
+- **Custom Styling**: Styled as a subtle underlined text button
+- **No Validation**: Discard actions bypass all form validation
+
+## Examples
 
 ### Basic Single-Step Form
 
-See the `examples/` directory for complete working examples:
+```tsx
+import { FormBuilder, FormBuilderConfig } from '@/components/FormBuilder';
 
-- Simple contact form
-- Multi-step service request
-- Conditional fields form
-- Custom component integration
+const basicFormConfig: FormBuilderConfig = {
+  id: 'contact-form',
+  title: 'Contact Information',
+  multiStep: false,
+  steps: [
+    {
+      id: 'contact-step',
+      title: 'Contact Details',
+      fields: [
+        {
+          id: 'firstName',
+          name: 'firstName',
+          type: 'text',
+          label: 'First Name',
+          required: true,
+        },
+        {
+          id: 'email',
+          name: 'email',
+          type: 'email',
+          label: 'Email Address',
+          required: true,
+        },
+        {
+          id: 'phone',
+          name: 'phone',
+          type: 'phone',
+          label: 'Phone Number',
+          required: true,
+        },
+      ],
+    },
+  ],
+  onSubmit: async (data) => {
+    console.log('Form submitted:', data);
+    // Handle form submission
+  },
+  onDiscard: () => {
+    window.history.back();
+  },
+};
+
+function ContactForm() {
+  return <FormBuilder config={basicFormConfig} />;
+}
+```
+
+### Multi-Step Form Example
+
+```tsx
+const multiStepConfig: FormBuilderConfig = {
+  id: 'multi-step-form',
+  title: 'Service Request',
+  multiStep: true,
+  steps: [
+    {
+      id: 'personal-info',
+      title: 'Personal Information',
+      fields: [
+        {
+          id: 'fullName',
+          name: 'fullName',
+          type: 'text',
+          label: 'Full Name',
+          required: true,
+        },
+        {
+          id: 'email',
+          name: 'email',
+          type: 'email',
+          label: 'Email',
+          required: true,
+        },
+      ],
+    },
+    {
+      id: 'service-details',
+      title: 'Service Details',
+      fields: [
+        {
+          id: 'serviceType',
+          name: 'serviceType',
+          type: 'select',
+          label: 'Service Type',
+          required: true,
+          options: [
+            { value: 'consultation', label: 'Consultation' },
+            { value: 'support', label: 'Technical Support' },
+          ],
+        },
+      ],
+    },
+  ],
+  onSubmit: async (data) => {
+    console.log('Multi-step form submitted:', data);
+  },
+  onSaveDraft: async (data) => {
+    localStorage.setItem('service-draft', JSON.stringify(data));
+  },
+  onLoadDraft: async () => {
+    const saved = localStorage.getItem('service-draft');
+    return saved ? JSON.parse(saved) : null;
+  },
+  onDiscard: () => {
+    if (confirm('Are you sure you want to discard this form?')) {
+      localStorage.removeItem('service-draft');
+      window.location.href = '/dashboard';
+    }
+  },
+};
+```
 
 ## TypeScript Support
 
@@ -668,24 +793,6 @@ const config: FormBuilderConfig = {
 };
 ```
 
-### Language Switching
-
-Use the `useLanguageSwitcher` hook to allow users to change languages:
-
-```tsx
-import { useLanguageSwitcher } from './FormBuilder';
-
-function LanguageSwitcher() {
-  const { currentLanguage, toggleLanguage, changeLanguage } = useLanguageSwitcher();
-
-  return (
-    <Button onClick={toggleLanguage}>
-      {currentLanguage === 'lt' ? 'Switch to English' : 'Perjungti į lietuvių'}
-    </Button>
-  );
-}
-```
-
 ### Available Translation Keys
 
 #### Form Actions
@@ -733,21 +840,40 @@ const config = {
 };
 ```
 
-### Translation Demo
+### Using Translations
 
-Check out the `TranslationDemo` component in the examples folder for a complete working demonstration of the translation features.
+The FormBuilder automatically supports Lithuanian and English translations. You can use translation keys in your field configurations:
 
 ```tsx
-import { TranslationDemo } from './FormBuilder/examples/TranslationDemo';
-
-function App() {
-  return <TranslationDemo />;
-}
+const translatedFormConfig: FormBuilderConfig = {
+  id: 'translated-form',
+  title: 'formBuilder.titles.contactForm', // Will be translated
+  steps: [
+    {
+      id: 'contact',
+      title: 'formBuilder.steps.contactInfo',
+      fields: [
+        {
+          id: 'email',
+          name: 'email',
+          type: 'email',
+          label: 'formBuilder.fields.email', // Translates to "Email Address" / "El. pašto adresas"
+          placeholder: 'formBuilder.placeholders.email',
+          required: true,
+        },
+        {
+          id: 'terms',
+          name: 'terms',
+          type: 'checkbox',
+          label: 'formBuilder.fields.termsAndConditions',
+          children: 'formBuilder.messages.termsAccept',
+          required: true,
+        },
+      ],
+    },
+  ],
+  onSubmit: async (data) => {
+    console.log('Translated form submitted:', data);
+  },
+};
 ```
-
-## Performance Improvements
-
-- Reduced bundle size by removing large internal MIME type mappings
-- Leveraged battle-tested libraries with millions of downloads
-- Improved validation accuracy using HTML5-compliant standards
-- Better TypeScript support and error handling

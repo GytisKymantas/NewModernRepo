@@ -59,7 +59,6 @@ export * from './validation';
 
 // Export translation hooks
 export { default as useFormTranslation } from './hooks/useFormTranslation';
-export { default as useLanguageSwitcher } from './hooks/useLanguageSwitcher';
 
 // All MIME type utilities are exported via 'export * from ./utils' above
 // Now using external libraries: 'mime' and 'attr-accept'
