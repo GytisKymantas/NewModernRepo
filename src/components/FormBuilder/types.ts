@@ -25,6 +25,24 @@ export interface SlotProps {
   [key: string]: any;
 }
 
+// Custom error messages interface
+export interface CustomErrorMessages {
+  required?: string;
+  email?: string;
+  phone?: string;
+  minLength?: string;
+  maxLength?: string;
+  min?: string;
+  max?: string;
+  pattern?: string;
+  fileSize?: string;
+  fileType?: string;
+  selectOption?: string;
+  selectAtLeastOne?: string;
+  custom?: string; // For custom validation rules
+  [key: string]: string | undefined; // Allow additional custom message types
+}
+
 export type FieldType =
   | 'text'
   | 'textarea'
@@ -54,6 +72,7 @@ export interface BaseFieldConfig {
   defaultValue?: any;
   validation?: RegisterOptions;
   zodValidation?: z.ZodType<any>;
+  customErrorMessages?: CustomErrorMessages; // New property for custom error messages
   slotProps?: SlotProps;
   gridColumn?: number; // For layout (1-12)
   conditionalLogic?: ConditionalLogic;
@@ -183,9 +202,11 @@ export interface FormBuilderConfig {
   steps: FormStep[];
   globalValidation?: z.ZodSchema;
   onSubmit: (data: any) => void | Promise<void>;
+  onInvalidSubmit?: (errors: FieldErrors, data: any) => void | Promise<void>;
   onStepChange?: (stepIndex: number, data: any) => void;
   onSaveDraft?: (data: any) => void | Promise<void>;
   onLoadDraft?: () => any | Promise<any>;
+  onDiscard?: () => void | Promise<void>;
 }
 
 export interface CustomFieldProps {
@@ -249,6 +270,7 @@ export interface FormActionsProps {
   onPrevious: () => void;
   onSubmit: () => void;
   onSaveDraft?: () => void;
+  onDiscard?: () => void;
 }
 
 export interface FormContentProps {

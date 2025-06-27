@@ -7,6 +7,7 @@ import TopBanner from '@/components/layout/components/TopBanner';
 
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
+const phoneField = commonFieldConfigs.phone('phone');
 const personalCodeField = commonFieldConfigs.personalCode('personalCode');
 
 function MultiStepServiceForm() {
@@ -94,8 +95,8 @@ function MultiStepServiceForm() {
                 defaultValue: '2024-04-06',
               },
               {
-                id: 'docNumber',
-                name: 'docNumber',
+                id: 'documentNumber',
+                name: 'documentNumber',
                 type: 'text',
                 label: 'Dokumento numeris',
                 required: true,
@@ -139,7 +140,7 @@ function MultiStepServiceForm() {
                 name: 'radioSelection',
                 type: 'radio',
                 label: 'Sutikimas naudoti juridinio asmens pavadinimą',
-                required: false,
+                required: true,
                 description:
                   'Pažymėkite, jei naudojate Lietuvos ar užsienio juridinio asmens pavadinimą ar jo dalį',
                 options: [
@@ -173,11 +174,9 @@ function MultiStepServiceForm() {
                 defaultValue: 'Vardenis Pavardenis',
               },
               {
-                name: 'phoneNo',
-                id: 'phoneNo',
-                type: 'text',
+                ...phoneField,
                 label: 'Telefono nr.',
-                defaultValue: 'Vardenis Pavardenis',
+                required: true,
               },
               {
                 ...emailField,
@@ -186,10 +185,29 @@ function MultiStepServiceForm() {
               {
                 id: 'formDate',
                 name: 'formDate',
-                type: 'text',
+                type: 'date',
                 label: 'Prašymo data',
                 required: true,
                 defaultValue: '2024-04-06',
+              },
+              // Example field with custom error messages
+              {
+                id: 'customMessageExample',
+                name: 'customMessageExample',
+                type: 'text',
+                label: 'Custom Validation Example',
+                required: true,
+                placeholder: 'Enter at least 5 characters',
+                validation: {
+                  minLength: 5,
+                  maxLength: 20,
+                },
+                customErrorMessages: {
+                  required: 'This custom field is absolutely required!',
+                  minLength:
+                    'You need at least {{min}} characters for this special field',
+                  maxLength: 'Please keep it under {{max}} characters',
+                },
               },
             ],
           },
@@ -215,6 +233,9 @@ function MultiStepServiceForm() {
       console.log('Service request submitted:', data);
       alert('Service request submitted successfully!');
     },
+    onInvalidSubmit: async (errors, data) => {
+      console.log('Invalid submit:', errors, data);
+    },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
       console.log('Draft saved:', data);
@@ -223,6 +244,10 @@ function MultiStepServiceForm() {
       console.log(`Moved to step ${step}:`, data);
       // Auto-save on step change
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
+    },
+    onDiscard: async () => {
+      localStorage.removeItem('serviceRequestDraft');
+      console.log('Draft discarded');
     },
     onLoadDraft: async () => {
       const draft = localStorage.getItem('serviceRequestDraft');

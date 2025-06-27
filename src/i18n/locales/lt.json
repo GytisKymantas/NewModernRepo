@@ -1,21 +1,47 @@
 {
+  "components": {
+    "ServiceFormActions": {
+      "discard": "Atšaukti pildymą ir ištrinti formos duomenis",
+      "draft": "Baigti pildyti vėliau",
+      "submit": "Pateikti"
+    }
+  },
   "formBuilder": {
     "actions": {
-      "next": "Toliau",
+      "next": "Tęsti",
       "previous": "Atgal",
       "submit": "Pateikti",
-      "saveDraft": "Išsaugoti juodraštį",
+      "saveDraft": "Baigti pildyti vėliau",
       "saving": "Išsaugoma...",
       "submitting": "Pateikiama..."
     },
     "validation": {
       "required": "Šis laukas yra privalomas",
+      "fieldRequired": "{{field}} yra privalomas",
       "email": "Įveskite teisingą el. pašto adresą",
       "phone": "Įveskite teisingą telefono numerį",
+      "personalCode": "Asmens kodas turi būti 11 skaitmenų",
+      "companyCode": "Įmonės kodas turi būti 9 skaitmenys",
       "minLength": "Minimalus ilgis yra {{min}} simboliai",
       "maxLength": "Maksimalus ilgis yra {{max}} simboliai",
       "min": "Minimali reikšmė yra {{min}}",
-      "max": "Maksimali reikšmė yra {{max}}"
+      "max": "Maksimali reikšmė yra {{max}}",
+      "selectOption": "Pasirinkite variantą",
+      "selectAtLeastOne": "Pasirinkite bent vieną variantą",
+      "fileSize": "Failo dydis turi būti mažesnis nei {{size}}MB",
+      "fileRequired": "{{field}} yra privalomas",
+      "invalidDate": "Įveskite teisingą datą",
+      "invalidUrl": "Įveskite teisingą URL",
+      "invalidNumber": "Įveskite teisingą skaičių",
+      "invalidString": "Įveskite teisingą tekstą",
+      "positiveNumber": "Turi būti teigiamas skaičius",
+      "strongPassword": {
+        "minLength": "Slaptažodis turi būti bent 8 simbolių",
+        "uppercase": "Slaptažodis turi turėti bent vieną didžiąją raidę",
+        "lowercase": "Slaptažodis turi turėti bent vieną mažąją raidę",
+        "number": "Slaptažodis turi turėti bent vieną skaičių",
+        "special": "Slaptažodis turi turėti bent vieną specialų simbolį"
+      }
     },
     "fields": {
       "email": "El. pašto adresas",

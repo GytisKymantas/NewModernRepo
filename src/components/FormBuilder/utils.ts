@@ -67,47 +67,58 @@ export const generateFieldId = (stepId: string, fieldName: string): string =>
 export const getDefaultValues = (steps: any[]): Record<string, any> => {
   const defaultValues: Record<string, any> = {};
 
-  steps.forEach((step) => {
-    if (!step.fields || !Array.isArray(step.fields)) {
-      return;
-    }
-    step.fields.forEach((field: FieldConfig) => {
-      if (field.defaultValue !== undefined) {
-        defaultValues[field.name] = field.defaultValue;
-      } else {
-        switch (field.type) {
-          case 'text':
-          case 'textarea':
-          case 'email':
-          case 'password':
-          case 'phone':
-            defaultValues[field.name] = '';
-            break;
-          case 'number':
-          case 'numberStepper':
-            defaultValues[field.name] = 0;
-            break;
-          case 'select':
-          case 'radio':
-            defaultValues[field.name] = '';
-            break;
-          case 'multiselect':
-            defaultValues[field.name] = [];
-            break;
-          case 'checkbox':
-            defaultValues[field.name] = false;
-            break;
-          case 'date':
-            defaultValues[field.name] = null;
-            break;
-          case 'file':
-            defaultValues[field.name] = (field as any).multiple ? [] : null;
-            break;
-          default:
-            defaultValues[field.name] = null;
-        }
+  const processField = (field: FieldConfig) => {
+    if (field.defaultValue !== undefined) {
+      defaultValues[field.name] = field.defaultValue;
+    } else {
+      switch (field.type) {
+        case 'text':
+        case 'textarea':
+        case 'email':
+        case 'password':
+        case 'phone':
+          defaultValues[field.name] = '';
+          break;
+        case 'number':
+        case 'numberStepper':
+          defaultValues[field.name] = 0;
+          break;
+        case 'select':
+        case 'radio':
+          defaultValues[field.name] = '';
+          break;
+        case 'multiselect':
+          defaultValues[field.name] = [];
+          break;
+        case 'checkbox':
+          defaultValues[field.name] = false;
+          break;
+        case 'date':
+          defaultValues[field.name] = null;
+          break;
+        case 'file':
+          defaultValues[field.name] = (field as any).multiple ? [] : null;
+          break;
+        default:
+          defaultValues[field.name] = null;
       }
-    });
+    }
+  };
+
+  steps.forEach((step) => {
+    // Process direct fields
+    if (step.fields && Array.isArray(step.fields)) {
+      step.fields.forEach(processField);
+    }
+
+    // Process subgroup fields
+    if (step.subgroups && Array.isArray(step.subgroups)) {
+      step.subgroups.forEach((subgroup: any) => {
+        if (subgroup.fields && Array.isArray(subgroup.fields)) {
+          subgroup.fields.forEach(processField);
+        }
+      });
+    }
   });
 
   return defaultValues;

@@ -6,13 +6,14 @@ import {
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldErrors, useForm } from 'react-hook-form';
 import '../../i18n/i18n';
 import theme from '../../theme';
 import FormActions from './components/FormActions';
 import FormContent from './components/FormContent';
 import FormHeader from './components/FormHeader';
+import useFormTranslation from './hooks/useFormTranslation';
 import { FormBuilderProps } from './types';
 import { formatFormDataForSubmission, getDefaultValues } from './utils';
 import { createFormValidation, createStepValidation } from './validation';
@@ -23,15 +24,16 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   const [isSavingDraft, setIsSavingDraft] = useState(false);
 
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
+  const { translateValidation } = useFormTranslation();
 
   const currentStepConfig = config.steps[currentStep];
   const isLastStep = currentStep === config.steps.length - 1;
   const isFirstStep = currentStep === 0;
 
-  // Create validation schema for current step or entire form
+  // Create validation schema for current step or entire form with translations
   const validationSchema = config.multiStep
-    ? createStepValidation(currentStepConfig)
-    : createFormValidation(config.steps, config.globalValidation);
+    ? createStepValidation(currentStepConfig, translateValidation)
+    : createFormValidation(config.steps, config.globalValidation, translateValidation);
 
   const defaultValues = {
     ...getDefaultValues(config.steps),
@@ -45,12 +47,11 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     setValue,
     watch,
     formState: { errors, isValid },
-    trigger,
     getValues,
   } = useForm({
     resolver: zodResolver(validationSchema),
     defaultValues,
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const formData = watch();
@@ -115,48 +116,25 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     }
   };
 
-  // Handle step navigation
-  const handleNext = async () => {
-    const isStepValid = await trigger();
-    if (isStepValid) {
-      if (config.onStepChange) {
-        config.onStepChange(currentStep + 1, getValues());
-      }
-      setCurrentStep((prev) => prev + 1);
-      // Update accordion state
-      if (accordionController.setState) {
-        const newState = { ...accordionController.state };
-        config.steps.forEach((step, index) => {
-          if (newState[step.id]) {
-            if (index < currentStep + 1) {
-              newState[step.id].state = 'completed';
-              newState[step.id].expanded = false;
-            } else if (index === currentStep + 1) {
-              newState[step.id].state = 'active';
-              newState[step.id].expanded = true;
-            }
-          }
-        });
-        accordionController.setState(newState);
-      }
+  // Handle discard functionality
+  const handleDiscard = async () => {
+    if (config.onDiscard) {
+      await config.onDiscard();
     }
   };
 
-  const handlePrevious = () => {
-    if (config.onStepChange) {
-      config.onStepChange(currentStep - 1, getValues());
-    }
-    setCurrentStep((prev) => prev - 1);
+  // Helper function to update accordion state for a given step
+  const updateAccordionState = useCallback(
+    (targetStep: number) => {
+      if (!accordionController.setState) return;
 
-    // Update accordion state
-    if (accordionController.setState) {
       const newState = { ...accordionController.state };
       config.steps.forEach((step, index) => {
         if (newState[step.id]) {
-          if (index < currentStep - 1) {
+          if (index < targetStep) {
             newState[step.id].state = 'completed';
             newState[step.id].expanded = false;
-          } else if (index === currentStep - 1) {
+          } else if (index === targetStep) {
             newState[step.id].state = 'active';
             newState[step.id].expanded = true;
           } else {
@@ -166,10 +144,44 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
         }
       });
       accordionController.setState(newState);
-    }
-  };
+    },
+    [accordionController, config.steps],
+  );
 
-  // Handle form submission
+  // Helper function to navigate to a specific step
+  const navigateToStep = useCallback(
+    (targetStep: number) => {
+      if (config.onStepChange) {
+        config.onStepChange(targetStep, getValues());
+      }
+      setCurrentStep(targetStep);
+      updateAccordionState(targetStep);
+    },
+    [config, getValues, updateAccordionState],
+  );
+
+  // Handle step navigation - use handleSubmit pattern for proper error handling
+  const handleNext = useCallback(() => {
+    // Use handleSubmit to properly trigger validation and get errors
+    const onStepValid = () => {
+      navigateToStep(currentStep + 1);
+    };
+
+    const onStepInvalid = async (stepErrors: FieldErrors) => {
+      if (config.onInvalidSubmit) {
+        await config.onInvalidSubmit(stepErrors, getValues());
+      }
+    };
+
+    // Use handleSubmit which will automatically validate and call the appropriate callback
+    return handleSubmit(onStepValid, onStepInvalid)();
+  }, [handleSubmit, navigateToStep, currentStep, config, getValues]);
+
+  const handlePrevious = useCallback(() => {
+    navigateToStep(currentStep - 1);
+  }, [navigateToStep, currentStep]);
+
+  // Handle successful form submission
   const handleFormSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
@@ -183,13 +195,22 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     }
   };
 
+  // Handle validation failure on form submission
+  const handleFormError = async (formErrors: FieldErrors) => {
+    if (config.onInvalidSubmit) {
+      await config.onInvalidSubmit(formErrors, getValues());
+    }
+  };
+
   // Prepare props for conditional rendering
   const formContainerProps = config.multiStep
     ? { accordionController, showProgressStepper: upMd }
     : { accordionController };
 
   const formActionsSubmitHandler =
-    config.multiStep && !isLastStep ? handleNext : handleSubmit(handleFormSubmit);
+    config.multiStep && !isLastStep
+      ? handleNext
+      : handleSubmit(handleFormSubmit, handleFormError);
 
   return (
     <RcSesServicePage className={className}>
@@ -218,6 +239,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
           onPrevious={handlePrevious}
           onSubmit={formActionsSubmitHandler}
           onSaveDraft={config.onSaveDraft ? handleSaveDraft : undefined}
+          onDiscard={handleDiscard}
         />
       </RcSesServiceFormContainer>
     </RcSesServicePage>

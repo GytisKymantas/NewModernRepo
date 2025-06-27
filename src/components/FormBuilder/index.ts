@@ -1,3 +1,51 @@
+/**
+ * FormBuilder Component Library
+ *
+ * Custom Error Messages Feature:
+ * You can now override default validation messages on a per-field basis using the `customErrorMessages` property.
+ *
+ * Priority order for error messages:
+ * 1. Custom messages from field config (customErrorMessages)
+ * 2. Translated messages from i18n
+ * 3. Default English fallback messages
+ *
+ * Example usage:
+ * {
+ *   id: 'email',
+ *   name: 'email',
+ *   type: 'email',
+ *   label: 'Email Address',
+ *   required: true,
+ *   customErrorMessages: {
+ *     required: 'Please provide your email - it is mandatory!',
+ *     email: 'The email format is incorrect. Please check again.',
+ *   },
+ * }
+ *
+ * Available error message types:
+ * - required: For required field validation
+ * - email: For email format validation
+ * - phone: For phone number validation
+ * - minLength: For minimum length validation (supports {{min}} placeholder)
+ * - maxLength: For maximum length validation (supports {{max}} placeholder)
+ * - min: For minimum value validation (supports {{min}} placeholder)
+ * - max: For maximum value validation (supports {{max}} placeholder)
+ * - fileSize: For file size validation (supports {{size}} placeholder)
+ * - selectOption: For select/radio option validation
+ * - selectAtLeastOne: For multiselect validation
+ * - custom: For custom validation rules
+ *
+ * Placeholders in custom messages:
+ * Use {{placeholder}} syntax for dynamic values:
+ * - {{field}}: Field label
+ * - {{min}}: Minimum value/length
+ * - {{max}}: Maximum value/length
+ * - {{size}}: File size limit
+ */
+
+// Import for internal use in commonFieldConfigs
+import { createCustomValidationRules } from './validation';
+
 export { default as FieldRenderer, SubgroupRenderer } from './FieldRenderer';
 export { default as FormBuilder } from './FormBuilder';
 export { default as FormActions } from './components/FormActions';
@@ -42,12 +90,8 @@ export const commonFieldConfigs = {
     label: 'formBuilder.fields.personalCode',
     placeholder: 'formBuilder.placeholders.personalCode',
     required,
-    validation: {
-      pattern: {
-        value: /^[0-9]{11}$/,
-        message: 'formBuilder.messages.personalCodeInvalid',
-      },
-    },
+    // Use Zod validation for proper translation support
+    // The validation schema will be created with translations in FormBuilder
   }),
 
   termsAndConditions: (name: string) => ({
@@ -88,4 +132,32 @@ export const commonFieldConfigs = {
     accept: '.pdf,.doc,.docx,.jpg,.png',
     maxSize: 5 * 1024 * 1024, // 5MB
   }),
+};
+
+// Function to create field configs with custom Zod validation (for advanced use cases)
+export const createTranslatedFieldConfigs = (
+  translateFunction?: (key: string, values?: Record<string, any>) => string,
+) => {
+  const validationRules = createCustomValidationRules(translateFunction);
+
+  return {
+    ...commonFieldConfigs,
+    personalCodeWithValidation: (name: string, required = true) => ({
+      ...commonFieldConfigs.personalCode(name, required),
+      zodValidation: required
+        ? validationRules.lithuanianPersonalCode
+        : validationRules.lithuanianPersonalCode.optional(),
+    }),
+    companyCode: (name: string, required = true) => ({
+      id: name,
+      name,
+      type: 'text' as const,
+      label: 'Company Code',
+      placeholder: 'Enter 9-digit company code',
+      required,
+      zodValidation: required
+        ? validationRules.lithuanianCompanyCode
+        : validationRules.lithuanianCompanyCode.optional(),
+    }),
+  };
 };

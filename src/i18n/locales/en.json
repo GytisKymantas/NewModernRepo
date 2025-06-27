@@ -1,21 +1,47 @@
 {
+  "components": {
+    "ServiceFormActions": {
+      "discard": "Discard",
+      "draft": "Finish filling later",
+      "submit": "Submit"
+    }
+  },
   "formBuilder": {
     "actions": {
-      "next": "Next",
-      "previous": "Previous",
+      "next": "Continue",
+      "previous": "Back",
       "submit": "Submit",
-      "saveDraft": "Save Draft",
+      "saveDraft": "Finish filling later",
       "saving": "Saving...",
       "submitting": "Submitting..."
     },
     "validation": {
       "required": "This field is required",
+      "fieldRequired": "{{field}} is required",
       "email": "Please enter a valid email address",
       "phone": "Please enter a valid phone number",
+      "personalCode": "Personal code must be 11 digits",
+      "companyCode": "Company code must be 9 digits",
       "minLength": "Minimum length is {{min}} characters",
       "maxLength": "Maximum length is {{max}} characters",
       "min": "Minimum value is {{min}}",
-      "max": "Maximum value is {{max}}"
+      "max": "Maximum value is {{max}}",
+      "selectOption": "Please select an option",
+      "selectAtLeastOne": "Please select at least one option",
+      "fileSize": "File size must be less than {{size}}MB",
+      "fileRequired": "{{field}} is required",
+      "invalidDate": "Please enter a valid date",
+      "invalidUrl": "Please enter a valid URL",
+      "invalidNumber": "Please enter a valid number",
+      "invalidString": "Please enter valid text",
+      "positiveNumber": "Must be a positive number",
+      "strongPassword": {
+        "minLength": "Password must be at least 8 characters",
+        "uppercase": "Password must contain at least one uppercase letter",
+        "lowercase": "Password must contain at least one lowercase letter",
+        "number": "Password must contain at least one number",
+        "special": "Password must contain at least one special character"
+      }
     },
     "fields": {
       "email": "Email Address",
@@ -41,6 +67,12 @@
       "fileUploadError": "Failed to upload file",
       "draftSaved": "Draft saved successfully",
       "draftSaveError": "Failed to save draft"
+    },
+    "examples": {
+      "customErrorMessages": {
+        "description": "Example of how to use custom error messages in field config",
+        "usage": "Add customErrorMessages property to any field configuration"
+      }
     }
   }
 }

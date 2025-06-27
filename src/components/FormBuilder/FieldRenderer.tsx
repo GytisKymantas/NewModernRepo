@@ -77,6 +77,8 @@ function FieldRenderer({
   control,
   errors,
   register,
+  setValue,
+  watch,
   formData,
 }: FieldRendererProps) {
   const { translateText } = useFormTranslation();
@@ -95,9 +97,8 @@ function FieldRenderer({
     slotProps: field.slotProps,
   };
 
-  // Format errors for RcSes components - they expect a nested errors object
+  // Get field error directly - RcSes components expect the error object directly
   const fieldError = errors?.[field.name];
-  const formattedErrors = fieldError ? { [field.name]: fieldError } : undefined;
 
   const renderField = () => {
     switch (field.type) {
@@ -110,11 +111,8 @@ function FieldRenderer({
             {...commonProps}
             type={field.type}
             placeholder={translateText(textField.placeholder)}
-            errors={formattedErrors}
-            {...register(field.name, {
-              required: field.required,
-              ...field.validation,
-            })}
+            errors={fieldError}
+            {...register(field.name)}
           />
         );
       }
@@ -125,11 +123,8 @@ function FieldRenderer({
           <RcSesTextField
             {...commonProps}
             placeholder={translateText(textField.placeholder)}
-            errors={formattedErrors}
-            {...register(field.name, {
-              required: field.required,
-              ...field.validation,
-            })}
+            errors={fieldError}
+            {...register(field.name)}
             slotProps={{
               ...field.slotProps,
               field: {
@@ -157,13 +152,9 @@ function FieldRenderer({
             {...commonProps}
             control={control}
             placeholder={translateText(selectField.placeholder)}
-            errors={formattedErrors}
+            errors={fieldError}
             options={selectField.options}
             multiple={selectField.multiple}
-            rules={{
-              required: field.required,
-              ...field.validation,
-            }}
           />
         );
       }
@@ -174,12 +165,17 @@ function FieldRenderer({
           <RcSesRadioButtonGroup
             {...commonProps}
             control={control}
-            errors={formattedErrors}
+            errors={fieldError}
             options={radioField.options}
             hideNativeRadio={radioField.hideNativeRadio}
-            rules={{
-              required: field.required,
-              ...field.validation,
+            slotProps={{
+              ...field.slotProps,
+              wrapper: {
+                description: field.description
+                  ? translateText(field.description)
+                  : undefined,
+                ...field.slotProps?.wrapper,
+              },
             }}
           />
         );
@@ -191,11 +187,16 @@ function FieldRenderer({
           <RcSesCheckbox
             {...commonProps}
             control={control}
-            errors={formattedErrors}
+            errors={fieldError}
             variant={checkboxField.variant}
-            rules={{
-              required: field.required,
-              ...field.validation,
+            slotProps={{
+              ...field.slotProps,
+              wrapper: {
+                description: field.description
+                  ? translateText(field.description)
+                  : undefined,
+                ...field.slotProps?.wrapper,
+              },
             }}
           >
             {typeof checkboxField.children === 'string'
@@ -211,28 +212,14 @@ function FieldRenderer({
           <RcSesDatepicker
             {...commonProps}
             control={control}
-            errors={formattedErrors}
+            errors={fieldError}
             clearable={dateField.clearable}
-            rules={{
-              required: field.required,
-              ...field.validation,
-            }}
           />
         );
       }
 
       case 'phone': {
-        return (
-          <RcSesPhoneInput
-            {...commonProps}
-            control={control}
-            errors={formattedErrors}
-            rules={{
-              required: field.required,
-              ...field.validation,
-            }}
-          />
-        );
+        return <RcSesPhoneInput {...commonProps} control={control} errors={fieldError} />;
       }
 
       case 'numberStepper': {
@@ -241,14 +228,8 @@ function FieldRenderer({
           <RcSesNumberStepper
             {...commonProps}
             control={control}
-            errors={formattedErrors}
+            errors={fieldError}
             displayStepperControls={stepperField.displayStepperControls}
-            rules={{
-              required: field.required,
-              min: stepperField.min,
-              max: stepperField.max,
-              ...field.validation,
-            }}
           />
         );
       }
@@ -275,11 +256,7 @@ function FieldRenderer({
           <RcSesFileDropzone
             {...commonProps}
             control={control}
-            errors={formattedErrors}
-            rules={{
-              required: field.required,
-              ...field.validation,
-            }}
+            errors={fieldError}
             slotProps={{
               ...field.slotProps,
               dropzone: dropzoneProps,
@@ -314,7 +291,7 @@ function FieldRenderer({
           <CustomComponent
             {...commonProps}
             control={control}
-            errors={formattedErrors}
+            errors={errors}
             {...customField.props}
           />
         );

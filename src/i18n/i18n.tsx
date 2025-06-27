@@ -15,9 +15,11 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: enTranslations,
+      common: enTranslations,
     },
     lt: {
       translation: ltTranslations,
+      common: ltTranslations,
     },
   },
 });
