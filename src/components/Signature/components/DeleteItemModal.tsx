@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
-import { Button, DialogActions, Divider } from '@mui/material';
+import { Button, DialogActions } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
 
 // Correct form type
@@ -72,8 +71,7 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
             </div>
 
             <h2>Ištrinti dokumentą</h2>
-            <p
->Atkreipiame dėmesį, kad jūsų įkeltas dokumentas bus ištrintas.</p>
+            <p>Atkreipiame dėmesį, kad jūsų įkeltas dokumentas bus ištrintas.</p>
           </StyledFormSection>
           <DialogActions>
             <Button type='submit'>Taip</Button>
@@ -82,7 +80,6 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
             </Button>
           </DialogActions>
         </form>
-        <Divider />
       </DialogContent>
     </Dialog>
   );

@@ -66,7 +66,6 @@ const BodyText = styled.p`
   font-weight: 400;
   line-height: 16px;
   max-width: 242px;
-  margin: 0 0 0 auto;
 `;
 
 const StyledForm = styled.form`

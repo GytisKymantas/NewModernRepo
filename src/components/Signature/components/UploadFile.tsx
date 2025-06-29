@@ -38,7 +38,8 @@ function UploadFile() {
   };
 
   return (
-    <div style={{marginBottom:'-63px'}}>
+    <div style={{marginBottom:'0px',
+}}>
       <UploadWrapper onClick={handleOpenModal}>
         <svg
           width='25'

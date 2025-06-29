@@ -41,6 +41,7 @@ function ServiceFormAccordion({
         pb: { md: 8 },
         pt: { xs: 0, md: 6 },
         px: { xs: 0, md: 3 },
+        mb: { xs: 0, md: 6 },
         ...slotProps?.container?.sx,
       }}
     >

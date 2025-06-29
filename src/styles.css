@@ -23,5 +23,23 @@ input[type='radio' i]:focus-visible {
   outline: none !important;
 }
 .MuiStepLabel-iconContainer {
-  z-index:3;
+  z-index: 3;
+}
+
+#basicInformation-content .css-34zkho-MuiAccordionDetails-root {
+  padding: 0;
+  margin-top: -12px;
+}
+
+#basicInformation-header .MuiAccordionSummary-content {
+  margin: 0;
+  padding: 20px 0;
+}
+
+.css-telt6a-MuiContainer-root {
+  background: white !important;
+}
+
+.MuiAccordionDetails-root {
+  padding-bottom:0 !important;
 }

@@ -4,19 +4,17 @@ import {
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
 import {
-  RcSesAccordion,
   RcSesAlert,
-  RcSesServiceFormActions,
-  RcSesServiceFormContainer,
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
 import InfoIcon from '../../assets/icons/InfoIcon';
+import AccordionWrapper from '../Service copy/components/AccordionWrapper';
+import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
 import ServiceHeader from '../Service copy/components/ServiceHeader';
 import DocumentInfoSection from './components/DocumentInfoSection';
+import ServiceFormActions from './components/ServiceFormActions';
 import UploadFile from './components/UploadFile';
-import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
-import AccordionWrapper from '../Service copy/components/AccordionWrapper';
 
 const StyledAlertText = styled.p`
   font-size: 14px;
@@ -58,10 +56,7 @@ function Signature() {
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
       />
 
-      <ServiceFormAccordion
-        accordionController={accordionController}
-        showProgressStepper
-      >
+      <ServiceFormAccordion accordionController={accordionController} showProgressStepper>
         <AccordionWrapper id='serviceDetails' controller={accordionController} noPadding>
           <RcSesAlert icon={<InfoIcon />} severity='info'>
             <StyledAlertText>
@@ -76,15 +71,16 @@ function Signature() {
           <UploadFile />
         </AccordionWrapper>
 
-        <RcSesServiceFormActions
-          onDiscard={() =>
-            redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')
-          }
+       
+
+        <ServiceFormActions
+          onDiscard={() => redirectToServiceDescriptionPage('redirect')}
           onSaveDraft={() => redirectToSelfServiceDashboard()}
+          onBack={() => window.location.href = '/'}
           onSubmit={() => redirectToSelfServiceDashboard()}
         />
       </ServiceFormAccordion>
-    </RcSesServicePage>
+    </RcSesServicePage> 
   );
 }
 
