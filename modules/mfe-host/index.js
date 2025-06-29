@@ -54,7 +54,9 @@ const redirectToServiceDescriptionPage = (id) => {
 };
 
 const unsupportedServiceRedirect = (id, message) => {
-  window.location.href = `/unsupported-service/${id}?message=${encodeURIComponent(message)}`;
+  window.location.href = `/unsupported-service/${id}?message=${encodeURIComponent(
+    message,
+  )}`;
 };
 
 // Eksportuojame funkcijas, kad jas būtų galima naudoti kitur
@@ -71,5 +73,5 @@ module.exports = {
   redirectToSelfServiceDashboardWithError,
   redirectToSelfServiceOwnedProperties,
   redirectToServiceDescriptionPage,
-  unsupportedServiceRedirect
+  unsupportedServiceRedirect,
 };

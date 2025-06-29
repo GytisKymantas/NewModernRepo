@@ -1,9 +1,6 @@
-
-import React from 'react'
-
-import { RcSesServicePage } from '@registrucentras/rc-ses-react-components'
-import theme from '../../theme'
-import { Container } from '@mui/material'
+import { Container } from '@mui/material';
+import { RcSesServicePage } from '@registrucentras/rc-ses-react-components';
+import theme from '../../theme';
 
 function OwnedProperties() {
   return (
@@ -20,7 +17,7 @@ function OwnedProperties() {
         ...
       </Container>
     </RcSesServicePage>
-  )
+  );
 }
 
-export default OwnedProperties
+export default OwnedProperties;

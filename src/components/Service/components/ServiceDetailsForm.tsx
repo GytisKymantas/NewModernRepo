@@ -1,23 +1,24 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
 
-import { RcSesCheckbox, RcSesNumberStepper, RcSesSelect } from '@registrucentras/rc-ses-react-components'
+import {
+  RcSesNumberStepper,
+  RcSesSelect,
+} from '@registrucentras/rc-ses-react-components';
 
 type FormModel = {
-  purpose: string
-  legalBasis: string
-  agreement: boolean
-  deadline: string
-  address: string
-  numberOfCopies: number
-}
+  purpose: string;
+  legalBasis: string;
+  agreement: boolean;
+  deadline: string;
+  address: string;
+  numberOfCopies: number;
+};
 
 function ServiceDetailsForm() {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    register,
   } = useForm<FormModel>({
     mode: 'all',
     defaultValues: {
@@ -28,7 +29,7 @@ function ServiceDetailsForm() {
       address: '',
       numberOfCopies: 0,
     },
-  })
+  });
 
   return (
     // eslint-disable-next-line no-console
@@ -60,7 +61,6 @@ function ServiceDetailsForm() {
           { value: 'teisinisPagrindas3', label: 'Teisinis pagrindas 3' },
         ]}
       />
-   
 
       <RcSesSelect
         id='deadline'
@@ -142,7 +142,7 @@ function ServiceDetailsForm() {
         slotProps={{ wrapper: { labelSubtitle: '(neprivaloma)' } }}
       />
     </form>
-  )
+  );
 }
 
-export default ServiceDetailsForm
+export default ServiceDetailsForm;

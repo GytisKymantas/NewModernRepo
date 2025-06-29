@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
-import {
-  RcSesAccordion,
-  useAccordionController,
-} from '@registrucentras/rc-ses-react-components';
+import { useMediaQuery } from '@mui/system';
+import { RcSesAlert } from '@registrucentras/rc-ses-react-components';
 import React from 'react';
 import DeleteIcon from '../../../assets/icons/DeleteIcon';
 import DownloadIcon from '../../../assets/icons/DownloadIcon';
 import OverviewIcon from '../../../assets/icons/OverviewIcon';
-import DownloadIconLabel from './DownloadIconLabel'; // adjust path if needed
-import ColorBallIcon from '../../../assets/icons/ColorBallIcon';
+import theme from '../../../theme';
+import { InfoHeader } from '../../Service copy/components/ServiceDetailsForm';
+import PrimaryButton from '../../common/PrimaryButton';
+import DeleteItemModal from './DeleteItemModal';
+import SignaturesSection from './SignaturesSection';
+import ViewItemModal from './ViewObjectModa';
 
 const Wrapper = styled.div`
   background-color: #f9fafb;
@@ -19,140 +21,190 @@ const Inner = styled.div`
   border-top: 1px solid #eef1f3;
   border-bottom: 1px solid #eef1f3;
   padding: 20px 2rem;
+  background: white;
 `;
 
 const Title = styled.h2`
   color: #1f2733;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
+  margin: 0;
 `;
 
 const Subtitle = styled.p`
   color: #4a5361;
-  font-size: 13px;
-  font-weight: 300;
+  font-family: 'Public Sans';
+  font-size: 12px;
+  font-weight: 300;   
 `;
 
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;
+  flex-direction: row;
+
+  @media (min-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
-const StatusLabel = styled.div`
+const StatusLabel = styled.div<{ status?: 'inQueue' | 'inProgress' | 'signed' }>`
   color: #1f2733;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 500;
-  background-color: #dcf4fc;
-  display: inline-block;
-  padding: 8px;
+  background-color: ${({ status }) => {
+    switch (status) {
+      case 'inQueue':
+        return '#F0F2F5';
+      case 'inProgress':
+        return '#dcf4fc';
+      case 'signed':
+        return '#D1FAE7';
+      default:
+        return '#dcf4fc';
+    }
+  }};
   border-radius: 100px;
   margin-right: 40px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  min-width: 108px;
+  justify-content: center;
+  letter-spacing: 0.16px;
 `;
 
 const Left = styled.div`
   display: flex;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
 `;
 
 const Actions = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 18px;
+  justify-content:center;
 `;
 
-const SignButton = styled.button`
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 13px;
-  background-color: #b9e9fa;
-`;
+function DocumentInfoSection({ index }: { index: number }) {
+  const [openModal, setOpenModal] = React.useState<null | 'view' | 'delete'>(null);
+  const upMd = useMediaQuery(theme.breakpoints.up('md'));
 
-const AccordionEntry = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-`;
-
-const PersonStatus = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`;
-
-const DocumentInfoSection = ({ index }: { index: number }) => {
-  const accordionController = useAccordionController({
-    initialState: {
-      basicInformation: {
-        expanded: false,
-        state: 'completed',
-        title: 'Pasirašantys asmenys (2)',
-      },
-      serviceDetails: {
-        expanded: true,
-        state: 'active',
-        title: 'Paslaugos užsakymas',
-      },
-      serviceIssuance: {
-        expanded: false,
-        state: 'pending',
-        title: 'Išdavimas',
-      },
-      additionalServices: {
-        expanded: false,
-        state: 'pending',
-        title: 'Reikalingos papildomos paslaugos',
-      },
-      termsAndConditions: {
-        expanded: false,
-        state: 'pending',
-        title: 'Terminai ir sąlygos',
-      },
-    },
-  });
+  const handleOpenModal = (modal: 'view' | 'delete') => setOpenModal(modal);
+  const handleCloseModal = () => setOpenModal(null);
 
   return (
     <Wrapper>
       <Inner>
         <Title>{index}. Dokumento tipo pavadinimas</Title>
-        <Subtitle></Subtitle>
+        <Subtitle>Dokumento pavadinimas.pdf</Subtitle>
+
         <Row>
           <Left>
-            <StatusLabel>Pasirašomas</StatusLabel>
+            <StatusLabel status={index === 1 ? 'signed' : 'inQueue'}>
+              {index === 1 ? 'Pasirašytas' : 'Pasirašomas'}
+            </StatusLabel>
+
             <Actions>
-              <DownloadIconLabel label="Atsisiųsti" svg={<DownloadIcon />} />
-              <DownloadIconLabel label="Peržiūrėti" svg={<OverviewIcon />} />
-              <DownloadIconLabel label="Ištrinti" svg={<DeleteIcon />} />
+              <div style={{ cursor: 'pointer' }}>
+                <PrimaryButton
+                  variant='text'
+                  size='small'
+                  startIcon={<DownloadIcon />}
+                  sx={{
+                    color: '#1F2733',
+                    '&:hover': {
+                      backgroundColor: 'inherit', // Keeps background unchanged
+                      boxShadow: 'none', // Removes shadow on hover
+                    },
+                  }}
+                >
+                  Atsisiųsti
+                </PrimaryButton>
+              </div>
+              <div onClick={() => handleOpenModal('view')} style={{ cursor: 'pointer' }}>
+                <PrimaryButton
+                  variant='text'
+                  size='small'
+                  startIcon={<OverviewIcon />}
+                  sx={{
+                    color: '#1F2733',
+                    '&:hover': {
+                      backgroundColor: 'inherit', // Keeps background unchanged
+                      boxShadow: 'none', // Removes shadow on hover
+                    },
+                  }}
+                >
+                  Peržiūrėti
+                </PrimaryButton>
+              </div>
+
+              <div
+                onClick={() => handleOpenModal('delete')}
+                style={{ cursor: 'pointer' }}
+              >
+                <PrimaryButton
+                  variant='text'
+                  startIcon={<DeleteIcon />}
+                  size='small'
+                  sx={{
+                    color: '#1F2733',
+                    '&:hover': {
+                      backgroundColor: 'inherit', // Keeps background unchanged
+                      boxShadow: 'none', // Removes shadow on hover
+                    },
+                  }}
+                >
+                  Ištrinti
+                </PrimaryButton>
+              </div>
             </Actions>
+
+            {index === 2 && upMd && (
+              <PrimaryButton sx={{ fontWeight: '600', marginLeft: 'auto' }}>
+                Pasirašyti
+              </PrimaryButton>
+            )}
           </Left>
-          <div>
-            <SignButton>Pasirašyti</SignButton>
-          </div>
         </Row>
-        <RcSesAccordion
-          id="basicInformation"
-          controller={accordionController}
-          sx={{ borderWidth: 0, border: 'none' }}
-        >
-          <AccordionEntry>
-            <p>Vardenis Pavardenis (Jus)</p>
-            <PersonStatus>
-              <ColorBallIcon />
-              Laukiama
-            </PersonStatus>
-          </AccordionEntry>
-          <AccordionEntry>
-            <p>Vardenis Pavardenis (Jus)</p>
-            <PersonStatus>
-              <ColorBallIcon />
-              Laukiama
-            </PersonStatus>
-          </AccordionEntry>
-        </RcSesAccordion>
+        
+
+        <SignaturesSection />
+        {index === 2 && !upMd && (
+          <div>
+            <PrimaryButton sx={{ fontWeight: '600', width: '100%' }}>
+              Pasirašyti
+            </PrimaryButton>
+          </div>
+        )}
       </Inner>
+
+      {index === 2 && (
+        <div style={{ padding: '0 24px',background:'#FFFFFF' }}>
+          <RcSesAlert severity='warning' sx={{ borderRadius: '6px' }}>
+            <InfoHeader noMargin>
+              Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
+              reikiamą informaciją.
+            </InfoHeader>
+          </RcSesAlert>
+        </div>
+      )}
+
+      {/* Modals */}
+      {openModal === 'view' && <ViewItemModal open={true} onClose={handleCloseModal} />}
+      {openModal === 'delete' && (
+        <DeleteItemModal open={true} onClose={handleCloseModal} />
+      )}
     </Wrapper>
   );
-};
+}
 
 export default DocumentInfoSection;

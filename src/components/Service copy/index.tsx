@@ -4,21 +4,22 @@ import {
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
 import {
-  RcSesAccordion,
   RcSesServiceFormActions,
-  RcSesServiceFormContainer,
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
 import theme from '../../theme';
 
+import AccordionWrapper from './components/AccordionWrapper';
 import ServiceDetailsForm from './components/ServiceDetailsForm';
+import ServiceFormAccordion from './components/ServiceFormAccordion';
 import ServiceFormContainer from './components/ServiceFormContainer';
 import ServiceHeader from './components/ServiceHeader';
-import React from 'react';
 
 function ServiceCopy() {
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
+
+
 
   const accordionController = useAccordionController({
     initialState: {
@@ -42,8 +43,6 @@ function ServiceCopy() {
 
   return (
     <RcSesServicePage>
-       
-
       <ServiceHeader
         breadcrumbsProps={{
           path: [
@@ -55,17 +54,17 @@ function ServiceCopy() {
           ],
         }}
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
-      ></ServiceHeader>
+      />
 
-      <RcSesServiceFormContainer
+      <ServiceFormAccordion
         accordionController={accordionController}
         showProgressStepper={upMd}
       >
         {!upMd && <ServiceFormContainer steps={accordionController.state} />}
 
-        <RcSesAccordion id='serviceDetails' controller={accordionController}>
+        <AccordionWrapper id='serviceDetails' controller={accordionController}>
           <ServiceDetailsForm />
-        </RcSesAccordion>
+        </AccordionWrapper>
 
         <RcSesServiceFormActions
           onDiscard={() =>
@@ -74,7 +73,7 @@ function ServiceCopy() {
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceDashboard()}
         />
-      </RcSesServiceFormContainer>
+      </ServiceFormAccordion>
     </RcSesServicePage>
   );
 }

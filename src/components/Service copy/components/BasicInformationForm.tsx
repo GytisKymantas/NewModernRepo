@@ -1,6 +1,5 @@
-import React from 'react'
-import { getToken } from '@rc-ses/mfe-host'
-import { RcSesTextField } from '@registrucentras/rc-ses-react-components'
+import { getToken } from '@rc-ses/mfe-host';
+import { RcSesTextField } from '@registrucentras/rc-ses-react-components';
 
 function BasicInformationForm() {
   return (
@@ -8,11 +7,9 @@ function BasicInformationForm() {
       label='JWT'
       slotProps={{
         field: {
-          InputProps:{
+          InputProps: {
             inputComponent: 'text',
-            inputProps: {
-         
-            }
+            inputProps: {},
           },
           slots: {
             input: 'text',
@@ -21,7 +18,7 @@ function BasicInformationForm() {
       }}
       value={getToken()}
     />
-  )
+  );
 }
 
-export default BasicInformationForm
+export default BasicInformationForm;

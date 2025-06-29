@@ -1,12 +1,15 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
 
-import { RcSesAlert, RcSesRadioButtonGroup, RcSesSelect } from '@registrucentras/rc-ses-react-components'
+import {
+  RcSesAlert,
+  RcSesRadioButtonGroup,
+  RcSesSelect,
+} from '@registrucentras/rc-ses-react-components';
 
 type FormModel = {
-  issuanceMethod: string
-  rcBranch: string
-}
+  issuanceMethod: string;
+  rcBranch: string;
+};
 
 function ServiceIssuanceForm() {
   const {
@@ -19,7 +22,7 @@ function ServiceIssuanceForm() {
       issuanceMethod: '',
       rcBranch: '',
     },
-  })
+  });
 
   return (
     // eslint-disable-next-line no-console
@@ -97,7 +100,7 @@ function ServiceIssuanceForm() {
         ]}
       />
     </form>
-  )
+  );
 }
 
-export default ServiceIssuanceForm
+export default ServiceIssuanceForm;

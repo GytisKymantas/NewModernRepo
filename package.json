@@ -6,7 +6,7 @@
   "repository": {
     "type": "git",
     "url": "https://gitlab.cgidevlabs.com/rc-ses/demo-providers/self-service-provider-demo-react-ui"
-  },  
+  },
   "scripts": {
     "dev": "webpack serve --port 9101",
     "dev:standalone": "webpack serve --env standalone",
@@ -18,7 +18,6 @@
     "test": "cross-env BABEL_ENV=test jest",
     "watch-tests": "cross-env BABEL_ENV=test jest --watch",
     "coverage": "cross-env BABEL_ENV=test jest --coverage",
-
     "rc-ses-components:purge": "rimraf -r ./node_modules/.vite/deps && rimraf -r ./node_modules/@registrucentras && rimraf -r ./node_modules/.package-lock.json",
     "rc-ses-components:install": "npm run rc-ses-components:purge && npm i --install-links"
   },
@@ -29,11 +28,13 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "5.16.7",
     "@mui/system": "5.16.7",
+    "@mui/x-date-pickers": "^7.17.0",
     "@registrucentras/rc-ses-react-components": "github:registrucentras/rc-ses-react-components#v1.0.1",
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/node": "^20.10.6",
     "axios": "^1.6.3",
     "clsx": "^2.1.0",
+    "date-fns": "^4.1.0",
     "i18next": "^23.11.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -52,11 +53,11 @@
     "@babel/preset-react": "^7.12.7",
     "@babel/preset-typescript": "^7.23.3",
     "@babel/runtime": "^7.12.5",
+    "@rc-ses/mfe-host": "file:./modules/mfe-host",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
-    "@rc-ses/mfe-host": "file:./modules/mfe-host",
     "babel-loader": "^9.1.3",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
@@ -83,5 +84,6 @@
     "webpack-config-single-spa-react-ts": "^4.0.5",
     "webpack-dev-server": "^4.15.1",
     "webpack-merge": "^5.10.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

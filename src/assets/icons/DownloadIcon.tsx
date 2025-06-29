@@ -1,13 +1,12 @@
 import IconProps from '../IconProps';
-import React from 'react';
 
-function DownloadIcon({ className = undefined }: IconProps) {
+function DownloadIcon({ fill = 'none' }: Omit<IconProps, 'className'>) {
   return (
     <svg
       width='20'
       height='20'
       viewBox='0 0 20 20'
-      fill='none'
+      fill={fill}
       xmlns='http://www.w3.org/2000/svg'
     >
       <path

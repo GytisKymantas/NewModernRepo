@@ -1,6 +1,6 @@
 import IconProps from '../IconProps';
-import React from 'react';
-function ColorBallIcon({ className = undefined, fill = 'none' }: IconProps) {
+
+function ColorBallIcon({ fill = 'none' }: Omit<IconProps, 'className'>) {
   return (
     <svg
       width='12'

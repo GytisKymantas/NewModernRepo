@@ -1,21 +1,20 @@
+import styled from '@emotion/styled';
 import {
   redirectToSelfServiceDashboard,
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
-import React from 'react';
 import {
-  RcSesAccordion,
   RcSesAlert,
-  RcSesServiceFormActions,
-  RcSesServiceFormContainer,
   RcSesServicePage,
-  useAccordionController, 
+  useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
-import styled from '@emotion/styled';
+import InfoIcon from '../../assets/icons/InfoIcon';
+import AccordionWrapper from '../Service copy/components/AccordionWrapper';
+import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
 import ServiceHeader from '../Service copy/components/ServiceHeader';
 import DocumentInfoSection from './components/DocumentInfoSection';
+import ServiceFormActions from './components/ServiceFormActions';
 import UploadFile from './components/UploadFile';
-import InfoIcon from '../../assets/icons/InfoIcon';
 
 const StyledAlertText = styled.p`
   font-size: 14px;
@@ -24,14 +23,12 @@ const StyledAlertText = styled.p`
   margin: 0;
 `;
 
-const Signature = () => {
-  const [count, setCount] = React.useState(0);
-
+function Signature() {
   const accordionController = useAccordionController({
     initialState: {
       serviceDetails: {
         expanded: false,
-        state: 'pending',
+        state: 'completed',
         title: 'Dokumentų pasirašymas',
       },
       serviceIssuance: {
@@ -56,39 +53,35 @@ const Signature = () => {
             { label: 'Formos su vedliu pavyzdys', path: '/sample-form-multiple-steps' },
           ],
         }}
-        title="Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą"
+        title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
       />
 
-      <RcSesServiceFormContainer
-        accordionController={accordionController}
-        showProgressStepper
-      >
-        <RcSesAccordion id="serviceDetails" controller={accordionController}>
-          <RcSesAlert icon={<InfoIcon />} severity="info">
+      <ServiceFormAccordion accordionController={accordionController} showProgressStepper>
+        <AccordionWrapper id='serviceDetails' controller={accordionController} noPadding>
+          <RcSesAlert icon={<InfoIcon />} severity='info'>
             <StyledAlertText>
               Visi dokumentai yra pasirašomi eilės tvarka.
             </StyledAlertText>
           </RcSesAlert>
 
           {[...Array(3)].map((_, index) => (
-            <DocumentInfoSection key={index} index={index + 1} />
+            <DocumentInfoSection key={`document-info-${index + 1}`} index={index + 1} />
           ))}
 
-         
+          <UploadFile />
+        </AccordionWrapper>
 
-            <UploadFile />
-        </RcSesAccordion>
+       
 
-        <RcSesServiceFormActions
-          onDiscard={() =>
-            redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')
-          }
+        <ServiceFormActions
+          onDiscard={() => redirectToServiceDescriptionPage('redirect')}
           onSaveDraft={() => redirectToSelfServiceDashboard()}
+          onBack={() => window.location.href = '/'}
           onSubmit={() => redirectToSelfServiceDashboard()}
         />
-      </RcSesServiceFormContainer>
-    </RcSesServicePage>
+      </ServiceFormAccordion>
+    </RcSesServicePage> 
   );
-};
+}
 
 export default Signature;

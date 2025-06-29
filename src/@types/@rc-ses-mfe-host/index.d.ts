@@ -1,6 +1,4 @@
 declare module '@rc-ses/mfe-host' {
-  import * as React from 'react'
-
   /*
    * Funkcija, skirta nukreipti naudotoją į savitarnos krepšelio puslapį.
    */
@@ -42,9 +40,11 @@ declare module '@rc-ses/mfe-host' {
   export const redirectToSelfServiceDashboard: () => void;
 
   /*
-  * Funkcija, skirta nukreipti naudotoją į savitarnos titulinį puslapį su klaidos pranešimu.
-  */
-  export const redirectToSelfServiceDashboardWithError: (type: 'failedToRetrieveOrderData' | 'failedToRetrieveListData') => void;
+   * Funkcija, skirta nukreipti naudotoją į savitarnos titulinį puslapį su klaidos pranešimu.
+   */
+  export const redirectToSelfServiceDashboardWithError: (
+    type: 'failedToRetrieveOrderData' | 'failedToRetrieveListData',
+  ) => void;
 
   /*
    * Funkcija, skirta nukreipti naudotoją į savitarnos "Mano Turtas" puslapį.
@@ -59,7 +59,10 @@ declare module '@rc-ses/mfe-host' {
   /*
    * Funkcija, skirta nukreipti naudotoją į paslaugos aprašymo puslapį su nurodytu klaidos pranešimu.
    */
-  export const redirectToServiceDescriptionPageWithError: (id: string, type: 'notAuthorizedToProvideBeneficiaries' | 'unsupportedRole') => void;
+  export const redirectToServiceDescriptionPageWithError: (
+    id: string,
+    type: 'notAuthorizedToProvideBeneficiaries' | 'unsupportedRole',
+  ) => void;
 
   /*
    * Funkcija, skirta nukreipti naudotoją į paslaugos aprašymo puslapį su klaidos pranešimu.

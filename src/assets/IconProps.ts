@@ -1,6 +1,6 @@
 type IconProps = {
-  className?: string
-  fill?: string
-}
+  className?: string;
+  fill?: string;
+};
 
-export default IconProps
+export default IconProps;

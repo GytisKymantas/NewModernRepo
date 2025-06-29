@@ -10,7 +10,6 @@ import {
   RcSesSelect,
   RcSesTextField,
 } from '@registrucentras/rc-ses-react-components';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import InfoIcon from '../../../assets/icons/InfoIcon';
 
@@ -42,13 +41,12 @@ const HeaderMain = styled.p`
   margin: 0;
 `;
 
-const InfoHeader = styled.p`
+export const InfoHeader = styled.p<{ noMargin?: boolean }>`
   font-size: 16px;
   font-weight: 500;
   color: #1f2733;
-  margin: 0 0 4px 0;
+  margin: ${({ noMargin }) => (noMargin ? '0' : '0 0 4px 0')};
 `;
-
 const UnorderedList = styled.ul`
   max-width: 640px;
   margin: 0;
@@ -68,7 +66,6 @@ const BodyText = styled.p`
   font-weight: 400;
   line-height: 16px;
   max-width: 242px;
-  margin: 0 0 0 auto;
 `;
 
 const StyledForm = styled.form`
@@ -94,8 +91,7 @@ const SectionBox = styled.div`
   margin-bottom: 24px;
 `;
 
-const ServiceDetailsForm = () => {
-  const [isSet, setIsSet] = React.useState(false);
+function ServiceDetailsForm() {
   const {
     control,
     handleSubmit,
@@ -127,7 +123,14 @@ const ServiceDetailsForm = () => {
   });
 
   return (
-    <StyledForm onSubmit={handleSubmit(console.debug)} noValidate id='testid'>
+    <StyledForm onSubmit={handleSubmit(() => {})} noValidate id='testid'>
+      <RcSesAlert severity='error' sx={{ borderRadius: '6px' }}>
+        <InfoHeader noMargin>
+          Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
+          reikiamą informaciją.
+        </InfoHeader>
+      </RcSesAlert>
+
       <HeaderMain>Prašymo objektas</HeaderMain>
       <Divider />
 
@@ -186,7 +189,7 @@ const ServiceDetailsForm = () => {
           </ListItem>
           <ListItem>
             filialo pavadinime privalo būti juridinio asmens (steigėjo) pavadinimas ir
-            žodis „filialas“.
+            žodis &bdquo;filialas&ldquo;.
           </ListItem>
         </UnorderedList>
       </RcSesAlert>
@@ -220,11 +223,13 @@ const ServiceDetailsForm = () => {
           errors={errors?.fileUpload3}
           slotProps={{
             dropzone: {
-              onDrop: (files: any) => {
-                setValue('deadline', files);
+              onDrop: (files: File[]) => {
+                setValue('fileUpload3', files[0]?.name || '');
                 files.forEach((file: Blob) => {
                   const reader = new FileReader();
-                  reader.onload = () => console.debug(file);
+                  reader.onload = () => {
+                    // File processing logic here
+                  };
                   reader.readAsArrayBuffer(file);
                 });
               },
@@ -378,6 +383,6 @@ const ServiceDetailsForm = () => {
       />
     </StyledForm>
   );
-};
+}
 
 export default ServiceDetailsForm;
