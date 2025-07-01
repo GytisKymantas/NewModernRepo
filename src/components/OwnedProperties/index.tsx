@@ -71,7 +71,6 @@ function OwnedProperties() {
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
       />
       <ServiceFormAccordion
-        showAccordionCollapseControls={false}
         accordionController={accordionController}
         showProgressStepper={upMd}
       >
