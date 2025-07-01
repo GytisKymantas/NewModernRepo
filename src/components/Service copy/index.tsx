@@ -10,16 +10,14 @@ import {
 } from '@registrucentras/rc-ses-react-components';
 import theme from '../../theme';
 
-import AccordionWrapper from './components/AccordionWrapper';
 import ServiceDetailsForm from './components/ServiceDetailsForm';
-import ServiceFormAccordion from './components/ServiceFormAccordion';
 import ServiceFormContainer from './components/ServiceFormContainer';
 import ServiceHeader from './components/ServiceHeader';
+import ServiceFormAccordion from './components/ServiceFormAccordion';
+import AccordionWrapper from './components/AccordionWrapper';
 
 function ServiceCopy() {
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
-
-
 
   const accordionController = useAccordionController({
     initialState: {

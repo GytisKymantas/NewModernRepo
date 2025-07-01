@@ -34,6 +34,7 @@ function ServiceFormAccordion({
 
   return (
     <Container
+    
       maxWidth={showProgressStepper ? 'lg' : 'md'}
       {...slotProps?.container}
       sx={{

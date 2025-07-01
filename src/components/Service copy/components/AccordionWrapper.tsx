@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, SxProps } from '@mui/material';
 import React from 'react';
 import IconProps from '../../../assets/IconProps';
 import useAccordionController from '../../hooks/useAccordionController';
@@ -28,6 +28,7 @@ type Props = React.ComponentProps<typeof Accordion> & {
   title?: string;
   titleComponent?: React.ReactNode;
   noPadding?: boolean;
+  sxStyle?: SxProps;
 };
 
 
@@ -39,7 +40,7 @@ letter-spacing: -0.24px;
 `;
 
 function AccordionWrapper(props: Props) {
-  const { children, controller, id, onChange,titleComponent, ...accordionProps } = props;
+  const { children, controller, id, onChange,titleComponent, sxStyle, ...accordionProps } = props;
   const { toggleAccordion, state } = controller;
 
   const { canToggle, disabled, expanded, title } =
@@ -68,7 +69,7 @@ function AccordionWrapper(props: Props) {
         id={`${id}-header`}
         aria-controls={`${id}-content`}
         expandIcon={canToggle === false ? null : <CaretDownIcon />}
-        sx={{backgroundColor:'white',borderRadius:'8px'}}
+        sx={sxStyle ?? {backgroundColor:'white',borderRadius:'8px'}}
         
       >
         {titleComponent? <div style={{margin:'0'}}>{titleComponent}</div>:<StyledTitle>{title}</StyledTitle>}

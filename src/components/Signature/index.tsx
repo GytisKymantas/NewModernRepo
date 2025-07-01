@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import {
   redirectToSelfServiceDashboard,
+  redirectToSelfServiceOwnedProperties,
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
 import {
@@ -76,8 +77,8 @@ function Signature() {
         <ServiceFormActions
           onDiscard={() => redirectToServiceDescriptionPage('redirect')}
           onSaveDraft={() => redirectToSelfServiceDashboard()}
+          onSubmit={() => redirectToSelfServiceOwnedProperties()}
           onBack={() => window.location.href = '/'}
-          onSubmit={() => redirectToSelfServiceDashboard()}
         />
       </ServiceFormAccordion>
     </RcSesServicePage> 

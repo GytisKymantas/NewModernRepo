@@ -1,8 +1,3 @@
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { getMFEBaseUrl, getOwnedPropertiesUrlFragment } from '@rc-ses/mfe-host';
-import { lt } from 'date-fns/locale/lt';
 import React from 'react';
 import {
   Route,
@@ -10,12 +5,18 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
+import { lt } from 'date-fns/locale/lt';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { getMFEBaseUrl } from '@rc-ses/mfe-host';
+
 import OwnedProperties from './components/OwnedProperties';
 import './styles.css';
-// import Service from './components/Service';
 import Signature from './components/Signature';
 import Home from './pages/Home';
 import theme from './theme';
+// import Service from './components/Service';
 
 /*
  * Pavyzdine router'io konfigūracija, jei nėra aktualūs "Mano turtas" micro-frontend'ai.
@@ -46,7 +47,7 @@ const router = createBrowserRouter(
         <Route path='09eec1a3-0674-479b-85fe-b9140879de7b' element={<Home />} />
         <Route path='77ca7f18-07d3-4f4a-8da7-758e4fa7aee1' element={<Home />} />
       </Route>
-      <Route path={'/ricardas'} element={<OwnedProperties />}>
+      <Route path={'/self-service-owned-properties'} element={<OwnedProperties />}>
         <Route
           path='177c5181-8710-443e-8335-327365835826'
           element={<OwnedProperties />}
@@ -60,12 +61,12 @@ const router = createBrowserRouter(
 export default function App() {
   return (
     <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={lt}>
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </LocalizationProvider>
-      </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={lt}>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </LocalizationProvider>
+        </ThemeProvider>
     </React.StrictMode>
   );
 }
