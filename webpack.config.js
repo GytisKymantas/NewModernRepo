@@ -51,6 +51,7 @@ module.exports = (webpackConfigEnv, argv) => {
     resolve: {
       alias: {
         '@rc-ses/mfe-host': path.resolve(__dirname, 'modules/mfe-host/index.js'),
+        '@': path.resolve(__dirname, 'src'),
       },
     },
     module: {
