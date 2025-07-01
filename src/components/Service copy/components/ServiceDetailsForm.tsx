@@ -65,7 +65,8 @@ const BodyText = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
-  max-width: 242px;
+  max-width: 248px;
+  margin-top: 0;
 `;
 
 const StyledForm = styled.form`
@@ -110,7 +111,7 @@ function ServiceDetailsForm() {
       companyName: '',
       termDate: '2024-04-06',
       docNumber: '',
-      phoneNo: '',
+      phoneNo: '234 15 987',
       radioSelection1: '',
       fileUpload: '',
       fileUpload2: '',
@@ -247,6 +248,25 @@ function ServiceDetailsForm() {
         name='agreement'
         control={control}
         errors={errors?.agreement}
+        slotProps={{
+          wrapper: {
+            background: 'red',
+          },
+          field: {
+            sx: {
+              padding: '0',
+            },
+            md: {
+              padding: '9px',
+            },
+          },
+          label: {
+            sx: {
+              padding: '0',
+              marginLeft: '1px',
+            },
+          },
+        }}
         variant='flat'
         label={
           <>
@@ -304,6 +324,8 @@ function ServiceDetailsForm() {
               '& .MuiOutlinedInput-root.Mui-focused': {
                 boxShadow: 'none', // Removes Material UI shadow on focus
               },
+              '#personalCode': { paddingLeft: '0' },
+
               '& .MuiOutlinedInput-input': {
                 outline: 'none', // Removes native browser outline inside input
               },
@@ -330,6 +352,7 @@ function ServiceDetailsForm() {
               '& .MuiOutlinedInput-root.Mui-focused': {
                 boxShadow: 'none', // Removes Material UI shadow on focus
               },
+              '#fullName': { paddingLeft: '0' },
               '& .MuiOutlinedInput-input': {
                 outline: 'none', // Removes native browser outline inside input
               },
@@ -372,6 +395,8 @@ function ServiceDetailsForm() {
               '& .MuiOutlinedInput-root.Mui-focused': {
                 boxShadow: 'none', // Removes Material UI shadow on focus
               },
+              '#formDate': { paddingLeft: '0' },
+
               '& .MuiOutlinedInput-input': {
                 outline: 'none', // Removes native browser outline inside input
               },

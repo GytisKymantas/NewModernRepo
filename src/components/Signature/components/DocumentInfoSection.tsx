@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Box } from '@mui/material';
 import { useMediaQuery } from '@mui/system';
 import { RcSesAlert } from '@registrucentras/rc-ses-react-components';
 import React from 'react';
@@ -35,7 +36,7 @@ const Subtitle = styled.p`
   color: #4a5361;
   font-family: 'Public Sans';
   font-size: 12px;
-  font-weight: 300;   
+  font-weight: 300;
 `;
 
 const Row = styled.div`
@@ -91,7 +92,7 @@ const Actions = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
 `;
 
 function DocumentInfoSection({ index }: { index: number }) {
@@ -114,7 +115,7 @@ function DocumentInfoSection({ index }: { index: number }) {
             </StatusLabel>
 
             <Actions>
-              <div style={{ cursor: 'pointer' }}>
+              <Box sx={{ cursor: 'pointer' }}>
                 <PrimaryButton
                   variant='text'
                   size='small'
@@ -129,8 +130,8 @@ function DocumentInfoSection({ index }: { index: number }) {
                 >
                   Atsisiųsti
                 </PrimaryButton>
-              </div>
-              <div onClick={() => handleOpenModal('view')} style={{ cursor: 'pointer' }}>
+              </Box>
+              <Box onClick={() => handleOpenModal('view')} sx={{ cursor: 'pointer' }}>
                 <PrimaryButton
                   variant='text'
                   size='small'
@@ -145,12 +146,9 @@ function DocumentInfoSection({ index }: { index: number }) {
                 >
                   Peržiūrėti
                 </PrimaryButton>
-              </div>
+              </Box>
 
-              <div
-                onClick={() => handleOpenModal('delete')}
-                style={{ cursor: 'pointer' }}
-              >
+              <Box onClick={() => handleOpenModal('delete')} sx={{ cursor: 'pointer' }}>
                 <PrimaryButton
                   variant='text'
                   startIcon={<DeleteIcon />}
@@ -165,7 +163,7 @@ function DocumentInfoSection({ index }: { index: number }) {
                 >
                   Ištrinti
                 </PrimaryButton>
-              </div>
+              </Box>
             </Actions>
 
             {index === 2 && upMd && (
@@ -175,27 +173,26 @@ function DocumentInfoSection({ index }: { index: number }) {
             )}
           </Left>
         </Row>
-        
 
         <SignaturesSection />
         {index === 2 && !upMd && (
-          <div>
+          <Box>
             <PrimaryButton sx={{ fontWeight: '600', width: '100%' }}>
               Pasirašyti
             </PrimaryButton>
-          </div>
+          </Box>
         )}
       </Inner>
 
       {index === 2 && (
-        <div style={{ padding: '0 24px',background:'#FFFFFF' }}>
+        <Box sx={{ padding: '0 24px', background: '#FFFFFF' }}>
           <RcSesAlert severity='warning' sx={{ borderRadius: '6px' }}>
             <InfoHeader noMargin>
               Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
               reikiamą informaciją.
             </InfoHeader>
           </RcSesAlert>
-        </div>
+        </Box>
       )}
 
       {/* Modals */}

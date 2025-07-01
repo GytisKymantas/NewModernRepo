@@ -2,9 +2,7 @@ import { Container, Grid } from '@mui/material';
 import { ContainerProps } from '@mui/system';
 import React from 'react';
 
-// import useAccordionController from '@/components/common/Accordion/hooks/useAccordionController'
 
-// import AccordionCollapseControls from './components/AccordionCollapseControls'
 
 type Props = {
   children: React.ReactNode;

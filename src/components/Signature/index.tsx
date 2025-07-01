@@ -33,7 +33,7 @@ function Signature() {
         title: 'Dokumentų pasirašymas',
       },
       serviceIssuance: {
-        expanded: false,
+        expanded: true,
         state: 'active',
         title: 'Dokumentų pasirašymas',
       },

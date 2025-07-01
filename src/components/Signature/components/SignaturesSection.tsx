@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useAccordionController } from '@registrucentras/rc-ses-react-components';
 import ColorBallIcon from '../../../assets/icons/ColorBallIcon';
 import AccordionWrapper from '../../Service copy/components/AccordionWrapper';
+import { Box } from '@mui/material';
 
 // Styled Components declared outside
 const AccordionEntry = styled.div<{ marginBottom?: string }>`
@@ -60,7 +61,7 @@ const SignaturesSection = () => {
       controller={accordionController}
       sx={{ borderWidth: 0, border: 'none',paddingLeft:'0px' }}
       titleComponent={
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center',margin:' 0 0 0 -24px' }}>
+        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center',margin:' 0 0 0 -24px' }}>
           <svg
             width='24'
             height='24'
@@ -75,11 +76,11 @@ const SignaturesSection = () => {
           </svg>
 
           <p style={{ fontSize: '14px', margin: 0 }}>Pasirašantys asmenys (2)</p>
-        </div>
+        </Box>
       }
     >
 
-      <div>
+      <Box>
       <AccordionEntry id='entry1'>
         <Names>Vardenis Pavardenis (Jus)</Names>
         <PersonStatus>
@@ -96,7 +97,7 @@ const SignaturesSection = () => {
         </PersonStatus>
       </AccordionEntry>
         
-      </div>
+      </Box>
 
     </AccordionWrapper>
   );

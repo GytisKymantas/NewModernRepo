@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, DialogActions, Divider } from '@mui/material';
+import { Box, Button, DialogActions } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
@@ -57,12 +57,12 @@ function ViewItemModal({ open, onSubmit, onClose }: Props) {
       <DialogContent>
         <form onSubmit={handleSubmit(handleOnSubmit)} noValidate>
           <StyledFormSection>
-            <div>
+            <Box>
               <h2 style={{ margin: '0' }}>Dokumento peržiūra</h2>
               <p style={{ margin: '0' }}>Dokumento pavadinimas.pdf</p>
-            </div>
+            </Box>
 
-            <div style={{ cursor: 'pointer' }} onClick={onClose}>
+            <Box sx={{ cursor: 'pointer' }} onClick={onClose}>
               <svg
                 width='24'
                 height='24'
@@ -75,7 +75,7 @@ function ViewItemModal({ open, onSubmit, onClose }: Props) {
                   fill='#1F2733'
                 />
               </svg>
-            </div>
+            </Box>
 
             {/* some sort of document viewer script here*/}
           </StyledFormSection>

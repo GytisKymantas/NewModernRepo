@@ -1,4 +1,4 @@
-import { Card, Grid, IconProps } from '@mui/material';
+import { Box, Card, Grid, IconProps } from '@mui/material';
 
 import palette from '../../../theme/palette';
 import PrimaryButton from '../../common/PrimaryButton';
@@ -45,6 +45,7 @@ type Props = {
   onBack?: () => void;
   draftDisabled?: boolean;
   submitDisabled?: boolean;
+  isFirstStep?:boolean;
 };
 function ServiceFormActions({
   onDiscard,
@@ -53,6 +54,7 @@ function ServiceFormActions({
   onBack,
   draftDisabled,
   submitDisabled,
+  isFirstStep,
 }: Props) {
 
   return (
@@ -87,8 +89,8 @@ function ServiceFormActions({
             </PrimaryButton>
           </Grid>
 
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <Grid item>
+          <Box sx={{ display: 'flex', gap: '1rem' }}>
+            {!isFirstStep && <Grid item>
               <PrimaryButton
                 disabled={submitDisabled === true}
                 onClick={() => onBack()}
@@ -98,7 +100,7 @@ function ServiceFormActions({
               >
                 Atgal
               </PrimaryButton>
-            </Grid>
+            </Grid>}
             <Grid item>
               <PrimaryButton
                 disabled={submitDisabled === true}
@@ -110,7 +112,7 @@ function ServiceFormActions({
                 Tęsti{' '}
               </PrimaryButton>
             </Grid>
-          </div>
+          </Box>
         </Grid>
       </Card>
 

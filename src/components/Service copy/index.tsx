@@ -15,6 +15,7 @@ import ServiceFormContainer from './components/ServiceFormContainer';
 import ServiceHeader from './components/ServiceHeader';
 import ServiceFormAccordion from './components/ServiceFormAccordion';
 import AccordionWrapper from './components/AccordionWrapper';
+import ServiceFormActions from '../Signature/components/ServiceFormActions';
 
 function ServiceCopy() {
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -64,12 +65,13 @@ function ServiceCopy() {
           <ServiceDetailsForm />
         </AccordionWrapper>
 
-        <RcSesServiceFormActions
+        <ServiceFormActions
           onDiscard={() =>
             redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')
           }
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceDashboard()}
+          isFirstStep
         />
       </ServiceFormAccordion>
     </RcSesServicePage>

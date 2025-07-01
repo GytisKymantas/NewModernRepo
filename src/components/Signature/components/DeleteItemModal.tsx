@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, DialogActions } from '@mui/material';
+import { Box, Button, DialogActions } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
@@ -54,7 +54,7 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
       <DialogContent>
         <form onSubmit={handleSubmit(handleOnSubmit)} noValidate>
           <StyledFormSection>
-            <div style={{ margin: '0 auto' }}>
+            <Box sx={{ margin: '0 auto' }}>
               <svg
                 width='68'
                 height='68'
@@ -68,7 +68,7 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
                   fill='#C84838'
                 />
               </svg>
-            </div>
+            </Box>
 
             <h2>Ištrinti dokumentą</h2>
             <p>Atkreipiame dėmesį, kad jūsų įkeltas dokumentas bus ištrintas.</p>
