@@ -19,7 +19,8 @@
     "watch-tests": "cross-env BABEL_ENV=test jest --watch",
     "coverage": "cross-env BABEL_ENV=test jest --coverage",
     "rc-ses-components:purge": "rimraf -r ./node_modules/.vite/deps && rimraf -r ./node_modules/@registrucentras && rimraf -r ./node_modules/.package-lock.json",
-    "rc-ses-components:install": "npm run rc-ses-components:purge && npm i --install-links"
+    "rc-ses-components:install": "npm run rc-ses-components:purge && npm i --install-links",
+    "prepare": "husky"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -77,6 +78,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^9.1.7",
     "prettier": "^3.1.1",
     "prettier-plugin-organize-imports": "^3.2.4",
     "style-loader": "^3.3.3",

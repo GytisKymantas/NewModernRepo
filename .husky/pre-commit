@@ -1,0 +1,72 @@
+#!/bin/sh
+
+# Pre-commit hook to run comprehensive checks
+echo "🔍 Running pre-commit checks..."
+
+# Function to print error and exit
+fail_check() {
+  echo "❌ $1"
+  echo "🚫 Commit blocked. Please fix the issues above before committing."
+  exit 1
+}
+
+# Function to print success
+pass_check() {
+  echo "✅ $1"
+}
+
+# Check if there are any TypeScript errors (using a temporary config to avoid emitDeclarationOnly conflict)
+echo "🔧 Checking TypeScript compilation..."
+npx tsc --noEmit --skipLibCheck --declaration false --emitDeclarationOnly false
+TSC_EXIT_CODE=$?
+
+if [ $TSC_EXIT_CODE -ne 0 ]; then
+  fail_check "TypeScript compilation failed. Please fix type errors before committing."
+fi
+pass_check "TypeScript compilation passed"
+
+# Run ESLint (allow warnings, only fail on errors)
+echo "📝 Running ESLint (warnings allowed)..."
+npm run lint
+LINT_EXIT_CODE=$?
+
+if [ $LINT_EXIT_CODE -ne 0 ]; then
+  fail_check "ESLint failed. Please fix all linting errors before committing."
+fi
+pass_check "ESLint checks passed"
+
+# Run Prettier format check
+echo "🎨 Checking code formatting..."
+npm run check-format
+FORMAT_EXIT_CODE=$?
+
+if [ $FORMAT_EXIT_CODE -ne 0 ]; then
+  echo "❌ Code formatting check failed."
+  echo "💡 Run 'npm run format' to fix formatting issues automatically."
+  fail_check "Code formatting issues detected"
+fi
+pass_check "Code formatting is correct"
+
+# Optional: Run tests (uncomment if you want to run tests on every commit)
+# echo "🧪 Running tests..."
+# npm run test -- --passWithNoTests --watchAll=false
+# TEST_EXIT_CODE=$?
+# 
+# if [ $TEST_EXIT_CODE -ne 0 ]; then
+#   fail_check "Tests failed. Please ensure all tests pass before committing."
+# fi
+# pass_check "All tests passed"
+
+# Optional: Check if build passes (uncomment for production-ready commits)
+# echo "🏗️ Verifying build..."
+# npm run build > /dev/null 2>&1
+# BUILD_EXIT_CODE=$?
+# 
+# if [ $BUILD_EXIT_CODE -ne 0 ]; then
+#   fail_check "Build failed. Please ensure the project builds successfully before committing."
+# fi
+# pass_check "Build verification passed"
+
+echo ""
+echo "🎉 All pre-commit checks passed! Your code is ready to commit."
+exit 0
