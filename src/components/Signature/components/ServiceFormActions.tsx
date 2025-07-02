@@ -45,7 +45,8 @@ type Props = {
   onBack?: () => void;
   draftDisabled?: boolean;
   submitDisabled?: boolean;
-  isFirstStep?:boolean;
+  isFirstStep?: boolean;
+  className?: string;
 };
 function ServiceFormActions({
   onDiscard,
@@ -55,10 +56,10 @@ function ServiceFormActions({
   draftDisabled,
   submitDisabled,
   isFirstStep,
+  className,
 }: Props) {
-
   return (
-    <>
+    <Box className={className}>
       <Card
         sx={{
           backgroundColor: palette.primary['50'],
@@ -90,17 +91,19 @@ function ServiceFormActions({
           </Grid>
 
           <Box sx={{ display: 'flex', gap: '1rem' }}>
-            {!isFirstStep && <Grid item>
-              <PrimaryButton
-                disabled={submitDisabled === true}
-                onClick={() => onBack()}
-                size='large'
-                sx={{ color: '#0079AD', fontWeight: 600, backgroundColor: '#F3FBFE' }}
-                variant='outlined'
-              >
-                Atgal
-              </PrimaryButton>
-            </Grid>}
+            {!isFirstStep && (
+              <Grid item>
+                <PrimaryButton
+                  disabled={submitDisabled === true}
+                  onClick={() => onBack()}
+                  size='large'
+                  sx={{ color: '#0079AD', fontWeight: 600, backgroundColor: '#F3FBFE' }}
+                  variant='outlined'
+                >
+                  Atgal
+                </PrimaryButton>
+              </Grid>
+            )}
             <Grid item>
               <PrimaryButton
                 disabled={submitDisabled === true}
@@ -121,7 +124,7 @@ function ServiceFormActions({
         sx={{
           justifyContent: 'center',
           py: { xs: '1.5rem', md: '.875rem' },
-          backgroundColor:  { xs:'#F3FBFE',md:'#FFFFFF' },
+          backgroundColor: { xs: '#F3FBFE', md: '#FFFFFF' },
         }}
       >
         <Grid item>
@@ -135,7 +138,7 @@ function ServiceFormActions({
           </PrimaryButton>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 }
 

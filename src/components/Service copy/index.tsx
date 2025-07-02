@@ -4,18 +4,17 @@ import {
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
 import {
-  RcSesServiceFormActions,
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
 import theme from '../../theme';
 
+import ServiceFormActions from '../Signature/components/ServiceFormActions';
+import AccordionWrapper from './components/AccordionWrapper';
 import ServiceDetailsForm from './components/ServiceDetailsForm';
+import ServiceFormAccordion from './components/ServiceFormAccordion';
 import ServiceFormContainer from './components/ServiceFormContainer';
 import ServiceHeader from './components/ServiceHeader';
-import ServiceFormAccordion from './components/ServiceFormAccordion';
-import AccordionWrapper from './components/AccordionWrapper';
-import ServiceFormActions from '../Signature/components/ServiceFormActions';
 
 function ServiceCopy() {
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -41,7 +40,7 @@ function ServiceCopy() {
   });
 
   return (
-    <RcSesServicePage>
+    <RcSesServicePage className='serviceForm-container'>
       <ServiceHeader
         breadcrumbsProps={{
           path: [
@@ -53,19 +52,31 @@ function ServiceCopy() {
           ],
         }}
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
+        className='serviceHeader-container'
       />
 
       <ServiceFormAccordion
         accordionController={accordionController}
         showProgressStepper={upMd}
+        className='serviceFormAccordion-container'
       >
-        {!upMd && <ServiceFormContainer steps={accordionController.state} />}
+        {!upMd && (
+          <ServiceFormContainer
+            steps={accordionController.state}
+            className='serviceForm-container'
+          />
+        )}
 
-        <AccordionWrapper id='serviceDetails' controller={accordionController}>
-          <ServiceDetailsForm />
+        <AccordionWrapper
+          className='accordionWrapper-container'
+          id='serviceDetails'
+          controller={accordionController}
+        >
+          <ServiceDetailsForm className='serviceDetailsForm-container' />
         </AccordionWrapper>
 
         <ServiceFormActions
+          className='serviceFormActions-container'
           onDiscard={() =>
             redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')
           }

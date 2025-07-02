@@ -13,6 +13,7 @@ type Props = {
   slotProps?: {
     container: Partial<ContainerProps>
   }
+  className?:string;
 }
 
 function ServiceFormAccordion({
@@ -20,13 +21,14 @@ function ServiceFormAccordion({
   children,
   showProgressStepper = false,
   slotProps,
+  className,
 }: Props) {
   const { state } = accordionController
 
 
   return (
     <Container
-    
+    className={className}
       maxWidth={showProgressStepper ? 'lg' : 'md'}
       {...slotProps?.container}
       sx={{

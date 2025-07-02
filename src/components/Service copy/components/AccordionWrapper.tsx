@@ -29,6 +29,7 @@ type Props = React.ComponentProps<typeof Accordion> & {
   titleComponent?: React.ReactNode;
   noPadding?: boolean;
   sxStyle?: SxProps;
+  className?:string;
 };
 
 const StyledTitle = styled.h1`
@@ -39,7 +40,7 @@ const StyledTitle = styled.h1`
 `;
 
 function AccordionWrapper(props: Props) {
-  const { children, controller, id, onChange,titleComponent, sxStyle, ...accordionProps } = props;
+  const { children, controller, id, onChange,titleComponent, sxStyle,className, ...accordionProps } = props;
   const { toggleAccordion, state } = controller;
 
   const { canToggle, disabled, expanded, title } =
@@ -63,6 +64,7 @@ function AccordionWrapper(props: Props) {
       expanded={expanded === true}
       {...accordionProps}
       onChange={handleOnChange}
+      className={className}
     >
       <AccordionSummary
         id={`${id}-header`}

@@ -75,9 +75,10 @@ type AccordionControllerState = Record<string, AccordionState>;
 type Props = {
   steps: AccordionControllerState;
   isVertical?: boolean;
+  className?:string;
 };
 
-function ServiceFormContainer({ steps, isVertical }: Props) {
+function ServiceFormContainer({ steps, isVertical,className }: Props) {
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
   const activeStep =
     Object.values(steps).findIndex((step) => step.state === 'active') ?? 0;
@@ -97,6 +98,7 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
   if (isVertical) {
     return (
       <Box
+      className={className}
         sx={{
           width: '100%',
           backgroundColor: '#ffffff',
@@ -142,7 +144,8 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
   return (
     <>
       {!upSm ? (
-        <ProgressContainer>
+        <ProgressContainer       className={className}
+>
           <ProgressBarWrapper>
             <ProgressBarFill percentage={percentage} />
           </ProgressBarWrapper>
