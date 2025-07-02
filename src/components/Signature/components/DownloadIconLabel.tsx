@@ -1,11 +1,19 @@
 // Optional: props for label text and SVG size
 
-function DownloadIconLabel({ label = 'Atsisiųsti', svg }) {
+import { Box } from '@mui/system';
+
+type DownloadIconLabelProps = {
+  label?: string;
+  svg: React.ReactNode;
+  style?: React.CSSProperties;
+};
+
+function DownloadIconLabel({ label = 'Atsisiųsti', svg, style }: DownloadIconLabelProps) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', ...style }}>
       {svg}
       <p style={{ margin: 0 }}>{label}</p>
-    </div>
+    </Box>
   );
 }
 

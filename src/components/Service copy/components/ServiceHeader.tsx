@@ -11,7 +11,10 @@ type Props = {
 function ServiceHeader({ breadcrumbsProps, children, title }: Props) {
   // Theme debug removed for production
   return (
-    <Box sx={{ backgroundColor: theme.palette.primary['50'] }}>
+    <Box
+      sx={{ backgroundColor: theme.palette.primary['50'] }}
+      className='ServiceHeader-container'
+    >
       <Container
         sx={{
           pb: { xs: '2rem', md: '2.25rem' },
@@ -30,6 +33,9 @@ function ServiceHeader({ breadcrumbsProps, children, title }: Props) {
           variant='h1'
           sx={{
             lineHeight: { xs: '2rem', md: '2.125rem' },
+            fontSize: { xs: '1.5rem' },
+            fontWeight: 600,
+            letterSpacing: '-.24px',
           }}
         >
           {title}

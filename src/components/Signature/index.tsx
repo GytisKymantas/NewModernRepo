@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import {
   redirectToSelfServiceDashboard,
+  redirectToSelfServiceOwnedProperties,
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
 import {
   RcSesAlert,
-  RcSesServiceFormActions,
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
@@ -14,6 +14,7 @@ import AccordionWrapper from '../Service copy/components/AccordionWrapper';
 import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
 import ServiceHeader from '../Service copy/components/ServiceHeader';
 import DocumentInfoSection from './components/DocumentInfoSection';
+import ServiceFormActions from './components/ServiceFormActions';
 import UploadFile from './components/UploadFile';
 
 const StyledAlertText = styled.p`
@@ -32,7 +33,7 @@ function Signature() {
         title: 'Dokumentų pasirašymas',
       },
       serviceIssuance: {
-        expanded: false,
+        expanded: true,
         state: 'active',
         title: 'Dokumentų pasirašymas',
       },
@@ -71,12 +72,12 @@ function Signature() {
           <UploadFile />
         </AccordionWrapper>
 
-        <RcSesServiceFormActions
-          onDiscard={() =>
-            redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')
-          }
+        <ServiceFormActions
+          onDiscard={() => redirectToServiceDescriptionPage('redirect')}
           onSaveDraft={() => redirectToSelfServiceDashboard()}
-          onSubmit={() => redirectToSelfServiceDashboard()}
+          onSubmit={() => redirectToSelfServiceOwnedProperties()}
+          // eslint-disable-next-line no-return-assign
+          onBack={() => (window.location.href = '/')}
         />
       </ServiceFormAccordion>
     </RcSesServicePage>

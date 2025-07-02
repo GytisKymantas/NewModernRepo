@@ -1,6 +1,12 @@
 /* eslint-disable react/prop-types */
 import styled from '@emotion/styled';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  SxProps,
+} from '@mui/material';
 import React from 'react';
 import IconProps from '../../../assets/IconProps';
 import useAccordionController from '../../hooks/useAccordionController';
@@ -9,8 +15,8 @@ function CaretDownIcon({ className = undefined }: IconProps) {
   return (
     <svg
       className={className}
-      width='24'
-      height='24'
+      width='16'
+      height='16'
       viewBox='0 0 24 24'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -28,6 +34,7 @@ type Props = React.ComponentProps<typeof Accordion> & {
   title?: string;
   titleComponent?: React.ReactNode;
   noPadding?: boolean;
+  sxStyle?: SxProps;
 };
 
 const StyledTitle = styled.h1`
@@ -38,7 +45,15 @@ const StyledTitle = styled.h1`
 `;
 
 function AccordionWrapper(props: Props) {
-  const { children, controller, id, onChange, titleComponent, ...accordionProps } = props;
+  const {
+    children,
+    controller,
+    id,
+    onChange,
+    titleComponent,
+    sxStyle,
+    ...accordionProps
+  } = props;
   const { toggleAccordion, state } = controller;
 
   const { canToggle, disabled, expanded, title } =
@@ -67,10 +82,10 @@ function AccordionWrapper(props: Props) {
         id={`${id}-header`}
         aria-controls={`${id}-content`}
         expandIcon={canToggle === false ? null : <CaretDownIcon />}
-        sx={{ backgroundColor: 'white', borderRadius: '8px' }}
+        sx={sxStyle ?? { backgroundColor: 'white', borderRadius: '8px' }}
       >
         {titleComponent ? (
-          <div style={{ margin: '0' }}>{titleComponent}</div>
+          <Box sx={{ margin: '0' }}>{titleComponent}</Box>
         ) : (
           <StyledTitle>{title}</StyledTitle>
         )}

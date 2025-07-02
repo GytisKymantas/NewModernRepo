@@ -10,14 +10,15 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
+
 import OwnedProperties from './components/OwnedProperties';
-import './i18n/i18n';
-import './styles.css';
-// import Service from './components/Service';
 import Signature from './components/Signature';
+import './i18n/i18n';
 import Home from './pages/Home';
 import MultiStepServiceForm from './pages/form-examples/MultiStepServiceForm';
+import './styles.css';
 import theme from './theme';
+// import Service from './components/Service';
 
 /*
  * Pavyzdine router'io konfigūracija, jei nėra aktualūs "Mano turtas" micro-frontend'ai.

@@ -3,13 +3,11 @@ import { ContainerProps } from '@mui/system';
 import React from 'react';
 
 import useAccordionController from '../../hooks/useAccordionController';
-import AccordionCollapseControls from './AccordionCollapseControls';
 import ServiceFormContainer from './ServiceFormContainer';
 
 type Props = {
   accordionController: ReturnType<typeof useAccordionController>;
   children: React.ReactNode;
-  showAccordionCollapseControls?: boolean;
   showProgressStepper?: boolean;
   slotProps?: {
     container: Partial<ContainerProps>;
@@ -19,16 +17,10 @@ type Props = {
 function ServiceFormAccordion({
   accordionController,
   children,
-  showAccordionCollapseControls = true,
   showProgressStepper = false,
   slotProps,
 }: Props) {
   const { state } = accordionController;
-
-  const areAccordionCollapseControlsVisible = React.useMemo(() => {
-    if (Object.keys(state).length <= 1 || !showAccordionCollapseControls) return false;
-    return true;
-  }, [showAccordionCollapseControls, state]);
 
   return (
     <Container
@@ -39,6 +31,7 @@ function ServiceFormAccordion({
         pb: { md: 8 },
         pt: { xs: 0, md: 6 },
         px: { xs: 0, md: 3 },
+        mb: { xs: 0, md: 6 },
         ...slotProps?.container?.sx,
       }}
     >
@@ -54,9 +47,6 @@ function ServiceFormAccordion({
         )}
 
         <Grid item sx={{ flexGrow: 1 }}>
-          {areAccordionCollapseControlsVisible && (
-            <AccordionCollapseControls controller={accordionController} />
-          )}
           {children}
         </Grid>
       </Grid>

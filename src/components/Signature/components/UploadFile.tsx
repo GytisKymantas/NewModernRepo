@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Box } from '@mui/material';
 import React from 'react';
 import ObjectIdentifierSearchModal from './ObjectIdentifierSearchModal';
 
@@ -38,7 +39,7 @@ function UploadFile() {
   };
 
   return (
-    <div style={{ marginBottom: '-63px' }}>
+    <Box sx={{ marginBottom: '0px' }}>
       <UploadWrapper onClick={handleOpenModal}>
         <svg
           width='25'
@@ -56,7 +57,7 @@ function UploadFile() {
       </UploadWrapper>
 
       <ObjectIdentifierSearchModal open={modalOpen} onClose={() => setModalOpen(false)} />
-    </div>
+    </Box>
   );
 }
 

@@ -4,12 +4,12 @@ import {
   redirectToServiceDescriptionPage,
 } from '@rc-ses/mfe-host';
 import {
-  RcSesServiceFormActions,
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
 import theme from '../../theme';
 
+import ServiceFormActions from '../Signature/components/ServiceFormActions';
 import AccordionWrapper from './components/AccordionWrapper';
 import ServiceDetailsForm from './components/ServiceDetailsForm';
 import ServiceFormAccordion from './components/ServiceFormAccordion';
@@ -64,12 +64,13 @@ function ServiceCopy() {
           <ServiceDetailsForm />
         </AccordionWrapper>
 
-        <RcSesServiceFormActions
+        <ServiceFormActions
           onDiscard={() =>
             redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')
           }
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceDashboard()}
+          isFirstStep
         />
       </ServiceFormAccordion>
     </RcSesServicePage>
