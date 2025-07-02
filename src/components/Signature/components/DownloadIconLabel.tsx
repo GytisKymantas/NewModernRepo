@@ -1,6 +1,6 @@
 // Optional: props for label text and SVG size
 
-import { Box } from "@mui/system";
+import { Box } from '@mui/system';
 
 type DownloadIconLabelProps = {
   label?: string;

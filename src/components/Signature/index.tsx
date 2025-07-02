@@ -87,6 +87,7 @@ function Signature() {
           onDiscard={() => redirectToServiceDescriptionPage('redirect')}
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceOwnedProperties()}
+          // eslint-disable-next-line no-return-assign
           onBack={() => (window.location.href = '/')}
         />
       </ServiceFormAccordion>

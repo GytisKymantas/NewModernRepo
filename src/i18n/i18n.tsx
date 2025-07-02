@@ -1,6 +1,10 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+// Import translation files
+import enTranslations from './locales/en.json';
+import ltTranslations from './locales/lt.json';
+
 i18n.use(initReactI18next).init({
   supportedLngs: ['lt', 'en'],
   lng: 'lt',
@@ -8,7 +12,16 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false,
   },
-  resources: {},
+  resources: {
+    en: {
+      translation: enTranslations,
+      common: enTranslations,
+    },
+    lt: {
+      translation: ltTranslations,
+      common: ltTranslations,
+    },
+  },
 });
 
 export default i18n;

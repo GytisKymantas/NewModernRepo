@@ -1,21 +1,21 @@
-import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material'
+import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material';
 
 const defaultProps: Partial<MuiButtonProps> = {
   color: 'primary',
   disabled: false,
   variant: 'contained',
-}
+};
 
-type Props = MuiButtonProps & { to?: string }
+type Props = MuiButtonProps & { to?: string };
 
 function PrimaryButton(props: Props) {
-  const { children, ...rest } = props
+  const { children, ...rest } = props;
 
   return (
     <MuiButton {...defaultProps} {...rest}>
       {children}
     </MuiButton>
-  )
+  );
 }
 
-export default PrimaryButton
+export default PrimaryButton;

@@ -2,8 +2,6 @@ import { Container, Grid } from '@mui/material';
 import { ContainerProps } from '@mui/system';
 import React from 'react';
 
-
-
 type Props = {
   children: React.ReactNode;
 

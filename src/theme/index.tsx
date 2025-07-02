@@ -18,10 +18,8 @@ const themePalette = createTheme({
   typography: {
     fontFamily: 'Public sans, sans-serif, Arial',
   },
-})
+});
 
-
-
-const theme = createTheme(RcSesTheme,themePalette);
+const theme = createTheme(RcSesTheme, themePalette);
 
 export default theme;

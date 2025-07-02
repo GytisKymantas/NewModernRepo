@@ -196,10 +196,8 @@ function DocumentInfoSection({ index }: { index: number }) {
       )}
 
       {/* Modals */}
-      {openModal === 'view' && <ViewItemModal open={true} onClose={handleCloseModal} />}
-      {openModal === 'delete' && (
-        <DeleteItemModal open={true} onClose={handleCloseModal} />
-      )}
+      {openModal === 'view' && <ViewItemModal open onClose={handleCloseModal} />}
+      {openModal === 'delete' && <DeleteItemModal open onClose={handleCloseModal} />}
     </Wrapper>
   );
 }

@@ -1,6 +1,12 @@
 /* eslint-disable react/prop-types */
-import { Accordion, AccordionDetails, AccordionSummary, SxProps,Box } from '@mui/material';
 import styled from '@emotion/styled';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  SxProps,
+} from '@mui/material';
 import React from 'react';
 import IconProps from '../../../assets/IconProps';
 import useAccordionController from '../../hooks/useAccordionController';
@@ -70,8 +76,7 @@ function AccordionWrapper(props: Props) {
         id={`${id}-header`}
         aria-controls={`${id}-content`}
         expandIcon={canToggle === false ? null : <CaretDownIcon />}
-        sx={sxStyle ?? {backgroundColor:'white',borderRadius:'8px'}}
-        
+        sx={sxStyle ?? { backgroundColor: 'white', borderRadius: '8px' }}
       >
         {titleComponent ? (
           <Box sx={{ margin: '0' }}>{titleComponent}</Box>

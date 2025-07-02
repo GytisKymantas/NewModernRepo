@@ -76,8 +76,6 @@ function ViewItemModal({ open, onSubmit, onClose }: Props) {
                 />
               </svg>
             </Box>
-
-            {/* some sort of document viewer script here*/}
           </StyledFormSection>
           <DialogActions>
             <Button

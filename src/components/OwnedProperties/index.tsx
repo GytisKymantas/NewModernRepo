@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Divider,
   Table,
@@ -13,6 +11,8 @@ import {
 import { Box, useMediaQuery } from '@mui/system';
 import { redirectToSelfServiceDashboard } from '@rc-ses/mfe-host';
 import { RcSesServicePage } from '@registrucentras/rc-ses-react-components';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DownloadIcon from '../../assets/icons/DownloadIcon';
 import theme from '../../theme';
 import AccordionWrapper from '../Service copy/components/AccordionWrapper';
@@ -217,7 +217,7 @@ function OwnedProperties() {
         />
       </ServiceFormAccordion>
       {/* closing modal */}
-      {openModal && <DeleteItemModal open={true} onClose={handleCloseModal} />}
+      {openModal && <DeleteItemModal open onClose={handleCloseModal} />}
     </RcSesServicePage>
   );
 }

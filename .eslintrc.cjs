@@ -50,6 +50,19 @@ module.exports = {
         'react/no-array-index-key': 'warn',
         'import/no-extraneous-dependencies': 'off',
         '@typescript-eslint/no-unused-vars': 'warn',
+        // Import rules for TypeScript with path mapping
+        'import/extensions': [
+          'error',
+          'ignorePackages',
+          {
+            js: 'never',
+            jsx: 'never',
+            ts: 'never',
+            tsx: 'never',
+          },
+        ],
+        // Disable import/order since prettier-plugin-organize-imports handles it
+        'import/order': 'off',
       },
     },
     {
@@ -96,6 +109,15 @@ module.exports = {
   settings: {
     react: {
       version: 'detect',
+    },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
+      },
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     },
   },
 };

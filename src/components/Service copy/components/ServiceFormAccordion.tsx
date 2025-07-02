@@ -1,15 +1,14 @@
-import { Container, Grid } from '@mui/material'
-import { ContainerProps } from '@mui/system'
-import React from 'react'
+import { Container, Grid } from '@mui/material';
+import { ContainerProps } from '@mui/system';
+import React from 'react';
 
-
-import useAccordionController from '../../hooks/useAccordionController'
-import ServiceFormContainer from './ServiceFormContainer'
+import useAccordionController from '../../hooks/useAccordionController';
+import ServiceFormContainer from './ServiceFormContainer';
 
 type Props = {
-  accordionController: ReturnType<typeof useAccordionController>
-  children: React.ReactNode
-  showProgressStepper?: boolean
+  accordionController: ReturnType<typeof useAccordionController>;
+  children: React.ReactNode;
+  showProgressStepper?: boolean;
   slotProps?: {
     container: Partial<ContainerProps>
   }
@@ -23,8 +22,7 @@ function ServiceFormAccordion({
   slotProps,
   className,
 }: Props) {
-  const { state } = accordionController
-
+  const { state } = accordionController;
 
   return (
     <Container
@@ -52,12 +50,11 @@ function ServiceFormAccordion({
         )}
 
         <Grid item sx={{ flexGrow: 1 }}>
-  
           {children}
         </Grid>
       </Grid>
     </Container>
-  )
+  );
 }
 
-export default ServiceFormAccordion
+export default ServiceFormAccordion;

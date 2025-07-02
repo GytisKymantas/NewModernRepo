@@ -1,0 +1,78 @@
+{
+  "components": {
+    "ServiceFormActions": {
+      "discard": "Atšaukti pildymą ir ištrinti formos duomenis",
+      "draft": "Baigti pildyti vėliau",
+      "submit": "Pateikti",
+      "discardConfirmation": {
+        "title": "Atšaukti pildymą",
+        "message": "Atkreipiame dėmesį, kad jūsų prašymas bei jo duomenys bus ištrinti",
+        "confirm": "Taip",
+        "cancel": "Ne"
+      }
+    }
+  },
+  "formBuilder": {
+    "actions": {
+      "next": "Tęsti",
+      "previous": "Atgal",
+      "submit": "Pateikti",
+      "saveDraft": "Baigti pildyti vėliau",
+      "saving": "Išsaugoma...",
+      "submitting": "Pateikiama..."
+    },
+    "validation": {
+      "required": "Šis laukas yra privalomas",
+      "fieldRequired": "{{field}} yra privalomas",
+      "email": "Įveskite teisingą el. pašto adresą",
+      "phone": "Įveskite teisingą telefono numerį",
+      "personalCode": "Asmens kodas turi būti 11 skaitmenų",
+      "companyCode": "Įmonės kodas turi būti 9 skaitmenys",
+      "minLength": "Minimalus ilgis yra {{min}} simboliai",
+      "maxLength": "Maksimalus ilgis yra {{max}} simboliai",
+      "min": "Minimali reikšmė yra {{min}}",
+      "max": "Maksimali reikšmė yra {{max}}",
+      "selectOption": "Pasirinkite variantą",
+      "selectAtLeastOne": "Pasirinkite bent vieną variantą",
+      "fileSize": "Failo dydis turi būti mažesnis nei {{size}}MB",
+      "fileRequired": "{{field}} yra privalomas",
+      "invalidDate": "Įveskite teisingą datą",
+      "invalidUrl": "Įveskite teisingą URL",
+      "invalidNumber": "Įveskite teisingą skaičių",
+      "invalidString": "Įveskite teisingą tekstą",
+      "positiveNumber": "Turi būti teigiamas skaičius",
+      "strongPassword": {
+        "minLength": "Slaptažodis turi būti bent 8 simbolių",
+        "uppercase": "Slaptažodis turi turėti bent vieną didžiąją raidę",
+        "lowercase": "Slaptažodis turi turėti bent vieną mažąją raidę",
+        "number": "Slaptažodis turi turėti bent vieną skaičių",
+        "special": "Slaptažodis turi turėti bent vieną specialų simbolį"
+      }
+    },
+    "fields": {
+      "email": "El. pašto adresas",
+      "phone": "Telefono numeris",
+      "personalCode": "Asmens kodas",
+      "termsAndConditions": "Taisyklės ir sąlygos",
+      "dateOfBirth": "Gimimo data",
+      "address": "Adresas",
+      "documentUpload": "Dokumento įkėlimas"
+    },
+    "placeholders": {
+      "email": "Įveskite el. pašto adresą",
+      "phone": "Įveskite telefono numerį",
+      "personalCode": "Įveskite 11 skaitmenų asmens kodą",
+      "address": "Įveskite pilną adresą",
+      "selectOption": "Pasirinkite variantą",
+      "search": "Ieškoti...",
+      "fileUpload": "Paspauskite, kad įkeltumėte arba nuvilkite failus"
+    },
+    "messages": {
+      "personalCodeInvalid": "Asmens kodas turi būti 11 skaitmenų",
+      "termsAccept": "Sutinku su taisyklėmis ir sąlygomis",
+      "fileUploadError": "Nepavyko įkelti failo",
+      "draftSaved": "Juodraštis sėkmingai išsaugotas",
+      "draftSaveError": "Nepavyko išsaugoti juodraščio"
+    }
+  }
+}

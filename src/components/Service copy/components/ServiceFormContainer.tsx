@@ -115,7 +115,12 @@ function ServiceFormContainer({ steps, isVertical,className }: Props) {
             <Step key={step.title}>
               <StepLabel
                 StepIconComponent={getStepIcon(step.state)}
-                style={{ flexDirection: 'row', gap: '10px', alignItems: 'flex-end',zIndex:'4' }}
+                style={{
+                  flexDirection: 'row',
+                  gap: '10px',
+                  alignItems: 'flex-end',
+                  zIndex: '4',
+                }}
               >
                 {step.title}
                 {/* Vertical Line */}
@@ -126,7 +131,7 @@ function ServiceFormContainer({ steps, isVertical,className }: Props) {
                       top: stepIndex === 0 ? '31px' : '27.5px',
                       left: '12px',
                       height: stepIndex === 0 ? '26px' : '33px', // Adjust default height if needed
-                      width: '3px', 
+                      width: '3px',
                       backgroundColor: '#F0F2F5',
                       transform: 'translateX(-50%)',
                       zIndex: '1',
