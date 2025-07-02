@@ -217,7 +217,7 @@ function OwnedProperties() {
         />
       </ServiceFormAccordion>
       {/* closing modal */}
-      {openModal && <DeleteItemModal open={true} onClose={handleCloseModal} />}
+      {openModal && <DeleteItemModal open onClose={handleCloseModal} />}
     </RcSesServicePage>
   );
 }

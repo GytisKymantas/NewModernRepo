@@ -24,7 +24,7 @@ const Names = styled.p`
   padding-left: 24px;
 `;
 
-const SignaturesSection = () => {
+function SignaturesSection() {
   const accordionController = useAccordionController({
     initialState: {
       basicInformation: {
@@ -105,6 +105,6 @@ const SignaturesSection = () => {
       </Box>
     </AccordionWrapper>
   );
-};
+}
 
 export default SignaturesSection;
