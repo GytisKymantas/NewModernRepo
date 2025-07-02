@@ -11,7 +11,7 @@ const primary = {
   '900': '#164763',
   '950': '#082d44',
   main: '#06a0d4',
-}
+};
 
 const secondary = {
   '50': '#ecfdf6',
@@ -26,7 +26,7 @@ const secondary = {
   '900': '#004e3d',
   '950': '#002c24',
   main: '#00c288',
-}
+};
 
 const grey = {
   '50': '#f9fafb',
@@ -41,7 +41,7 @@ const grey = {
   '900': '#1f2733',
   '950': '#10161f',
   main: '#8e959e',
-}
+};
 
 const warning = {
   '50': '#fef9ef',
@@ -56,7 +56,7 @@ const warning = {
   '900': '#4a3504',
   '950': '#312303',
   main: '#f9b311',
-}
+};
 
 const error = {
   '50': '#fef4f2',
@@ -71,7 +71,7 @@ const error = {
   '900': '#4a1a14',
   '950': '#31110d',
   main: '#fa5a46',
-}
+};
 
-export { primary, secondary, grey, warning, error }
-export default { primary, secondary, grey, warning, error }
+export { error, grey, primary, secondary, warning };
+export default { primary, secondary, grey, warning, error };

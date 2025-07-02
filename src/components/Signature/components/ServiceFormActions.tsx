@@ -45,7 +45,7 @@ type Props = {
   onBack?: () => void;
   draftDisabled?: boolean;
   submitDisabled?: boolean;
-  isFirstStep?:boolean;
+  isFirstStep?: boolean;
 };
 function ServiceFormActions({
   onDiscard,
@@ -56,7 +56,6 @@ function ServiceFormActions({
   submitDisabled,
   isFirstStep,
 }: Props) {
-
   return (
     <>
       <Card
@@ -90,17 +89,19 @@ function ServiceFormActions({
           </Grid>
 
           <Box sx={{ display: 'flex', gap: '1rem' }}>
-            {!isFirstStep && <Grid item>
-              <PrimaryButton
-                disabled={submitDisabled === true}
-                onClick={() => onBack()}
-                size='large'
-                sx={{ color: '#0079AD', fontWeight: 600, backgroundColor: '#F3FBFE' }}
-                variant='outlined'
-              >
-                Atgal
-              </PrimaryButton>
-            </Grid>}
+            {!isFirstStep && (
+              <Grid item>
+                <PrimaryButton
+                  disabled={submitDisabled === true}
+                  onClick={() => onBack()}
+                  size='large'
+                  sx={{ color: '#0079AD', fontWeight: 600, backgroundColor: '#F3FBFE' }}
+                  variant='outlined'
+                >
+                  Atgal
+                </PrimaryButton>
+              </Grid>
+            )}
             <Grid item>
               <PrimaryButton
                 disabled={submitDisabled === true}
@@ -121,7 +122,7 @@ function ServiceFormActions({
         sx={{
           justifyContent: 'center',
           py: { xs: '1.5rem', md: '.875rem' },
-          backgroundColor:  { xs:'#F3FBFE',md:'#FFFFFF' },
+          backgroundColor: { xs: '#F3FBFE', md: '#FFFFFF' },
         }}
       >
         <Grid item>

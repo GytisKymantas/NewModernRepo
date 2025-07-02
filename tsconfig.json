@@ -3,11 +3,10 @@
   "typeRoots": ["./@types"],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "baseUrl": ".", 
-     "paths": {
+    "baseUrl": ".",
+    "paths": {
       "@/*": ["src/*"]
     }
-    
   },
   "include": ["src/**/*", "@types/**/*", "node_modules/@types"],
   "exclude": ["src/**/*.test*"]

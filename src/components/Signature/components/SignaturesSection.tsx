@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
+import { Box } from '@mui/material';
 import { useAccordionController } from '@registrucentras/rc-ses-react-components';
 import ColorBallIcon from '../../../assets/icons/ColorBallIcon';
 import AccordionWrapper from '../../Service copy/components/AccordionWrapper';
-import { Box } from '@mui/material';
 
 // Styled Components declared outside
 const AccordionEntry = styled.div<{ marginBottom?: string }>`
@@ -19,12 +19,12 @@ const PersonStatus = styled.div`
 `;
 
 const Names = styled.p`
-margin:0;
-font-size:13px;
-padding-left:24px;
+  margin: 0;
+  font-size: 13px;
+  padding-left: 24px;
 `;
 
-const SignaturesSection = () => {
+function SignaturesSection() {
   const accordionController = useAccordionController({
     initialState: {
       basicInformation: {
@@ -59,9 +59,16 @@ const SignaturesSection = () => {
     <AccordionWrapper
       id='basicInformation'
       controller={accordionController}
-      sx={{ borderWidth: 0, border: 'none',paddingLeft:'0px' }}
+      sx={{ borderWidth: 0, border: 'none', paddingLeft: '0px' }}
       titleComponent={
-        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center',margin:' 0 0 0 -24px' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center',
+            margin: ' 0 0 0 -24px',
+          }}
+        >
           <svg
             width='24'
             height='24'
@@ -79,28 +86,25 @@ const SignaturesSection = () => {
         </Box>
       }
     >
-
       <Box>
-      <AccordionEntry id='entry1'>
-        <Names>Vardenis Pavardenis (Jus)</Names>
-        <PersonStatus>
-          <ColorBallIcon />
-          Laukiama
-        </PersonStatus>
-      </AccordionEntry>
-      
-      <AccordionEntry id='entry2' marginBottom='24px'>
-        <Names>Vardenis Pavardenis (Jus)</Names>
-        <PersonStatus>
-          <ColorBallIcon />
-          Laukiama
-        </PersonStatus>
-      </AccordionEntry>
-        
-      </Box>
+        <AccordionEntry id='entry1'>
+          <Names>Vardenis Pavardenis (Jus)</Names>
+          <PersonStatus>
+            <ColorBallIcon />
+            Laukiama
+          </PersonStatus>
+        </AccordionEntry>
 
+        <AccordionEntry id='entry2' marginBottom='24px'>
+          <Names>Vardenis Pavardenis (Jus)</Names>
+          <PersonStatus>
+            <ColorBallIcon />
+            Laukiama
+          </PersonStatus>
+        </AccordionEntry>
+      </Box>
     </AccordionWrapper>
   );
-};
+}
 
 export default SignaturesSection;

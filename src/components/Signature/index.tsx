@@ -72,16 +72,15 @@ function Signature() {
           <UploadFile />
         </AccordionWrapper>
 
-       
-
         <ServiceFormActions
           onDiscard={() => redirectToServiceDescriptionPage('redirect')}
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceOwnedProperties()}
-          onBack={() => window.location.href = '/'}
+          // eslint-disable-next-line no-return-assign
+          onBack={() => (window.location.href = '/')}
         />
       </ServiceFormAccordion>
-    </RcSesServicePage> 
+    </RcSesServicePage>
   );
 }
 

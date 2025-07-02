@@ -11,7 +11,10 @@ type Props = {
 function ServiceHeader({ breadcrumbsProps, children, title }: Props) {
   // Theme debug removed for production
   return (
-    <Box sx={{ backgroundColor: theme.palette.primary['50'] }} className='ServiceHeader-container'>
+    <Box
+      sx={{ backgroundColor: theme.palette.primary['50'] }}
+      className='ServiceHeader-container'
+    >
       <Container
         sx={{
           pb: { xs: '2rem', md: '2.25rem' },
