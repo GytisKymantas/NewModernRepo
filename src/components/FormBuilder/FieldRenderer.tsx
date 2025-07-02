@@ -77,8 +77,6 @@ function FieldRenderer({
   control,
   errors,
   register,
-  setValue,
-  watch,
   formData,
 }: FieldRendererProps) {
   const { translateText } = useFormTranslation();

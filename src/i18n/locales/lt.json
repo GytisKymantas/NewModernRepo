@@ -3,7 +3,13 @@
     "ServiceFormActions": {
       "discard": "Atšaukti pildymą ir ištrinti formos duomenis",
       "draft": "Baigti pildyti vėliau",
-      "submit": "Pateikti"
+      "submit": "Pateikti",
+      "discardConfirmation": {
+        "title": "Atšaukti pildymą",
+        "message": "Atkreipiame dėmesį, kad jūsų prašymas bei jo duomenys bus ištrinti",
+        "confirm": "Taip",
+        "cancel": "Ne"
+      }
     }
   },
   "formBuilder": {

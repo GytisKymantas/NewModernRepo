@@ -6,7 +6,7 @@ import {
   RcSesServicePage,
   useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
 import '../../i18n/i18n';
 import theme from '../../theme';
@@ -16,12 +16,14 @@ import FormHeader from './components/FormHeader';
 import useFormTranslation from './hooks/useFormTranslation';
 import { FormBuilderProps } from './types';
 import { formatFormDataForSubmission, getDefaultValues } from './utils';
-import { createFormValidation, createStepValidation } from './validation';
+import { createFormValidation } from './validation';
 
 function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [preservedFormData, setPreservedFormData] = useState<Record<string, any>>({});
 
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
   const { translateValidation } = useFormTranslation();
@@ -30,15 +32,22 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   const isLastStep = currentStep === config.steps.length - 1;
   const isFirstStep = currentStep === 0;
 
-  // Create validation schema for current step or entire form with translations
-  const validationSchema = config.multiStep
-    ? createStepValidation(currentStepConfig, translateValidation)
-    : createFormValidation(config.steps, config.globalValidation, translateValidation);
+  // Memoize validation schema to avoid recreation on every render
+  const validationSchema = useMemo(
+    () =>
+      createFormValidation(config.steps, config.globalValidation, translateValidation),
+    [config.steps, config.globalValidation, translateValidation],
+  );
 
-  const defaultValues = {
-    ...getDefaultValues(config.steps),
-    ...initialData,
-  };
+  // Memoize default values to avoid recreation on every render
+  const defaultValues = useMemo(
+    () => ({
+      ...getDefaultValues(config.steps),
+      ...initialData,
+      ...preservedFormData, // Include preserved data in default values
+    }),
+    [config.steps, initialData, preservedFormData],
+  );
 
   const {
     control,
@@ -48,32 +57,113 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     watch,
     formState: { errors, isValid },
     getValues,
+    trigger,
   } = useForm({
     resolver: zodResolver(validationSchema),
     defaultValues,
-    mode: 'all',
+    mode: 'onChange',
   });
 
   const formData = watch();
 
-  // Create accordion controller for both single and multi-step forms
-  const initialAccordionState = config.steps.reduce((acc, step, index) => {
-    let state: 'completed' | 'active' | 'pending';
-    if (index < currentStep) {
-      state = 'completed';
-    } else if (index === currentStep) {
-      state = 'active';
-    } else {
-      state = 'pending';
+  // Fix: Restore preserved values after form reset - avoid infinite loop by not including preservedFormData in deps
+  useEffect(() => {
+    if (Object.keys(preservedFormData).length > 0) {
+      Object.keys(preservedFormData).forEach((key) => {
+        if (
+          preservedFormData[key] !== undefined &&
+          preservedFormData[key] !== null &&
+          preservedFormData[key] !== ''
+        ) {
+          setValue(key, preservedFormData[key], {
+            shouldValidate: false,
+            shouldDirty: true,
+          });
+        }
+      });
     }
+  }, [currentStep, setValue]); // Removed preservedFormData from deps to prevent infinite loop
 
-    acc[step.id] = {
-      expanded: index === currentStep,
-      state,
-      title: step.title,
-    };
-    return acc;
-  }, {} as any);
+  // Check if current step is valid for navigation
+  const isCurrentStepValid = useCallback(() => {
+    if (!config.multiStep) return isValid;
+
+    // Get current step fields
+    const currentStepFields = [
+      ...(currentStepConfig.fields || []),
+      ...(currentStepConfig.subgroups?.flatMap((subgroup) => subgroup.fields) || []),
+    ];
+
+    // Get only required fields
+    const requiredStepFields = currentStepFields.filter((field) => field.required);
+
+    // If no required fields, step is always valid
+    if (requiredStepFields.length === 0) return true;
+
+    // Check if any required field has errors
+    const hasErrors = requiredStepFields.some((field) => errors[field.name]);
+
+    // Check if any required field is empty
+    const currentFormData = getValues();
+    const hasEmptyRequired = requiredStepFields.some((field) => {
+      const value = currentFormData[field.name];
+      return !value || value === '' || (Array.isArray(value) && value.length === 0);
+    });
+
+    return !hasErrors && !hasEmptyRequired;
+  }, [config.multiStep, isValid, currentStepConfig, errors, getValues]);
+
+  // Simplified loading states - only keep essential ones
+  const combinedLoadingStates = useMemo(
+    () => ({
+      isSubmitting: config.loading?.states?.isSubmitting ?? isSubmitting,
+      isSavingDraft: config.loading?.states?.isSavingDraft ?? isSavingDraft,
+      isDataLoading: config.loading?.states?.isDataLoading ?? isDataLoading,
+    }),
+    [
+      config.loading?.states?.isSubmitting,
+      config.loading?.states?.isSavingDraft,
+      config.loading?.states?.isDataLoading,
+      isSubmitting,
+      isSavingDraft,
+      isDataLoading,
+    ],
+  );
+
+  // Determine if any loading is active
+  const isAnyLoading = useMemo(
+    () => Object.values(combinedLoadingStates).some(Boolean),
+    [combinedLoadingStates],
+  );
+
+  // Determine if form should be disabled
+  const isFormDisabled = useMemo(
+    () => (config.loading?.disableFormDuringLoading ? isAnyLoading : false),
+    [config.loading?.disableFormDuringLoading, isAnyLoading],
+  );
+
+  // Memoize accordion state to avoid recreation on every render
+  const initialAccordionState = useMemo(
+    () =>
+      config.steps.reduce((acc, step, index) => {
+        let state: 'completed' | 'active' | 'pending';
+        if (index < currentStep) {
+          state = 'completed';
+        } else if (index === currentStep) {
+          state = 'active';
+        } else {
+          state = 'pending';
+        }
+
+        acc[step.id] = {
+          expanded: index === currentStep,
+          state,
+          title: step.title,
+        };
+        return acc;
+      }, {} as any),
+    [config.steps, currentStep],
+  );
 
   // Use accordion controller hook - required for RcSesServiceFormContainer
   const accordionController = useAccordionController({
@@ -84,9 +174,12 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   useEffect(() => {
     const loadDraft = async () => {
       if (config.onLoadDraft) {
+        setIsDataLoading(true);
         try {
           const draftData = await config.onLoadDraft();
           if (draftData) {
+            // Set preserved data for form restoration
+            setPreservedFormData(draftData);
             Object.keys(draftData).forEach((key) => {
               setValue(key, draftData[key]);
             });
@@ -94,6 +187,8 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
         } catch (error) {
           // eslint-disable-next-line no-console
           console.error('Failed to load draft:', error);
+        } finally {
+          setIsDataLoading(false);
         }
       }
     };
@@ -101,10 +196,13 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   }, [config, setValue]);
 
   // Handle draft saving
-  const handleSaveDraft = async () => {
+  const handleSaveDraft = useCallback(async () => {
     if (!config.onSaveDraft) return;
 
-    setIsSavingDraft(true);
+    // Don't override external loading state
+    if (!config.loading?.states?.isSavingDraft) {
+      setIsSavingDraft(true);
+    }
     try {
       const currentData = getValues();
       await config.onSaveDraft(currentData);
@@ -112,16 +210,18 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
       // eslint-disable-next-line no-console
       console.error('Failed to save draft:', error);
     } finally {
-      setIsSavingDraft(false);
+      if (!config.loading?.states?.isSavingDraft) {
+        setIsSavingDraft(false);
+      }
     }
-  };
+  }, [config, getValues]);
 
   // Handle discard functionality
-  const handleDiscard = async () => {
+  const handleDiscard = useCallback(async () => {
     if (config.onDiscard) {
       await config.onDiscard();
     }
-  };
+  }, [config]);
 
   // Helper function to update accordion state for a given step
   const updateAccordionState = useCallback(
@@ -151,8 +251,16 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   // Helper function to navigate to a specific step
   const navigateToStep = useCallback(
     (targetStep: number) => {
+      const currentValues = getValues();
+
+      // Preserve form values in state for restoration after step change
+      setPreservedFormData((prevData) => ({
+        ...prevData,
+        ...currentValues,
+      }));
+
       if (config.onStepChange) {
-        config.onStepChange(targetStep, getValues());
+        config.onStepChange(targetStep, currentValues);
       }
       setCurrentStep(targetStep);
       updateAccordionState(targetStep);
@@ -160,57 +268,127 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     [config, getValues, updateAccordionState],
   );
 
-  // Handle step navigation - use handleSubmit pattern for proper error handling
-  const handleNext = useCallback(() => {
-    // Use handleSubmit to properly trigger validation and get errors
-    const onStepValid = () => {
-      navigateToStep(currentStep + 1);
-    };
+  // Handle step navigation - with proper validation
+  const handleNext = useCallback(async () => {
+    if (config.multiStep) {
+      // Get current step fields
+      const currentStepFields = [
+        ...(currentStepConfig.fields || []),
+        ...(currentStepConfig.subgroups?.flatMap((subgroup) => subgroup.fields) || []),
+      ];
 
-    const onStepInvalid = async (stepErrors: FieldErrors) => {
-      if (config.onInvalidSubmit) {
+      // Get only required fields for validation
+      const requiredStepFields = currentStepFields.filter((field) => field.required);
+
+      // If no required fields, navigate directly
+      if (requiredStepFields.length === 0) {
+        navigateToStep(currentStep + 1);
+        return;
+      }
+
+      // Trigger validation for current step's required fields
+      const fieldNames = requiredStepFields.map((field) => field.name);
+      const isStepValid = await trigger(fieldNames);
+
+      if (isStepValid) {
+        // If validation passes, navigate to next step
+        navigateToStep(currentStep + 1);
+      } else if (config.onInvalidSubmit) {
+        // Validation failed - errors will be automatically displayed by React Hook Form
+        // Get current errors for the step fields
+        const stepErrors = fieldNames.reduce((acc, fieldName) => {
+          if (errors[fieldName]) {
+            acc[fieldName] = errors[fieldName];
+          }
+          return acc;
+        }, {} as any);
+
         await config.onInvalidSubmit(stepErrors, getValues());
       }
-    };
-
-    // Use handleSubmit which will automatically validate and call the appropriate callback
-    return handleSubmit(onStepValid, onStepInvalid)();
-  }, [handleSubmit, navigateToStep, currentStep, config, getValues]);
+    } else {
+      // For single-step forms, use normal submit
+      handleSubmit(
+        (data) => config.onSubmit(formatFormDataForSubmission(data)),
+        (formErrors) => config.onInvalidSubmit?.(formErrors, getValues()),
+      )();
+    }
+  }, [
+    config,
+    currentStepConfig,
+    navigateToStep,
+    currentStep,
+    trigger,
+    errors,
+    getValues,
+    handleSubmit,
+  ]);
 
   const handlePrevious = useCallback(() => {
     navigateToStep(currentStep - 1);
   }, [navigateToStep, currentStep]);
 
   // Handle successful form submission
-  const handleFormSubmit = async (data: any) => {
-    setIsSubmitting(true);
-    try {
-      const formattedData = formatFormDataForSubmission(data);
-      await config.onSubmit(formattedData);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Form submission error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const handleFormSubmit = useCallback(
+    async (data: any) => {
+      // Don't override external loading state
+      if (!config.loading?.states?.isSubmitting) {
+        setIsSubmitting(true);
+      }
+      try {
+        const formattedData = formatFormDataForSubmission(data);
+        await config.onSubmit(formattedData);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Form submission error:', error);
+      } finally {
+        if (!config.loading?.states?.isSubmitting) {
+          setIsSubmitting(false);
+        }
+      }
+    },
+    [config],
+  );
 
   // Handle validation failure on form submission
-  const handleFormError = async (formErrors: FieldErrors) => {
-    if (config.onInvalidSubmit) {
-      await config.onInvalidSubmit(formErrors, getValues());
-    }
-  };
+  const handleFormError = useCallback(
+    async (formErrors: FieldErrors) => {
+      if (config.onInvalidSubmit) {
+        await config.onInvalidSubmit(formErrors, getValues());
+      }
+    },
+    [config, getValues],
+  );
 
-  // Prepare props for conditional rendering
-  const formContainerProps = config.multiStep
-    ? { accordionController, showProgressStepper: upMd }
-    : { accordionController };
+  // Memoize form container props
+  const formContainerProps = useMemo(
+    () =>
+      config.multiStep
+        ? { accordionController, showProgressStepper: upMd }
+        : { accordionController },
+    [config.multiStep, accordionController, upMd],
+  );
 
-  const formActionsSubmitHandler =
-    config.multiStep && !isLastStep
-      ? handleNext
-      : handleSubmit(handleFormSubmit, handleFormError);
+  // Memoize form actions submit handler
+  const formActionsSubmitHandler = useMemo(
+    () =>
+      config.multiStep && !isLastStep
+        ? handleNext
+        : handleSubmit(handleFormSubmit, handleFormError),
+    [
+      config.multiStep,
+      isLastStep,
+      handleNext,
+      handleSubmit,
+      handleFormSubmit,
+      handleFormError,
+    ],
+  );
+
+  // Determine if form actions should be valid (for submit/next button)
+  const isFormActionsValid = useMemo(
+    () => (config.multiStep ? isCurrentStepValid() : isValid),
+    [config.multiStep, isCurrentStepValid, isValid],
+  );
 
   return (
     <RcSesServicePage className={className}>
@@ -227,14 +405,18 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
           formData={formData}
           onSubmit={handleSubmit(handleFormSubmit)}
           accordionController={accordionController}
+          loadingStates={combinedLoadingStates}
+          loadingConfig={config.loading}
         />
         <FormActions
           multiStep={config.multiStep}
           isFirstStep={isFirstStep}
           isLastStep={isLastStep}
-          isValid={isValid}
-          isSubmitting={isSubmitting}
-          isSavingDraft={isSavingDraft}
+          isValid={isFormActionsValid && !isFormDisabled}
+          isSubmitting={combinedLoadingStates.isSubmitting}
+          isSavingDraft={combinedLoadingStates.isSavingDraft}
+          loadingStates={combinedLoadingStates}
+          loadingConfig={config.loading}
           onNext={handleNext}
           onPrevious={handlePrevious}
           onSubmit={formActionsSubmitHandler}

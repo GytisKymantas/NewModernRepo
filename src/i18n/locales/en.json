@@ -3,7 +3,13 @@
     "ServiceFormActions": {
       "discard": "Discard",
       "draft": "Finish filling later",
-      "submit": "Submit"
+      "submit": "Submit",
+      "discardConfirmation": {
+        "title": "Cancel Form",
+        "message": "Please note that your request and its data will be deleted",
+        "confirm": "Yes",
+        "cancel": "No"
+      }
     }
   },
   "formBuilder": {

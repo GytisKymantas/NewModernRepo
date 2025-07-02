@@ -2,13 +2,15 @@ import InfoIcon from '@/assets/icons/InfoIcon';
 import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
-import Header from '@/components/layout/Header';
-import TopBanner from '@/components/layout/components/TopBanner';
 
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
 const personalCodeField = commonFieldConfigs.personalCode('personalCode');
+
+function CustomField() {
+  return <div>Custom Field</div>;
+}
 
 function MultiStepServiceForm() {
   const config: FormBuilderConfig = {
@@ -28,12 +30,22 @@ function MultiStepServiceForm() {
             variant: 'default',
             fields: [
               {
+                id: 'customField',
+                name: 'customField',
+                type: 'custom',
+                label: 'Custom Field',
+                required: false,
+                placeholder: 'Pasirinkite teisinę formą',
+                component: CustomField,
+              },
+              {
                 id: 'purpose',
                 name: 'purpose',
                 type: 'select',
                 label: 'Juridinio asmens teisinė forma',
                 required: true,
                 placeholder: 'Pasirinkite teisinę formą',
+                defaultValue: '',
                 options: [
                   { value: 'tikslas1', label: 'Tikslas 1' },
                   { value: 'tikslas2', label: 'Tikslas 2' },
@@ -255,15 +267,7 @@ function MultiStepServiceForm() {
     },
   };
 
-  return (
-    <div>
-      <TopBanner />
-      <Header />
-
-      {/* FormBuilder handles its own RcSesServiceFormContainer */}
-      <FormBuilder config={config} />
-    </div>
-  );
+  return <FormBuilder config={config} />;
 }
 
 export default MultiStepServiceForm;

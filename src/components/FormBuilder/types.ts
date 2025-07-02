@@ -194,10 +194,28 @@ export interface FormStep {
   validation?: z.ZodSchema;
 }
 
+// Loading state configuration
+export interface LoadingStates {
+  isSubmitting?: boolean; // Form submission
+  isSavingDraft?: boolean; // Saving draft
+  isDataLoading?: boolean; // Initial data loading
+}
+
+export interface LoadingConfig {
+  states?: LoadingStates;
+  disableFormDuringLoading?: boolean; // Disable form interactions during loading
+  loadingMessages?: {
+    submitting?: string;
+    savingDraft?: string;
+    dataLoading?: string;
+  };
+}
+
 export interface FormBuilderConfig {
   id: string;
   title: string;
   description?: string;
+  loading?: LoadingConfig; // New loading configuration
   multiStep?: boolean;
   steps: FormStep[];
   globalValidation?: z.ZodSchema;
@@ -234,6 +252,7 @@ export interface FieldRendererProps {
   setValue: any;
   watch: any;
   formData: any;
+  disabled?: boolean;
 }
 
 export interface SubgroupRendererProps {
@@ -244,6 +263,7 @@ export interface SubgroupRendererProps {
   setValue: any;
   watch: any;
   formData: any;
+  disabled?: boolean;
 }
 
 // New component prop interfaces
@@ -266,6 +286,8 @@ export interface FormActionsProps {
   isValid: boolean;
   isSubmitting: boolean;
   isSavingDraft: boolean;
+  loadingStates?: LoadingStates;
+  loadingConfig?: LoadingConfig;
   onNext: () => void;
   onPrevious: () => void;
   onSubmit: () => void;
@@ -283,4 +305,6 @@ export interface FormContentProps {
   formData: any;
   onSubmit: (e?: React.BaseSyntheticEvent) => void;
   accordionController: any;
+  loadingStates?: LoadingStates;
+  loadingConfig?: LoadingConfig;
 }
