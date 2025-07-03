@@ -1,4 +1,4 @@
-import DocumentInfoSection from "./DocumentInfoSection";
+import DocumentInfoSection from './DocumentInfoSection';
 
 function DocumentCollection() {
   return (

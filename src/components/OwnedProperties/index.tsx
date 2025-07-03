@@ -1,13 +1,4 @@
-import {
-  Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Divider } from '@mui/material';
 import { Box, useMediaQuery } from '@mui/system';
 import { redirectToSelfServiceDashboard } from '@rc-ses/mfe-host';
 import { RcSesServicePage } from '@registrucentras/rc-ses-react-components';
@@ -24,6 +15,8 @@ import DeleteItemModal from '../Signature/components/DeleteItemModal';
 import DownloadIconLabel from '../Signature/components/DownloadIconLabel';
 import ServiceFormActions from '../Signature/components/ServiceFormActions';
 import useAccordionController from '../hooks/useAccordionController';
+import FormTable from './FormTable';
+import PricingTable from './PricingTable';
 import ServiceDetails from './ServiceDetails';
 
 function OwnedProperties() {
@@ -104,109 +97,82 @@ function OwnedProperties() {
             <HeaderMain>Teikiami Dokumentai</HeaderMain>
             <Divider />
           </Box>
-          <TableContainer sx={{ pb: '34.5px' }}>
-            <Table sx={{ backgroundColor: '#f9fafb' }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ backgroundColor: '#f9fafb' }}>Dokumentas</TableCell>
-                  <TableCell align='left' sx={{ backgroundColor: '#f9fafb' }}>
-                    Būsena
-                  </TableCell>
-                  <TableCell align='right' sx={{ backgroundColor: '#f9fafb' }}>
-                    Veiksmai
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell sx={{ borderRight: 'none' }}>
-                    Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą
-                    JAR-5-E
-                  </TableCell>
-                  <TableCell sx={{ borderLeft: 'none', borderRight: 'none' }}>
-                    Pasirašytas
-                  </TableCell>
-                  <TableCell sx={{ borderLeft: 'none' }}>
-                    <DownloadIconLabel
-                      style={{ justifyContent: 'flex-end' }}
-                      label='Atsisiųsti'
-                      svg={<DownloadIcon />}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ borderRight: 'none' }}>
-                    Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą
-                    JAR-5-E
-                  </TableCell>
-                  <TableCell sx={{ borderLeft: 'none', borderRight: 'none' }}>
-                    Pasirašytas
-                  </TableCell>
-                  <TableCell sx={{ borderLeft: 'none' }}>
-                    <DownloadIconLabel
-                      style={{ justifyContent: 'flex-end' }}
-                      label='Atsisiųsti'
-                      svg={<DownloadIcon />}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ borderRight: 'none' }}>
-                    Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą
-                    JAR-5-E
-                  </TableCell>
-                  <TableCell sx={{ borderLeft: 'none', borderRight: 'none' }}>
-                    Pasirašytas
-                  </TableCell>
-                  <TableCell sx={{ borderLeft: 'none' }}>
-                    <DownloadIconLabel
-                      style={{ justifyContent: 'flex-end' }}
-                      label='Atsisiųsti'
-                      svg={<DownloadIcon />}
-                    />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <HeaderMain>Paslaugos Kaina</HeaderMain>
-          <Divider />
-          <TableContainer sx={{ pb: '48px' }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ backgroundColor: '#f9fafb' }}>Paslauga</TableCell>
-                  <TableCell align='right' sx={{ backgroundColor: '#f9fafb' }}>
-                    Kaina
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell sx={{ borderRight: 'none' }}>
-                    Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą
-                    JAR-5-E
-                  </TableCell>
-                  <TableCell align='right' sx={{ borderLeft: 'none' }}>
-                    14,76 Eur
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ borderRight: 'none' }}>
-                    <Typography
-                      variant='body1'
-                      sx={{ textAlign: 'right', fontWeight: 'bold' }}
-                    >
-                      Bendra Suma
-                    </Typography>
-                  </TableCell>
-                  <TableCell align='right' sx={{ borderLeft: 'none' }}>
-                    14,76 Eur
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <FormTable
+            sxStyle={{ borderCollapse: 'collapse' }}
+            cols={[
+              { key: 'doc', label: 'Dokumentas' },
+              { key: 'status', label: 'Būsena' },
+              { key: 'actions', label: 'Veiksmai' },
+            ]}
+            rows={[
+              {
+                doc: 'Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą JAR-5-E',
+                status: 'Pasirašytas',
+                actions: (
+                  <DownloadIconLabel
+                    label='Atsisiųsti'
+                    svg={<DownloadIcon />}
+                    style={{ justifyContent: 'flex-end' }}
+                  />
+                ),
+              },
+              {
+                doc: 'Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą JAR-5-E',
+                status: 'Pasirašytas',
+                actions: (
+                  <DownloadIconLabel
+                    label='Atsisiųsti'
+                    svg={<DownloadIcon />}
+                    style={{ justifyContent: 'flex-end' }}
+                  />
+                ),
+              },
+              {
+                doc: 'Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą JAR-5-E',
+                status: 'Pasirašytas',
+                actions: (
+                  <DownloadIconLabel
+                    label='Atsisiųsti'
+                    svg={<DownloadIcon />}
+                    style={{ justifyContent: 'flex-end' }}
+                  />
+                ),
+              },
+            ]}
+          />
+          <Box sx={{ pt: '34.5px' }}>
+            <HeaderMain>Paslaugos Kaina</HeaderMain>
+            <Divider />
+          </Box>
+          <FormTable
+            cols={[
+              {
+                key: 'service',
+                label: 'Paslauga',
+                headerAlign: 'left',
+                cellAlign: (row) => (row.service === 'Bendra Suma' ? 'right' : 'left'),
+              },
+              {
+                key: 'price',
+                label: 'Kaina',
+                headerAlign: 'right',
+                cellAlign: 'right',
+              },
+            ]}
+            rows={[
+              {
+                service:
+                  'Prašymas laikinai įrašyti pavadinimą į Juridinių asmenų registrą JAR-5-E',
+                price: '14,76 Eur',
+              },
+              {
+                service: 'Bendra Suma',
+                price: '14,76 Eur',
+                isStuf: true,
+              },
+            ]}
+          />
+          <PricingTable />
         </AccordionWrapper>
 
         <ServiceFormActions

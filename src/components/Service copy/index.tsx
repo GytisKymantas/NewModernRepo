@@ -60,12 +60,7 @@ function ServiceCopy() {
         showProgressStepper={upMd}
         className='serviceFormAccordion-container'
       >
-        {!upMd && (
-          <ServiceFormContainer
-            steps={accordionController.state}
-            className='serviceForm-container'
-          />
-        )}
+        {!upMd && <ServiceFormContainer steps={accordionController.state} />}
 
         <AccordionWrapper
           className='accordionWrapper-container'

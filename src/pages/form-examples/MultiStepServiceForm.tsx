@@ -4,7 +4,12 @@ import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
-
+import {
+  FormTableData,
+  PricingTableData,
+  ServiceDetail,
+  sampleTableData,
+} from './MultiStepServiceForm.deps';
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
@@ -15,6 +20,9 @@ function CustomField() {
 }
 
 function MultiStepServiceForm() {
+  const localData = localStorage.getItem('serviceRequestDraft');
+  const formData = JSON.parse(localData);
+
   const config: FormBuilderConfig = {
     id: 'service-request-form',
     title: 'Service Application Request',
@@ -257,6 +265,117 @@ function MultiStepServiceForm() {
             required: false,
             placeholder: '',
             component: UploadFile,
+          },
+        ],
+      },
+      {
+        id: 'request_view',
+        title: 'Prašymo Pateikimas',
+        subgroups: [
+          {
+            id: 'request-object',
+            variant: 'default',
+            fields: [
+              {
+                id: 'customField',
+                name: 'customField',
+                type: 'custom',
+                label: 'Custom Field',
+                required: false,
+                component: ServiceDetail,
+                props: {
+                  title: 'Prašymo objektas',
+                  rows: [
+                    {
+                      label: 'Laikinai įrašomas pavadinimas',
+                      value: formData.companyName,
+                    },
+                  ],
+                },
+              },
+              {
+                id: 'customField',
+                name: 'customField',
+                type: 'custom',
+                label: 'Custom Field',
+                required: false,
+                component: ServiceDetail,
+                props: {
+                  sxStyle: { pt: '34.5px' },
+                  title: 'Prašymą teikia',
+                  rows: [
+                    {
+                      label: 'Asmens Kodas',
+                      value: formData.personalCode,
+                    },
+                    {
+                      label: 'Vardas, Pavardė',
+                      value: formData.fullName,
+                    },
+                  ],
+                },
+              },
+              {
+                id: 'customField',
+                name: 'customField',
+                type: 'custom',
+                label: 'Custom Field',
+                required: false,
+                component: ServiceDetail,
+                props: {
+                  sxStyle: { pt: '34.5px' },
+                  title: 'Prašymo būsena',
+                  rows: [
+                    {
+                      label: 'Būsena',
+                      value: 'Pildomas',
+                    },
+                  ],
+                },
+              },
+              {
+                id: 'customField',
+                name: 'customField',
+                type: 'custom',
+                label: 'Custom Field',
+                required: false,
+                component: ServiceDetail,
+                props: {
+                  sxStyle: { pt: '34.5px' },
+                  title: 'Teikiami Dokumentai',
+                },
+              },
+              {
+                id: 'tableData',
+                name: 'tableData',
+                type: 'custom',
+                label: 'tableData',
+                component: FormTableData,
+                props: {
+                  sxStyle: { borderCollapse: 'collapse' },
+                  title: 'Teikiami Dokumentai',
+                  cols: sampleTableData.cols,
+                  rows: sampleTableData.rows,
+                },
+              },
+              {
+                id: 'servicePrice',
+                name: 'servicePrice',
+                type: 'custom',
+                label: 'servicePrice',
+                component: ServiceDetail,
+                props: {
+                  title: 'Paslaugos kaina',
+                },
+              },
+              {
+                id: 'pricingTableData',
+                name: 'pricingTableData',
+                type: 'custom',
+                label: 'pricingTableData',
+                component: PricingTableData,
+              },
+            ],
           },
         ],
       },
