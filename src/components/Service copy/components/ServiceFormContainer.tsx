@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, StepConnector, useMediaQuery } from '@mui/material';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
@@ -108,6 +108,7 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
           activeStep={activeStep}
           alternativeLabel
           orientation={isVertical ? 'vertical' : 'horizontal'}
+          connector={<StepConnector sx={{ display: 'none' }} />}
         >
           {Object.values(steps).map((step, stepIndex) => (
             <Step key={step.title}>

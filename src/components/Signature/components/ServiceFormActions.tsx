@@ -46,6 +46,7 @@ type Props = {
   draftDisabled?: boolean;
   submitDisabled?: boolean;
   isFirstStep?: boolean;
+  className?: string;
 };
 function ServiceFormActions({
   onDiscard,
@@ -55,9 +56,10 @@ function ServiceFormActions({
   draftDisabled,
   submitDisabled,
   isFirstStep,
+  className,
 }: Props) {
   return (
-    <>
+    <Box className={className}>
       <Card
         sx={{
           backgroundColor: palette.primary['50'],
@@ -136,7 +138,7 @@ function ServiceFormActions({
           </PrimaryButton>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 }
 

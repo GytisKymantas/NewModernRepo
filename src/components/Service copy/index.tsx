@@ -40,7 +40,7 @@ function ServiceCopy() {
   });
 
   return (
-    <RcSesServicePage>
+    <RcSesServicePage className='serviceForm-container'>
       <ServiceHeader
         breadcrumbsProps={{
           path: [
@@ -52,19 +52,31 @@ function ServiceCopy() {
           ],
         }}
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
+        className='serviceHeader-container'
       />
 
       <ServiceFormAccordion
         accordionController={accordionController}
         showProgressStepper={upMd}
+        className='serviceFormAccordion-container'
       >
-        {!upMd && <ServiceFormContainer steps={accordionController.state} />}
+        {!upMd && (
+          <ServiceFormContainer
+            steps={accordionController.state}
+            className='serviceForm-container'
+          />
+        )}
 
-        <AccordionWrapper id='serviceDetails' controller={accordionController}>
-          <ServiceDetailsForm />
+        <AccordionWrapper
+          className='accordionWrapper-container'
+          id='serviceDetails'
+          controller={accordionController}
+        >
+          <ServiceDetailsForm className='serviceDetailsForm-container' />
         </AccordionWrapper>
 
         <ServiceFormActions
+          className='serviceFormActions-container'
           onDiscard={() =>
             redirectToServiceDescriptionPage('00000000-0000-0000-0000-000000000000')
           }

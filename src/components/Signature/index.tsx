@@ -46,7 +46,7 @@ function Signature() {
   });
 
   return (
-    <RcSesServicePage>
+    <RcSesServicePage className='signatureForm-container'>
       <ServiceHeader
         breadcrumbsProps={{
           path: [
@@ -55,10 +55,20 @@ function Signature() {
           ],
         }}
         title='Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą'
+        className='signatureHeader-container'
       />
 
-      <ServiceFormAccordion accordionController={accordionController} showProgressStepper>
-        <AccordionWrapper id='serviceDetails' controller={accordionController} noPadding>
+      <ServiceFormAccordion
+        accordionController={accordionController}
+        showProgressStepper
+        className='signatureFormAccordion-container'
+      >
+        <AccordionWrapper
+          id='serviceDetails'
+          controller={accordionController}
+          noPadding
+          className='accordionWrapper-container'
+        >
           <RcSesAlert icon={<InfoIcon />} severity='info'>
             <StyledAlertText>
               Visi dokumentai yra pasirašomi eilės tvarka.
@@ -73,6 +83,7 @@ function Signature() {
         </AccordionWrapper>
 
         <ServiceFormActions
+          className='signatureFormActions-container'
           onDiscard={() => redirectToServiceDescriptionPage('redirect')}
           onSaveDraft={() => redirectToSelfServiceDashboard()}
           onSubmit={() => redirectToSelfServiceOwnedProperties()}

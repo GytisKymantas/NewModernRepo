@@ -2,6 +2,7 @@ import InfoIcon from '@/assets/icons/InfoIcon';
 import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
+import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
@@ -10,6 +11,22 @@ const personalCodeField = commonFieldConfigs.personalCode('personalCode');
 
 function CustomField() {
   return <div>Custom Field</div>;
+}
+
+function UploadFile() {
+  return (
+    <>
+      <UploadFile />
+    </>
+  );
+}
+
+function DocumentSection() {
+  return (
+    <>
+      <DocumentCollection />
+    </>
+  );
 }
 
 function MultiStepServiceForm() {
@@ -228,15 +245,40 @@ function MultiStepServiceForm() {
       {
         id: 'documents',
         title: 'Dokumentų pasirašymas',
-        fields: [
+        subgroups: [
           {
-            id: 'documentUpload',
-            name: 'documentUpload',
-            type: 'file',
-            label: 'Dokumentų pasirašymas',
-            required: true,
-            accept: '.doc,.docx,.pdf,.pages',
-            maxSize: 5 * 1024 * 1024, // 5MB
+            id: '',
+            title: '',
+            variant: 'default',
+            fields: [
+              {
+                id: 'infoAlert',
+                name: 'infoAlert',
+                type: 'alert',
+                label: 'infoAlert',
+                message: <div>Visi dokumentai yra pasirašomi eilės tvarka.</div>,
+                severity: 'info',
+                icon: <InfoIcon />,
+              },
+              {
+                id: 'DocumentSection',
+                name: 'DocumentSection',
+                type: 'custom',
+                label: 'DocumentSection',
+                required: false,
+                placeholder: '',
+                component: DocumentSection,
+              },
+              {
+                id: 'uploadFile',
+                name: 'uploadFile',
+                type: 'custom',
+                label: 'uploadFile',
+                required: false,
+                placeholder: '',
+                component: UploadFile,
+              },
+            ],
           },
         ],
       },

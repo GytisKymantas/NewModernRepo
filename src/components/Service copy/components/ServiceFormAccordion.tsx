@@ -10,20 +10,23 @@ type Props = {
   children: React.ReactNode;
   showProgressStepper?: boolean;
   slotProps?: {
-    container: Partial<ContainerProps>;
-  };
-};
+    container: Partial<ContainerProps>
+  }
+  className?:string;
+}
 
 function ServiceFormAccordion({
   accordionController,
   children,
   showProgressStepper = false,
   slotProps,
+  className,
 }: Props) {
   const { state } = accordionController;
 
   return (
     <Container
+    className={className}
       maxWidth={showProgressStepper ? 'lg' : 'md'}
       {...slotProps?.container}
       sx={{

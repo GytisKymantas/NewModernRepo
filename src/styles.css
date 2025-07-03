@@ -10,8 +10,8 @@
   display: flex;
   flex-direction: column !important;
 }
-.css-18jysbj-MuiFormControl-root .rc-ses-form-control-wrapper {
-  /* align-items:flex-start; */
+.rc-ses-form-field-wrapper.MuiBox-root.css-jx62xo {
+  margin-bottom:auto;
 }
 #personalCode .MuiOutlinedInput-notchedOutline {
   border: none !important;
