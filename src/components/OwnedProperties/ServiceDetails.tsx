@@ -20,18 +20,32 @@ function ServiceDetails({ title, rows, sxStyle }: ServiceDetailsProps) {
         <HeaderMain>{title}</HeaderMain>
         <Divider />
       </Box>
-      {rows.map(({ label, value }, i) => (
-        <Box key={i} sx={{ display: 'flex', mb: i === rows.length - 1 ? 0 : '20px' }}>
-          <Typography
-            sx={{ maxWidth: '243px', width: '100%', textAlign: 'right', mr: '24px' }}
+      {rows &&
+        rows.map(({ label, value }, i) => (
+          <Box
+            key={i}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              gap: { xs: 2 },
+              mb: i === rows.length - 1 ? 0 : '20px',
+            }}
           >
-            {label}
-          </Typography>
-          <Typography sx={{ maxWidth: '525px', width: '100%', textAlign: 'left' }}>
-            {value}
-          </Typography>
-        </Box>
-      ))}
+            <Typography
+              sx={{
+                maxWidth: '243px',
+                width: '100%',
+                textAlign: { xs: 'left', sm: 'right' },
+                mr: '24px',
+              }}
+            >
+              {label}
+            </Typography>
+            <Typography sx={{ maxWidth: '525px', width: '100%', textAlign: 'left' }}>
+              {value}
+            </Typography>
+          </Box>
+        ))}
     </>
   );
 }

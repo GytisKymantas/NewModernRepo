@@ -92,7 +92,7 @@ const SectionBox = styled.div`
   margin-bottom: 24px;
 `;
 
-function ServiceDetailsForm({ className } ) {
+function ServiceDetailsForm({ className }) {
   const {
     control,
     handleSubmit,
@@ -124,7 +124,12 @@ function ServiceDetailsForm({ className } ) {
   });
 
   return (
-    <StyledForm onSubmit={handleSubmit(() => {})} noValidate id='testid' className={className}>
+    <StyledForm
+      onSubmit={handleSubmit(() => {})}
+      noValidate
+      id='testid'
+      className={className}
+    >
       <RcSesAlert severity='error' sx={{ borderRadius: '6px' }}>
         <InfoHeader noMargin>
           Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
