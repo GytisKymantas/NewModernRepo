@@ -2,7 +2,7 @@ import InfoIcon from '@/assets/icons/InfoIcon';
 import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
-import DocumentInfoSection from '@/components/Signature/components/DocumentInfoSection';
+import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
@@ -24,9 +24,7 @@ function UploadFile() {
 function DocumentSection() {
   return (
     <>
-      {[...Array(3)].map((_, index) => (
-        <DocumentInfoSection key={`document-info-${index + 1}`} index={index + 1} />
-      ))}
+      <DocumentCollection />
     </>
   );
 }
