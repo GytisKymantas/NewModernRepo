@@ -3,6 +3,7 @@ import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
+import UploadFile from '@/components/Signature/components/UploadFile';
 
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
@@ -11,22 +12,6 @@ const personalCodeField = commonFieldConfigs.personalCode('personalCode');
 
 function CustomField() {
   return <div>Custom Field</div>;
-}
-
-function UploadFile() {
-  return (
-    <>
-      <UploadFile />
-    </>
-  );
-}
-
-function DocumentSection() {
-  return (
-    <>
-      <DocumentCollection />
-    </>
-  );
 }
 
 function MultiStepServiceForm() {
@@ -262,7 +247,16 @@ function MultiStepServiceForm() {
             label: 'DocumentSection',
             required: false,
             placeholder: '',
-            component: DocumentSection,
+            component: DocumentCollection,
+          },
+          {
+            id: 'uploadFile',
+            name: 'uploadFile',
+            type: 'custom',
+            label: 'uploadFile',
+            required: false,
+            placeholder: '',
+            component: UploadFile,
           },
         ],
       },
