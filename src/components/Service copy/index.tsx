@@ -40,7 +40,7 @@ function ServiceCopy() {
   });
 
   return (
-    <RcSesServicePage className='serviceForm-container'>
+    <RcSesServicePage>
       <ServiceHeader
         breadcrumbsProps={{
           path: [
@@ -60,7 +60,11 @@ function ServiceCopy() {
         showProgressStepper={upMd}
         className='serviceFormAccordion-container'
       >
-        {!upMd && <ServiceFormContainer steps={accordionController.state} />}
+        {!upMd && (
+          <ServiceFormContainer
+            steps={accordionController.state}
+          />
+        )}
 
         <AccordionWrapper
           className='accordionWrapper-container'
