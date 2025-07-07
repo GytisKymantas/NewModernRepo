@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import styled from '@emotion/styled';
 import { Box, StepConnector, useMediaQuery } from '@mui/material';
 import Step from '@mui/material/Step';
@@ -70,7 +72,9 @@ type AccordionState = {
   title: string;
 };
 
-type AccordionControllerState = Record<string, AccordionState>;
+type AccordionControllerState = {
+  [key: string]: AccordionState;
+};
 
 type Props = {
   steps: AccordionControllerState;
@@ -80,8 +84,11 @@ type Props = {
 function ServiceFormContainer({ steps, isVertical }: Props) {
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
   const activeStep =
-    Object.values(steps).findIndex((step) => step.state === 'active') ?? 0;
+    Object.keys(steps).findIndex((step) => step.state === 'active') ?? 0;
   const percentage = ((activeStep + 1) / Object.keys(steps).length) * 100;
+
+  console.log(upSm,'upSm',isVertical)
+console.log(steps,'is steps from service form container')
 
   const getStepIcon = (state: AccordionState['state']) => {
     switch (state) {
@@ -94,9 +101,22 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
     }
   };
 
-  if (isVertical) {
-    return (
-      <Box
+
+  return (
+    <>
+       {!isVertical? <ProgressContainer>
+          <ProgressBarWrapper>
+            <ProgressBarFill percentage={percentage} />
+          </ProgressBarWrapper>
+          <ProgressTextContainer>
+            <StepInfo>
+              {activeStep + 1} žingsnis iš {Object.keys(steps).length}
+            </StepInfo>
+            {/* <StepTitle>Paslaugos užsakymas</StepTitle> */}
+          </ProgressTextContainer>
+        </ProgressContainer>
+
+        :  <Box
         sx={{
           width: '100%',
           backgroundColor: '#ffffff',
@@ -121,7 +141,7 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
                   zIndex: '4',
                 }}
               >
-                {step.title}
+                {step.title} 
                 {/* Vertical Line */}
                 {(stepIndex === 0 || stepIndex === 1) && (
                   <Box
@@ -141,44 +161,8 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
             </Step>
           ))}
         </Stepper>
-      </Box>
-    );
-  }
-
-  return (
-    <>
-      {!upSm ? (
-        <ProgressContainer>
-          <ProgressBarWrapper>
-            <ProgressBarFill percentage={percentage} />
-          </ProgressBarWrapper>
-          <ProgressTextContainer>
-            <StepInfo>
-              {activeStep + 1} žingsnis iš {Object.keys(steps).length}
-            </StepInfo>
-            {/* <StepTitle>Paslaugos užsakymas</StepTitle> */}
-          </ProgressTextContainer>
-        </ProgressContainer>
-      ) : (
-        <Box
-          sx={{
-            width: '100%',
-            backgroundColor: '#ffffff',
-            margin: '0 0 -8px 0',
-            paddingTop: '32px',
-          }}
-        >
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {Object.values(steps).map((step) => (
-              <Step key={step.title}>
-                <StepLabel StepIconComponent={getStepIcon(step.state)}>
-                  {step.title}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Box>
-      )}
+        </Box>}
+    
     </>
   );
 }

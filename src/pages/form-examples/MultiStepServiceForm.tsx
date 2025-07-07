@@ -270,7 +270,7 @@ function MultiStepServiceForm() {
       },
       {
         id: 'request_view',
-        title: 'Prašymo Pateikimas',
+        title: 'Prašymo pateikimas',
         subgroups: [
           {
             id: 'request-object',
