@@ -2,9 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMediaQuery } from '@mui/material';
 import {
-  RcSesServiceFormContainer,
   RcSesServicePage,
-  useAccordionController,
 } from '@registrucentras/rc-ses-react-components';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
@@ -17,6 +15,8 @@ import useFormTranslation from './hooks/useFormTranslation';
 import { FormBuilderProps } from './types';
 import { formatFormDataForSubmission, getDefaultValues } from './utils';
 import { createFormValidation } from './validation';
+import useAccordionController from '../hooks/useAccordionController';
+import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
 
 function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -165,10 +165,33 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     [config.steps, currentStep],
   );
 
-  // Use accordion controller hook - required for RcSesServiceFormContainer
-  const accordionController = useAccordionController({
+  const initialAccordionStateArray = useMemo(() => 
+  config.steps.map((step, index) => {
+    let state: 'completed' | 'active' | 'pending';
+    
+    if (index < currentStep ) {
+      state = 'completed';
+    } else if (index === currentStep) {
+      state = 'active';
+    } else {
+      state = 'pending';
+    }
+
+    return {
+      id: step.id, 
+      expanded: index === currentStep,
+      state,
+      title: step.title,
+    };
+  }),
+[config.steps, currentStep]);
+
+
+ const accordionController = useAccordionController({
     initialState: initialAccordionState,
   });
+
+
 
   // Load draft data on component mount
   useEffect(() => {
@@ -224,29 +247,30 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   }, [config]);
 
   // Helper function to update accordion state for a given step
-  const updateAccordionState = useCallback(
-    (targetStep: number) => {
-      if (!accordionController.setState) return;
+  // const updateAccordionState = useCallback(
+  //   (targetStep: number) => {
+  //     // if (!accordionController.setState) return;
 
-      const newState = { ...accordionController.state };
-      config.steps.forEach((step, index) => {
-        if (newState[step.id]) {
-          if (index < targetStep) {
-            newState[step.id].state = 'completed';
-            newState[step.id].expanded = false;
-          } else if (index === targetStep) {
-            newState[step.id].state = 'active';
-            newState[step.id].expanded = true;
-          } else {
-            newState[step.id].state = 'pending';
-            newState[step.id].expanded = false;
-          }
-        }
-      });
-      accordionController.setState(newState);
-    },
-    [accordionController, config.steps],
-  );
+  //     const newState = { ...accordionController.state };
+  //     config.steps.forEach((step, index) => {
+  //       if (newState[step.id]) {
+  //         if (index < targetStep) {
+  //           newState[step.id].state = 'completed';
+  //           newState[step.id].expanded = false;
+  //         } else if (index === targetStep) {
+  //           newState[step.id].state = 'active';
+  //           newState[step.id].expanded = true;
+  //         } else {
+  //           newState[step.id].state = 'pending';
+  //           newState[step.id].expanded = false;
+  //         }
+  //       }
+  //     });
+  //     //  accordionController(newState);
+
+  //   },
+  //   [accordionController, config.steps],
+  // );
 
   // Helper function to navigate to a specific step
   const navigateToStep = useCallback(
@@ -263,9 +287,9 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
         config.onStepChange(targetStep, currentValues);
       }
       setCurrentStep(targetStep);
-      updateAccordionState(targetStep);
+      // updateAccordionState(targetStep);
     },
-    [config, getValues, updateAccordionState],
+    [config, getValues],
   );
 
   // Handle step navigation - with proper validation
@@ -359,14 +383,16 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     [config, getValues],
   );
 
-  // Memoize form container props
-  const formContainerProps = useMemo(
-    () =>
-      config.multiStep
-        ? { accordionController, showProgressStepper: upMd }
-        : { accordionController },
-    [config.multiStep, accordionController, upMd],
-  );
+  // // Memoize form container props
+  // const formContainerProps = useMemo(
+  //   () =>
+  //     config.multiStep
+  //       ? { accordionController, showProgressStepper: upMd }
+  //       : { accordionController },
+  //   [config.multiStep, accordionController, upMd],
+  // );
+
+  // console.log(formContainerProps,'formContainerProps')
 
   // Memoize form actions submit handler
   const formActionsSubmitHandler = useMemo(
@@ -394,7 +420,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     <RcSesServicePage className={className}>
       <FormHeader title={config.title} description={config.description} />
 
-      <RcSesServiceFormContainer {...formContainerProps}>
+      <ServiceFormAccordion initialAccordionStateArray={initialAccordionStateArray} >
         <FormContent
           step={currentStepConfig}
           control={control}
@@ -423,7 +449,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
           onSaveDraft={config.onSaveDraft ? handleSaveDraft : undefined}
           onDiscard={handleDiscard}
         />
-      </RcSesServiceFormContainer>
+      </ServiceFormAccordion>
     </RcSesServicePage>
   );
 }

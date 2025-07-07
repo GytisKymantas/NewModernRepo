@@ -1,53 +1,47 @@
-import { Container, Grid } from '@mui/material';
-import { ContainerProps } from '@mui/system';
+import { Container, Grid, useMediaQuery } from '@mui/material';
 import React from 'react';
 
-import useAccordionController from '../../hooks/useAccordionController';
+import theme from '@/theme';
 import ServiceFormContainer from './ServiceFormContainer';
 
 type Props = {
-  accordionController: ReturnType<typeof useAccordionController>;
   children: React.ReactNode;
-  showProgressStepper?: boolean;
-  slotProps?: {
-    container: Partial<ContainerProps>;
-  };
-  className?: string;
+  initialAccordionStateArray: any;
 };
 
-function ServiceFormAccordion({
-  accordionController,
-  children,
-  showProgressStepper = false,
-  slotProps,
-  className,
-}: Props) {
-  const { state } = accordionController;
+function ServiceFormAccordion({ initialAccordionStateArray, children }: Props) {
+  const upSm = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <Container
-      className={className}
-      maxWidth={showProgressStepper ? 'lg' : 'md'}
-      {...slotProps?.container}
+      maxWidth={'lg'}
       sx={{
         backgroundColor: { xs: 'grey', md: 'white' },
         pb: { md: 8 },
         pt: { xs: 0, md: 6 },
         px: { xs: 0, md: 3 },
         mb: { xs: 0, md: 6 },
-        ...slotProps?.container?.sx,
       }}
     >
       <Grid
         container
-        columns={showProgressStepper ? 2 : 1}
-        sx={{ columnGap: 7.5, flexWrap: 'nowrap', justifyContent: 'center' }}
+        columns={2}
+        sx={{
+          columnGap: 7.5,
+          flexWrap: 'nowrap',
+          justifyContent: 'center',
+          flexDirection: upSm ? 'row' : 'column',
+        }}
       >
-        {showProgressStepper && (
-          <Grid item sx={{ display: { xs: 'none', md: 'block' }, flex: '0 0 270px' }}>
-            <ServiceFormContainer steps={state} isVertical />
-          </Grid>
-        )}
+        <Grid
+          item
+          sx={{
+            display: 'block',
+            flex: upSm ? '0 0 270px' : '0 0 50px',
+          }}
+        >
+          <ServiceFormContainer steps={initialAccordionStateArray} isVertical={upSm} />
+        </Grid>
 
         <Grid item sx={{ flexGrow: 1 }}>
           {children}

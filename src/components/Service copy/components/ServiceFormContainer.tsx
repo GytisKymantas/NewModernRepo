@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import styled from '@emotion/styled';
 import { Box, StepConnector, useMediaQuery } from '@mui/material';
 import Step from '@mui/material/Step';
@@ -70,7 +72,9 @@ type AccordionState = {
   title: string;
 };
 
-type AccordionControllerState = Record<string, AccordionState>;
+type AccordionControllerState = {
+  [key: string]: AccordionState;
+};
 
 type Props = {
   steps: AccordionControllerState;
@@ -79,9 +83,9 @@ type Props = {
 
 function ServiceFormContainer({ steps, isVertical }: Props) {
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const activeStep =
-    Object.values(steps).findIndex((step) => step.state === 'active') ?? 0;
-  const percentage = ((activeStep + 1) / Object.keys(steps).length) * 100;
+  const activeStep = steps.findIndex(item => item.state === "active") ?? 0;
+  const percentage = ((activeStep + 1) / steps.length) * 100;
+
 
   const getStepIcon = (state: AccordionState['state']) => {
     switch (state) {
@@ -94,67 +98,16 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
     }
   };
 
-  if (isVertical) {
-    return (
-      <Box
-        sx={{
-          width: '100%',
-          backgroundColor: '#ffffff',
-          margin: '0 0 -8px 0',
-          paddingTop: '32px',
-        }}
-      >
-        <Stepper
-          activeStep={activeStep}
-          alternativeLabel
-          orientation={isVertical ? 'vertical' : 'horizontal'}
-          connector={<StepConnector sx={{ display: 'none' }} />}
-        >
-          {Object.values(steps).map((step, stepIndex) => (
-            <Step key={step.title}>
-              <StepLabel
-                StepIconComponent={getStepIcon(step.state)}
-                style={{
-                  flexDirection: 'row',
-                  gap: '10px',
-                  alignItems: 'flex-end',
-                  zIndex: '4',
-                }}
-              >
-                {step.title}
-                {/* Vertical Line */}
-                {(stepIndex === 0 || stepIndex === 1) && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: stepIndex === 0 ? '31px' : '27.5px',
-                      left: '12px',
-                      height: stepIndex === 0 ? '26px' : '33px', // Adjust default height if needed
-                      width: '3px',
-                      backgroundColor: '#F0F2F5',
-                      transform: 'translateX(-50%)',
-                      zIndex: '1',
-                    }}
-                  />
-                )}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </Box>
-    );
-  }
-
   return (
     <>
-      {!upSm ? (
+      {!isVertical ? (
         <ProgressContainer>
           <ProgressBarWrapper>
             <ProgressBarFill percentage={percentage} />
           </ProgressBarWrapper>
           <ProgressTextContainer>
             <StepInfo>
-              {activeStep + 1} žingsnis iš {Object.keys(steps).length}
+              {activeStep + 1} žingsnis iš {steps.length}
             </StepInfo>
             {/* <StepTitle>Paslaugos užsakymas</StepTitle> */}
           </ProgressTextContainer>
@@ -168,11 +121,39 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
             paddingTop: '32px',
           }}
         >
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {Object.values(steps).map((step) => (
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
+            orientation={isVertical ? 'vertical' : 'horizontal'}
+            connector={<StepConnector sx={{ display: 'none' }} />}
+          >
+            {Object.values(steps).map((step, stepIndex) => (
               <Step key={step.title}>
-                <StepLabel StepIconComponent={getStepIcon(step.state)}>
+                <StepLabel
+                  StepIconComponent={getStepIcon(step.state)}
+                  style={{
+                    flexDirection: 'row',
+                    gap: '10px',
+                    alignItems: 'flex-end',
+                    zIndex: '4',
+                  }}
+                >
                   {step.title}
+                  {/* Vertical Line */}
+                  {(stepIndex === 0 || stepIndex === 1) && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: stepIndex === 0 ? '31px' : '27.5px',
+                        left: '12px',
+                        height: stepIndex === 0 ? '26px' : '33px', // Adjust default height if needed
+                        width: '3px',
+                        backgroundColor: '#F0F2F5',
+                        transform: 'translateX(-50%)',
+                        zIndex: '1',
+                      }}
+                    />
+                  )}
                 </StepLabel>
               </Step>
             ))}
