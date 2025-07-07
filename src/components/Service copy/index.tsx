@@ -55,7 +55,6 @@
 //         className='serviceHeader-container'
 //       />
 
-<<<<<<< HEAD
 //       <ServiceFormAccordion
 //         accordionController={accordionController}
 //         showProgressStepper={upMd}
@@ -66,14 +65,6 @@
 //             steps={accordionController.state}
 //           />
 //         )}
-=======
-      <ServiceFormAccordion
-        accordionController={accordionController}
-        showProgressStepper={upMd}
-        className='serviceFormAccordion-container'
-      >
-        {!upMd && <ServiceFormContainer steps={accordionController.state} />}
->>>>>>> staging
 
 //         <AccordionWrapper
 //           className='accordionWrapper-container'

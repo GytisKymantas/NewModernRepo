@@ -83,12 +83,9 @@ type Props = {
 
 function ServiceFormContainer({ steps, isVertical }: Props) {
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const activeStep =
-    Object.keys(steps).findIndex((step) => step.state === 'active') ?? 0;
-  const percentage = ((activeStep + 1) / Object.keys(steps).length) * 100;
+  const activeStep = steps.findIndex(item => item.state === "active") ?? 0;
+  const percentage = ((activeStep + 1) / steps.length) * 100;
 
-  console.log(upSm,'upSm',isVertical)
-console.log(steps,'is steps from service form container')
 
   const getStepIcon = (state: AccordionState['state']) => {
     switch (state) {
@@ -101,68 +98,68 @@ console.log(steps,'is steps from service form container')
     }
   };
 
-
   return (
     <>
-       {!isVertical? <ProgressContainer>
+      {!isVertical ? (
+        <ProgressContainer>
           <ProgressBarWrapper>
             <ProgressBarFill percentage={percentage} />
           </ProgressBarWrapper>
           <ProgressTextContainer>
             <StepInfo>
-              {activeStep + 1} žingsnis iš {Object.keys(steps).length}
+              {activeStep + 1} žingsnis iš {steps.length}
             </StepInfo>
             {/* <StepTitle>Paslaugos užsakymas</StepTitle> */}
           </ProgressTextContainer>
         </ProgressContainer>
-
-        :  <Box
-        sx={{
-          width: '100%',
-          backgroundColor: '#ffffff',
-          margin: '0 0 -8px 0',
-          paddingTop: '32px',
-        }}
-      >
-        <Stepper
-          activeStep={activeStep}
-          alternativeLabel
-          orientation={isVertical ? 'vertical' : 'horizontal'}
-          connector={<StepConnector sx={{ display: 'none' }} />}
+      ) : (
+        <Box
+          sx={{
+            width: '100%',
+            backgroundColor: '#ffffff',
+            margin: '0 0 -8px 0',
+            paddingTop: '32px',
+          }}
         >
-          {Object.values(steps).map((step, stepIndex) => (
-            <Step key={step.title}>
-              <StepLabel
-                StepIconComponent={getStepIcon(step.state)}
-                style={{
-                  flexDirection: 'row',
-                  gap: '10px',
-                  alignItems: 'flex-end',
-                  zIndex: '4',
-                }}
-              >
-                {step.title} 
-                {/* Vertical Line */}
-                {(stepIndex === 0 || stepIndex === 1) && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: stepIndex === 0 ? '31px' : '27.5px',
-                      left: '12px',
-                      height: stepIndex === 0 ? '26px' : '33px', // Adjust default height if needed
-                      width: '3px',
-                      backgroundColor: '#F0F2F5',
-                      transform: 'translateX(-50%)',
-                      zIndex: '1',
-                    }}
-                  />
-                )}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        </Box>}
-    
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
+            orientation={isVertical ? 'vertical' : 'horizontal'}
+            connector={<StepConnector sx={{ display: 'none' }} />}
+          >
+            {Object.values(steps).map((step, stepIndex) => (
+              <Step key={step.title}>
+                <StepLabel
+                  StepIconComponent={getStepIcon(step.state)}
+                  style={{
+                    flexDirection: 'row',
+                    gap: '10px',
+                    alignItems: 'flex-end',
+                    zIndex: '4',
+                  }}
+                >
+                  {step.title}
+                  {/* Vertical Line */}
+                  {(stepIndex === 0 || stepIndex === 1) && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: stepIndex === 0 ? '31px' : '27.5px',
+                        left: '12px',
+                        height: stepIndex === 0 ? '26px' : '33px', // Adjust default height if needed
+                        width: '3px',
+                        backgroundColor: '#F0F2F5',
+                        transform: 'translateX(-50%)',
+                        zIndex: '1',
+                      }}
+                    />
+                  )}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
+      )}
     </>
   );
 }
