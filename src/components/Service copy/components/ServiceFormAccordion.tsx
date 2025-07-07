@@ -12,7 +12,6 @@ type Props = {
 function ServiceFormAccordion({ initialAccordionStateArray, children }: Props) {
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
 
-  console.log(initialAccordionStateArray, 'this is state');
   return (
     <Container
       maxWidth={'lg'}
