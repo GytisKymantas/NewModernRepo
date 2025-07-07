@@ -277,10 +277,10 @@ function MultiStepServiceForm() {
             variant: 'default',
             fields: [
               {
-                id: 'customField',
-                name: 'customField',
+                id: 'requestObject',
+                name: 'requestObject',
                 type: 'custom',
-                label: 'Custom Field',
+                label: 'requestObject',
                 required: false,
                 component: ServiceDetail,
                 props: {
@@ -294,10 +294,10 @@ function MultiStepServiceForm() {
                 },
               },
               {
-                id: 'customField',
-                name: 'customField',
+                id: 'submittedBy',
+                name: 'submittedBy',
                 type: 'custom',
-                label: 'Custom Field',
+                label: 'submittedBy',
                 required: false,
                 component: ServiceDetail,
                 props: {
@@ -316,10 +316,10 @@ function MultiStepServiceForm() {
                 },
               },
               {
-                id: 'customField',
-                name: 'customField',
+                id: 'requestStatus',
+                name: 'requestStatus',
                 type: 'custom',
-                label: 'Custom Field',
+                label: 'requestStatus',
                 required: false,
                 component: ServiceDetail,
                 props: {
@@ -334,8 +334,8 @@ function MultiStepServiceForm() {
                 },
               },
               {
-                id: 'customField',
-                name: 'customField',
+                id: 'documents',
+                name: 'documents',
                 type: 'custom',
                 label: 'Custom Field',
                 required: false,
