@@ -82,6 +82,15 @@ export const commonFieldConfigs = {
     required,
   }),
 
+  search: (name: string, withTriggerText?: boolean, required = true) => ({
+    id: name,
+    name,
+    type: 'search' as const,
+    label: 'formBuilder.fields.search',
+    required,
+    withTriggerText,
+  }),
+
   personalCode: (name: string, required = true) => ({
     id: name,
     name,
