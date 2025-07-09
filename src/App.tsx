@@ -4,15 +4,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { getMFEBaseUrl } from '@rc-ses/mfe-host';
 import { lt } from 'date-fns/locale/lt';
 import React from 'react';
+import MultiStepServiceForm from './pages/form-examples/MultiStepServiceForm';
+
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-
 import './i18n/i18n';
-import MultiStepServiceForm from './pages/form-examples/MultiStepServiceForm';
+import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
 import './styles.css';
 import theme from './theme';
 // import Service from './components/Service';
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
     <>
       <Route path='/' element={<MultiStepServiceForm />} />
       <Route path='form-examples/multi-step-service' element={<MultiStepServiceForm />} />
+      <Route path='form-examples/combined-form' element={<CombinedForm />} />
       {/* <Route path='/self-service-owned-properties' element={<OwnedProperties />}>
         <Route
           path='177c5181-8710-443e-8335-327365835826'

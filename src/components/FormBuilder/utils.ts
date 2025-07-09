@@ -77,6 +77,7 @@ export const getDefaultValues = (steps: any[]): Record<string, any> => {
         case 'email':
         case 'password':
         case 'phone':
+        case 'search':
           defaultValues[field.name] = '';
           break;
         case 'number':

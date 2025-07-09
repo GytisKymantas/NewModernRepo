@@ -57,6 +57,7 @@ export type FieldType =
   | 'date'
   | 'file'
   | 'numberStepper'
+  | 'search'
   | 'alert'
   | 'custom';
 
@@ -95,6 +96,12 @@ export interface TextFieldConfig extends BaseFieldConfig {
   multiline?: boolean;
   rows?: number;
   maxLength?: number;
+}
+
+export interface SearchFieldConfig extends BaseFieldConfig {
+  type: 'search';
+  props?: Record<string, any>;
+  withTriggerText: boolean;
 }
 
 export interface NumberFieldConfig extends BaseFieldConfig {
@@ -174,7 +181,8 @@ export type FieldConfig =
   | PhoneFieldConfig
   | FileFieldConfig
   | AlertFieldConfig
-  | CustomFieldConfig;
+  | CustomFieldConfig
+  | SearchFieldConfig;
 
 // New interfaces for subgroup support
 export interface FieldSubgroup {
