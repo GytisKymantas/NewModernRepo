@@ -35,7 +35,7 @@ build:
   <<: *node_cache
   script:
     - echo "Installing dependencies..."
-    - npm ci --silent
+    - npm ci --silent --legacy-peer-deps
     - echo "Running linting..."
     - npm run lint
     - echo "Building application..."
@@ -56,7 +56,7 @@ test:
   image: node:${NODE_VERSION}-alpine
   <<: *node_cache
   script:
-    - npm ci --silent
+    - npm ci --silent --legacy-peer-deps
     - npm run test
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   artifacts:
