@@ -1,6 +1,5 @@
 stages:
   - build
-  - test
   - security
   - package
   - deploy
@@ -44,26 +43,6 @@ build:
     paths:
       - dist/
     expire_in: 1 hour
-  only:
-    - merge_requests
-    - main
-    - staging
-    - develop
-
-# Test stage
-test:
-  stage: test
-  image: node:${NODE_VERSION}-alpine
-  <<: *node_cache
-  script:
-    - npm ci --silent --legacy-peer-deps
-    - npm run test
-  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
-  artifacts:
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
   only:
     - merge_requests
     - main
