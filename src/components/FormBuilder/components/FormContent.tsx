@@ -1,5 +1,5 @@
+import AccordionWrapper from '@/components/Service copy/components/AccordionWrapper';
 import { Grid, Typography } from '@mui/material';
-import { RcSesAccordion } from '@registrucentras/rc-ses-react-components';
 import FieldRenderer, { SubgroupRenderer } from '../FieldRenderer';
 import { StyledAccordionWrapper, StyledFormContent } from '../styled';
 import { FormContentProps } from '../types';
@@ -25,7 +25,7 @@ export default function FormContent({
 
   return (
     <StyledAccordionWrapper>
-      <RcSesAccordion
+      <AccordionWrapper
         key={step.id}
         id={step.id}
         controller={accordionController}
@@ -76,7 +76,7 @@ export default function FormContent({
             )}
           </StyledFormContent>
         </form>
-      </RcSesAccordion>
+      </AccordionWrapper>
     </StyledAccordionWrapper>
   );
 }

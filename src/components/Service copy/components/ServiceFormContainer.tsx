@@ -83,9 +83,8 @@ type Props = {
 
 function ServiceFormContainer({ steps, isVertical }: Props) {
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const activeStep = steps.findIndex(item => item.state === "active") ?? 0;
+  const activeStep = steps.findIndex((item) => item.state === 'active') ?? 0;
   const percentage = ((activeStep + 1) / steps.length) * 100;
-
 
   const getStepIcon = (state: AccordionState['state']) => {
     switch (state) {
@@ -118,7 +117,6 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
             width: '100%',
             backgroundColor: '#ffffff',
             margin: '0 0 -8px 0',
-            paddingTop: '32px',
           }}
         >
           <Stepper

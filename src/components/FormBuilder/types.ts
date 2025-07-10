@@ -134,6 +134,7 @@ export interface RadioFieldConfig extends BaseFieldConfig {
 export interface CheckboxFieldConfig extends BaseFieldConfig {
   type: 'checkbox';
   variant?: 'flat' | 'outlined';
+  title?: string;
   children?: ReactNode;
 }
 
@@ -243,6 +244,7 @@ export interface CustomFieldProps {
   label: string;
   required?: boolean;
   disabled?: boolean;
+  isWithoutDivider?: boolean;
   [key: string]: any;
 }
 

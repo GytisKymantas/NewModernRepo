@@ -11,6 +11,7 @@ function ServiceDetail({
   sxStyle,
   withHeading,
   textSpacing,
+  isWithoutDivider,
 }: CustomFieldProps) {
   return (
     <ServiceDetails
@@ -19,6 +20,7 @@ function ServiceDetail({
       sxStyle={sxStyle}
       withHeading={withHeading}
       textSpacing={textSpacing}
+      isWithoutDivider={isWithoutDivider}
     />
   );
 }

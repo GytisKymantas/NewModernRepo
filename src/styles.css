@@ -49,6 +49,6 @@ input[type='radio' i]:focus-visible {
   padding-bottom: 0 !important;
 }
 
-.MuiContainer-root {
-  background: white !important;
+.MuiAlert-icon {
+  margin-bottom: auto;
 }

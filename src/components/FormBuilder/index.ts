@@ -65,6 +65,15 @@ export { default as useFormTranslation } from './hooks/useFormTranslation';
 
 // Pre-built field configs for common use cases
 export const commonFieldConfigs = {
+  textField: (name: string, required = true) => ({
+    id: name,
+    name,
+    type: 'textField' as const,
+    label: 'formBuilder.fields.textField',
+    placeholder: 'formBuilder.placeholders.textField',
+    required,
+  }),
+
   email: (name: string, required = true) => ({
     id: name,
     name,
