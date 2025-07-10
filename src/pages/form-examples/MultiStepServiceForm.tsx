@@ -21,6 +21,68 @@ function CustomField() {
   return <div>Custom Field</div>;
 }
 
+// Component definitions moved outside render to fix lint errors
+function DocumentTypeField() {
+  return (
+    <ServiceDetails
+      title=''
+      isWithoutDivider
+      rows={[
+        {
+          label: 'Dokumento tipas',
+          value: 'Sutikimas naudoti prekinį ženklą',
+        },
+      ]}
+    />
+  );
+}
+
+function PersonalCodeField() {
+  return (
+    <ServiceDetails
+      title=''
+      isWithoutDivider
+      rows={[
+        {
+          label: 'Asmens kodas',
+          value: '39005201234',
+        },
+      ]}
+    />
+  );
+}
+
+function NameField() {
+  return (
+    <ServiceDetails
+      title=''
+      isWithoutDivider
+      rows={[
+        {
+          label: 'Vardas, Pavardė',
+          value: 'Vardenis Pavardenis',
+        },
+      ]}
+    />
+  );
+}
+
+function FormDateField() {
+  return (
+    <ServiceDetails
+      title=''
+      isWithoutDivider
+      textSpacing={{ paddingBottom: '48px' }}
+      rows={[
+        {
+          label: 'Prašymo data',
+          value: '2024-04-06',
+        },
+      ]}
+    />
+  );
+}
+
 function MultiStepServiceForm() {
   const localData = localStorage.getItem('serviceRequestDraft');
   const formData = JSON.parse(localData);
@@ -120,18 +182,7 @@ function MultiStepServiceForm() {
                 type: 'custom',
                 label: 'DocumentTypedOnlyField',
                 required: false,
-                component: () => (
-                  <ServiceDetails
-                    title=''
-                    isWithoutDivider
-                    rows={[
-                      {
-                        label: 'Dokumento tipas',
-                        value: 'Sutikimas naudoti prekinį ženklą',
-                      },
-                    ]}
-                  />
-                ),
+                component: DocumentTypeField,
               },
               {
                 id: 'termDate',
@@ -204,18 +255,7 @@ function MultiStepServiceForm() {
                 type: 'custom',
                 label: 'personalCodeReadOnlyField',
                 required: false,
-                component: () => (
-                  <ServiceDetails
-                    title=''
-                    isWithoutDivider
-                    rows={[
-                      {
-                        label: 'Asmens kodas',
-                        value: '39005201234',
-                      },
-                    ]}
-                  />
-                ),
+                component: PersonalCodeField,
               },
               {
                 id: 'firstLastNameReadOnlyField',
@@ -223,18 +263,7 @@ function MultiStepServiceForm() {
                 type: 'custom',
                 label: 'firstLastNameReadOnlyField',
                 required: false,
-                component: () => (
-                  <ServiceDetails
-                    title=''
-                    isWithoutDivider={true}
-                    rows={[
-                      {
-                        label: 'Vardas, Pavardė',
-                        value: 'Vardenis Pavardenis',
-                      },
-                    ]}
-                  />
-                ),
+                component: NameField,
                 props: {
                   rows: [
                     {
@@ -260,19 +289,7 @@ function MultiStepServiceForm() {
                 type: 'custom',
                 label: 'formDateReadOnlyField',
                 required: false,
-                component: () => (
-                  <ServiceDetails
-                    title=''
-                    isWithoutDivider
-                    textSpacing={{ paddingBottom: '48px' }}
-                    rows={[
-                      {
-                        label: 'Prašymo data',
-                        value: '2024-04-06',
-                      },
-                    ]}
-                  />
-                ),
+                component: FormDateField,
               },
             ],
           },

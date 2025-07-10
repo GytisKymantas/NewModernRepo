@@ -14,7 +14,7 @@ function ServiceFormAccordion({ initialAccordionStateArray, children }: Props) {
 
   return (
     <Container
-      maxWidth={'lg'}
+      maxWidth='lg'
       sx={{
         backgroundColor: { xs: 'grey', md: 'white' },
         pb: { md: 8 },

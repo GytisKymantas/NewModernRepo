@@ -1,11 +1,8 @@
-// @ts-nocheck
-
 import styled from '@emotion/styled';
-import { Box, StepConnector, useMediaQuery } from '@mui/material';
+import { Box, StepConnector } from '@mui/material';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
-import theme from '../../../theme';
 
 const ProgressContainer = styled.div`
   background-color: #ffffff;
@@ -72,17 +69,12 @@ type AccordionState = {
   title: string;
 };
 
-type AccordionControllerState = {
-  [key: string]: AccordionState;
-};
-
 type Props = {
-  steps: AccordionControllerState;
+  steps: AccordionState[];
   isVertical?: boolean;
 };
 
 function ServiceFormContainer({ steps, isVertical }: Props) {
-  const upSm = useMediaQuery(theme.breakpoints.up('sm'));
   const activeStep = steps.findIndex((item) => item.state === 'active') ?? 0;
   const percentage = ((activeStep + 1) / steps.length) * 100;
 
@@ -125,7 +117,7 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
             orientation={isVertical ? 'vertical' : 'horizontal'}
             connector={<StepConnector sx={{ display: 'none' }} />}
           >
-            {Object.values(steps).map((step, stepIndex) => (
+            {steps.map((step, stepIndex) => (
               <Step key={step.title}>
                 <StepLabel
                   StepIconComponent={getStepIcon(step.state)}

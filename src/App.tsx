@@ -12,7 +12,10 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
+import { AuthGuard, CallbackHandler, SilentCallback } from './components/auth';
+import { AuthProvider } from './contexts/AuthContext';
 import './i18n/i18n';
+import Home from './pages/Home';
 import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
 import './styles.css';
 import theme from './theme';
@@ -39,15 +42,35 @@ import theme from './theme';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path='/' element={<MultiStepServiceForm />} />
-      <Route path='form-examples/multi-step-service' element={<MultiStepServiceForm />} />
-      <Route path='form-examples/combined-form' element={<CombinedForm />} />
-      {/* <Route path='/self-service-owned-properties' element={<OwnedProperties />}>
-        <Route
-          path='177c5181-8710-443e-8335-327365835826'
-          element={<OwnedProperties />}
-        />
-      </Route> */}
+      {/* Auth callback routes - these should not be protected */}
+      <Route path='/callback' element={<CallbackHandler />} />
+      <Route path='/silent-callback' element={<SilentCallback />} />
+
+      {/* Protected routes */}
+      <Route
+        path='/'
+        element={
+          <AuthGuard>
+            <Home />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/multi-step-service'
+        element={
+          <AuthGuard>
+            <MultiStepServiceForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/combined-form'
+        element={
+          <AuthGuard>
+            <CombinedForm />
+          </AuthGuard>
+        }
+      />
     </>,
   ),
   { basename: getMFEBaseUrl() },
@@ -56,12 +79,14 @@ const router = createBrowserRouter(
 export default function App() {
   return (
     <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={lt}>
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </LocalizationProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={lt}>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </LocalizationProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </React.StrictMode>
   );
 }
