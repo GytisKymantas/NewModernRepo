@@ -13,6 +13,8 @@ import {
 
 import FileDropzone from '../Service copy/components/FileDropzone';
 import { BodyText } from '../Service copy/components/ServiceDetailsForm';
+import ObjectIdentifierSearchModal from './components/ObjectIdentifierSearchModal';
+import SearchableField from './components/SearchableField';
 import useFormTranslation from './hooks/useFormTranslation';
 import {
   AlertFieldConfig,
@@ -23,6 +25,7 @@ import {
   FileFieldConfig,
   NumberStepperConfig,
   RadioFieldConfig,
+  SearchFieldConfig,
   SelectFieldConfig,
   SubgroupRendererProps,
   TextFieldConfig,
@@ -237,6 +240,23 @@ function FieldRenderer({
             control={control}
             errors={fieldError}
             clearable={dateField.clearable}
+          />
+        );
+      }
+
+      case 'search': {
+        const customField = field as SearchFieldConfig;
+
+        return (
+          <SearchableField
+            {...customField.props}
+            control={control}
+            id='searchable'
+            label='Teikėjo adresas'
+            name='searchable'
+            rules={{ required: true }}
+            ModalComponent={ObjectIdentifierSearchModal}
+            errors={undefined}
           />
         );
       }

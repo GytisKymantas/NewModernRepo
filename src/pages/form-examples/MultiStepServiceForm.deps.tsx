@@ -5,13 +5,22 @@ import PricingTable from '@/components/OwnedProperties/PricingTable';
 import ServiceDetails from '@/components/OwnedProperties/ServiceDetails';
 import DownloadIconLabel from '@/components/Signature/components/DownloadIconLabel';
 
-function ServiceDetail({ title, rows, sxStyle, isWithoutDivider }: CustomFieldProps) {
+function ServiceDetail({
+  title,
+  rows,
+  sxStyle,
+  withHeading,
+  textSpacing,
+  isWithoutDivider,
+}: CustomFieldProps) {
   return (
     <ServiceDetails
       title={title}
       rows={rows}
-      isWithoutDivider={isWithoutDivider}
       sxStyle={sxStyle}
+      withHeading={withHeading}
+      textSpacing={textSpacing}
+      isWithoutDivider={isWithoutDivider}
     />
   );
 }

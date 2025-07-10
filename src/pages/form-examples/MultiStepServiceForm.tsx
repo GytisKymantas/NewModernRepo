@@ -328,6 +328,7 @@ function MultiStepServiceForm() {
                 component: ServiceDetail,
                 props: {
                   title: 'Prašymo objektas',
+                  withHeading: true,
                   rows: [
                     {
                       label: 'Laikinai įrašomas pavadinimas',
@@ -346,6 +347,7 @@ function MultiStepServiceForm() {
                 props: {
                   sxStyle: { pt: '34.5px' },
                   title: 'Prašymą teikia',
+                  withHeading: true,
                   rows: [
                     {
                       label: 'Asmens Kodas',
@@ -368,6 +370,7 @@ function MultiStepServiceForm() {
                 props: {
                   sxStyle: { pt: '34.5px' },
                   title: 'Prašymo būsena',
+                  withHeading: true,
                   rows: [
                     {
                       label: 'Būsena',
@@ -385,6 +388,7 @@ function MultiStepServiceForm() {
                 component: ServiceDetail,
                 props: {
                   sxStyle: { pt: '34.5px' },
+                  withHeading: true,
                   title: 'Teikiami Dokumentai',
                 },
               },
@@ -408,7 +412,9 @@ function MultiStepServiceForm() {
                 label: 'servicePrice',
                 component: ServiceDetail,
                 props: {
+                  withHeading: true,
                   title: 'Paslaugos kaina',
+                  widthHeading: true,
                 },
               },
               {
