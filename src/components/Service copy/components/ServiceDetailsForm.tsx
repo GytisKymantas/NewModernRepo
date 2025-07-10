@@ -59,7 +59,7 @@ const ListItem = styled.li`
   color: #1f2733;
 `;
 
-const BodyText = styled.p`
+export const BodyText = styled.p`
   color: #4a5361;
   font-family: 'Public Sans', sans-serif;
   font-size: 14px;

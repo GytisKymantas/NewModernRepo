@@ -7,12 +7,11 @@ type Props = {
   breadcrumbsProps: React.ComponentProps<typeof RcSesBreadcrumbs>;
   children?: React.ReactNode;
   title: string;
-  className?: string;
 };
-function ServiceHeader({ breadcrumbsProps, children, title, className }: Props) {
+function ServiceHeader({ breadcrumbsProps, children, title }: Props) {
   // Theme debug removed for production
   return (
-    <Box sx={{ backgroundColor: theme.palette.primary['50'] }} className={className}>
+    <Box sx={{ backgroundColor: '#F3FBFE' }}>
       <Container
         sx={{
           pb: { xs: '2rem', md: '2.25rem' },
@@ -21,6 +20,7 @@ function ServiceHeader({ breadcrumbsProps, children, title, className }: Props) 
           display: 'flex',
           justifyContent: 'center',
           flexDirection: 'column',
+          backgroundColor: '#F3FBFE ',
         }}
       >
         <Box sx={{ mb: { xs: '.875rem', md: '.375rem' } }}>
@@ -31,8 +31,8 @@ function ServiceHeader({ breadcrumbsProps, children, title, className }: Props) 
           variant='h1'
           sx={{
             lineHeight: { xs: '2rem', md: '2.125rem' },
-            fontSize: { xs: '1.5rem' },
-            fontWeight: 600,
+            fontSize: { xs: '24px', md: '36px' },
+            fontWeight: 500,
             letterSpacing: '-.24px',
           }}
         >

@@ -1,5 +1,6 @@
 import { Divider, Typography } from '@mui/material';
 import { Box, SxProps } from '@mui/system';
+import { RcSesFormControlWrapper } from '@registrucentras/rc-ses-react-components';
 import { HeaderMain } from '../Service copy/components/ServiceDetailsForm';
 
 type Row = {
@@ -11,39 +12,41 @@ type ServiceDetailsProps = {
   title: string;
   rows: Row[];
   sxStyle?: SxProps;
+  isWithoutDivider?: boolean;
+  withHeading?: boolean;
+  textSpacing?: SxProps;
 };
 
-function ServiceDetails({ title, rows, sxStyle }: ServiceDetailsProps) {
+function ServiceDetails({
+  title,
+  rows,
+  sxStyle,
+  isWithoutDivider,
+  withHeading,
+  textSpacing,
+}: ServiceDetailsProps) {
   return (
     <>
-      <Box sx={sxStyle}>
-        <HeaderMain>{title}</HeaderMain>
-        <Divider />
-      </Box>
+      {withHeading && (
+        <Box sx={sxStyle}>
+          <HeaderMain>{title}</HeaderMain>
+          {!isWithoutDivider && <Divider />}
+        </Box>
+      )}
       {rows &&
-        rows.map(({ label, value }, i) => (
-          <Box
-            key={i}
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              gap: { xs: 2 },
-              mb: i === rows.length - 1 ? 0 : '20px',
-            }}
-          >
-            <Typography
-              sx={{
-                maxWidth: '243px',
-                width: '100%',
-                textAlign: { xs: 'left', sm: 'right' },
-                mr: '24px',
-              }}
-            >
-              {label}
-            </Typography>
-            <Typography sx={{ maxWidth: '525px', width: '100%', textAlign: 'left' }}>
-              {value}
-            </Typography>
+        rows.map(({ label, value }) => (
+          <Box sx={textSpacing} key={`${label}-${value}`}>
+            <RcSesFormControlWrapper label={label}>
+              <Typography
+                sx={{
+                  maxWidth: '100%',
+                  width: '100%',
+                  textAlign: 'left',
+                }}
+              >
+                {value}
+              </Typography>
+            </RcSesFormControlWrapper>
           </Box>
         ))}
     </>

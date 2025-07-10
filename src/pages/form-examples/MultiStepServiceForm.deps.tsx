@@ -5,8 +5,15 @@ import PricingTable from '@/components/OwnedProperties/PricingTable';
 import ServiceDetails from '@/components/OwnedProperties/ServiceDetails';
 import DownloadIconLabel from '@/components/Signature/components/DownloadIconLabel';
 
-function ServiceDetail({ title, rows, sxStyle }: CustomFieldProps) {
-  return <ServiceDetails title={title} rows={rows} sxStyle={sxStyle} />;
+function ServiceDetail({ title, rows, sxStyle, isWithoutDivider }: CustomFieldProps) {
+  return (
+    <ServiceDetails
+      title={title}
+      rows={rows}
+      isWithoutDivider={isWithoutDivider}
+      sxStyle={sxStyle}
+    />
+  );
 }
 function FormTableData({ sxStyle, cols, rows }: CustomFieldProps) {
   return <FormTable sxStyle={sxStyle} rows={rows} cols={cols} />;

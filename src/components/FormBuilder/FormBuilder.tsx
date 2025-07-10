@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMediaQuery } from '@mui/material';
-import {
-  RcSesServicePage,
-} from '@registrucentras/rc-ses-react-components';
+import { RcSesServicePage } from '@registrucentras/rc-ses-react-components';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
 import '../../i18n/i18n';
 import theme from '../../theme';
+import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
+import ServiceHeader from '../Service copy/components/ServiceHeader';
+import useAccordionController from '../hooks/useAccordionController';
 import FormActions from './components/FormActions';
 import FormContent from './components/FormContent';
-import FormHeader from './components/FormHeader';
 import useFormTranslation from './hooks/useFormTranslation';
 import { FormBuilderProps } from './types';
 import { formatFormDataForSubmission, getDefaultValues } from './utils';
 import { createFormValidation } from './validation';
-import useAccordionController from '../hooks/useAccordionController';
-import ServiceFormAccordion from '../Service copy/components/ServiceFormAccordion';
 
 function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -165,33 +163,32 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     [config.steps, currentStep],
   );
 
-  const initialAccordionStateArray = useMemo(() => 
-  config.steps.map((step, index) => {
-    let state: 'completed' | 'active' | 'pending';
-    
-    if (index < currentStep ) {
-      state = 'completed';
-    } else if (index === currentStep) {
-      state = 'active';
-    } else {
-      state = 'pending';
-    }
+  const initialAccordionStateArray = useMemo(
+    () =>
+      config.steps.map((step, index) => {
+        let state: 'completed' | 'active' | 'pending';
 
-    return {
-      id: step.id, 
-      expanded: index === currentStep,
-      state,
-      title: step.title,
-    };
-  }),
-[config.steps, currentStep]);
+        if (index < currentStep) {
+          state = 'completed';
+        } else if (index === currentStep) {
+          state = 'active';
+        } else {
+          state = 'pending';
+        }
 
+        return {
+          id: step.id,
+          expanded: index === currentStep,
+          state,
+          title: step.title,
+        };
+      }),
+    [config.steps, currentStep],
+  );
 
- const accordionController = useAccordionController({
+  const accordionController = useAccordionController({
     initialState: initialAccordionState,
   });
-
-
 
   // Load draft data on component mount
   useEffect(() => {
@@ -417,10 +414,23 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   );
 
   return (
-    <RcSesServicePage className={className}>
-      <FormHeader title={config.title} description={config.description} />
+    <RcSesServicePage>
+      {/* <FormHeader title={config.title} description={config.description} /> */}
 
-      <ServiceFormAccordion initialAccordionStateArray={initialAccordionStateArray} >
+      <ServiceHeader
+        breadcrumbsProps={{
+          path: [
+            { label: 'Savitarna', path: '/' },
+            {
+              label: config.title,
+              path: '/',
+            },
+          ],
+        }}
+        title={config.description}
+      />
+
+      <ServiceFormAccordion initialAccordionStateArray={initialAccordionStateArray}>
         <FormContent
           step={currentStepConfig}
           control={control}

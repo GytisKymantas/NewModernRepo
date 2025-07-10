@@ -4,7 +4,6 @@ import {
   RcSesAlert,
   RcSesCheckbox,
   RcSesDatepicker,
-  RcSesFileDropzone,
   RcSesNumberStepper,
   RcSesPhoneInput,
   RcSesRadioButtonGroup,
@@ -12,6 +11,8 @@ import {
   RcSesTextField,
 } from '@registrucentras/rc-ses-react-components';
 
+import FileDropzone from '../Service copy/components/FileDropzone';
+import { BodyText } from '../Service copy/components/ServiceDetailsForm';
 import useFormTranslation from './hooks/useFormTranslation';
 import {
   AlertFieldConfig,
@@ -93,6 +94,7 @@ function FieldRenderer({
     required: field.required,
     disabled: field.disabled,
     slotProps: field.slotProps,
+    description: field.description,
   };
 
   // Get field error directly - RcSes components expect the error object directly
@@ -100,9 +102,20 @@ function FieldRenderer({
 
   const renderField = () => {
     switch (field.type) {
-      case 'text':
       case 'email':
       case 'password': {
+        const textField = field as TextFieldConfig;
+        return (
+          <RcSesTextField
+            {...commonProps}
+            type={field.type}
+            placeholder={translateText(textField.placeholder)}
+            errors={fieldError}
+            {...register(field.name)}
+          />
+        );
+      }
+      case 'text': {
         const textField = field as TextFieldConfig;
         return (
           <RcSesTextField
@@ -166,12 +179,18 @@ function FieldRenderer({
             errors={fieldError}
             options={radioField.options}
             hideNativeRadio={radioField.hideNativeRadio}
+            label={
+              <>
+                <strong>{field.label}</strong>
+                <br />
+                <BodyText>
+                  {field.description ? translateText(field.description) : undefined}
+                </BodyText>
+              </>
+            }
             slotProps={{
               ...field.slotProps,
               wrapper: {
-                description: field.description
-                  ? translateText(field.description)
-                  : undefined,
                 ...field.slotProps?.wrapper,
               },
             }}
@@ -187,12 +206,18 @@ function FieldRenderer({
             control={control}
             errors={fieldError}
             variant={checkboxField.variant}
+            label={
+              <>
+                <strong>{checkboxField.label}</strong>
+                <br />
+                <BodyText>
+                  {field.description ? translateText(field.description) : undefined}
+                </BodyText>
+              </>
+            }
             slotProps={{
               ...field.slotProps,
               wrapper: {
-                description: field.description
-                  ? translateText(field.description)
-                  : undefined,
                 ...field.slotProps?.wrapper,
               },
             }}
@@ -251,7 +276,7 @@ function FieldRenderer({
         }
 
         return (
-          <RcSesFileDropzone
+          <FileDropzone
             {...commonProps}
             control={control}
             errors={fieldError}

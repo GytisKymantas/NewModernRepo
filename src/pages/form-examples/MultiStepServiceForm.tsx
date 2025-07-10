@@ -2,8 +2,10 @@ import InfoIcon from '@/assets/icons/InfoIcon';
 import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
+import ServiceDetails from '@/components/OwnedProperties/ServiceDetails';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
+import { Box } from '@mui/material';
 import {
   FormTableData,
   PricingTableData,
@@ -26,28 +28,19 @@ function MultiStepServiceForm() {
   const config: FormBuilderConfig = {
     id: 'service-request-form',
     title: 'Service Application Request',
-    description: 'Complete this multi-step form to submit your service application',
+    description: 'Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą',
     multiStep: true,
     steps: [
       {
         id: 'service-details',
-        title: 'Paslaugos užsakymas',
-        description: 'Please provide service request details',
+        title: 'Prašymo duomenys',
+        description: '',
         subgroups: [
           {
             id: 'request-object',
             title: 'Prašymo objektas',
             variant: 'default',
             fields: [
-              {
-                id: 'customField',
-                name: 'customField',
-                type: 'custom',
-                label: 'Custom Field',
-                required: false,
-                placeholder: 'Pasirinkite teisinę formą',
-                component: CustomField,
-              },
               {
                 id: 'purpose',
                 name: 'purpose',
@@ -76,7 +69,7 @@ function MultiStepServiceForm() {
                 type: 'alert',
                 label: 'infoAlert',
                 message: (
-                  <div>
+                  <Box>
                     <strong>Reikalavimai pavadinimui</strong>
                     <ul>
                       <li>
@@ -94,12 +87,26 @@ function MultiStepServiceForm() {
                         pavadinimas ir žodis &bdquo;filialas&ldquo;.
                       </li>
                     </ul>
-                  </div>
+                  </Box>
                 ),
                 severity: 'info',
-                icon: <InfoIcon />,
+                icon: (
+                  <Box sx={{ marginBottom: 'auto' }} id='boblazar'>
+                    <InfoIcon />
+                  </Box>
+                ),
               },
-              // TODO: Add info alert about naming requirements here
+              {
+                id: 'agreement',
+                name: 'agreement',
+                type: 'checkbox',
+                label: 'Sutikimas naudoti prekinį ženklą',
+                required: false,
+                variant: 'flat',
+                description:
+                  'Pažymėkite, jei naudojate prekinio ženklo pavadinimą ar jo dalį',
+                children: 'Pridedamas',
+              },
             ],
           },
           {
@@ -107,6 +114,25 @@ function MultiStepServiceForm() {
             title: '',
             variant: 'bordered',
             fields: [
+              {
+                id: 'DocumentTypedOnlyField',
+                name: 'DocumentTypedOnlyField',
+                type: 'custom',
+                label: 'DocumentTypedOnlyField',
+                required: false,
+                component: () => (
+                  <ServiceDetails
+                    title=''
+                    isWithoutDivider
+                    rows={[
+                      {
+                        label: 'Dokumento tipas',
+                        value: 'Sutikimas naudoti prekinį ženklą',
+                      },
+                    ]}
+                  />
+                ),
+              },
               {
                 id: 'termDate',
                 name: 'termDate',
@@ -128,15 +154,15 @@ function MultiStepServiceForm() {
                 id: 'fileUpload',
                 name: 'fileUpload',
                 type: 'file',
-                label: 'Failo įkėlimas',
+                label: 'Dokumentas',
                 required: true,
                 accept: '.doc,.docx,.pdf,.pages',
                 maxSize: 5 * 1024 * 1024, // 5MB
                 description: 'Maksimalus failo dydis: 5MB',
                 slotProps: {
-                  wrapper: {
-                    labelSubtitle: 'Tinkami formatai: .doc, .xdoc, .pdf, .pages',
-                  },
+                  // wrapper: {
+                  //   labelSubtitle: 'Tinkami formatai: .doc, .xdoc, .pdf, .pages',
+                  // },
                 },
               },
             ],
@@ -146,17 +172,6 @@ function MultiStepServiceForm() {
             title: '',
             variant: 'default',
             fields: [
-              {
-                id: 'agreement',
-                name: 'agreement',
-                type: 'checkbox',
-                label: 'Sutikimas naudoti prekinį ženklą',
-                required: false,
-                variant: 'flat',
-                description:
-                  'Pažymėkite, jei naudojate prekinio ženklo pavadinimą ar jo dalį',
-                children: 'Pridedamas',
-              },
               {
                 id: 'radioSelection',
                 name: 'radioSelection',
@@ -184,16 +199,50 @@ function MultiStepServiceForm() {
             variant: 'default',
             fields: [
               {
-                ...personalCodeField,
-                defaultValue: '39005201234',
+                id: 'personalCodeReadOnlyField',
+                name: 'personalCodeReadOnlyField',
+                type: 'custom',
+                label: 'personalCodeReadOnlyField',
+                required: false,
+                component: () => (
+                  <ServiceDetails
+                    title=''
+                    isWithoutDivider
+                    rows={[
+                      {
+                        label: 'Asmens kodas',
+                        value: '39005201234',
+                      },
+                    ]}
+                  />
+                ),
               },
               {
-                id: 'fullName',
-                name: 'fullName',
-                type: 'text',
-                label: 'Vardas, Pavardė',
-                required: true,
-                defaultValue: 'Vardenis Pavardenis',
+                id: 'firstLastNameReadOnlyField',
+                name: 'firstLastNameReadOnlyField',
+                type: 'custom',
+                label: 'firstLastNameReadOnlyField',
+                required: false,
+                component: () => (
+                  <ServiceDetails
+                    title=''
+                    isWithoutDivider={true}
+                    rows={[
+                      {
+                        label: 'Vardas, Pavardė',
+                        value: 'Vardenis Pavardenis',
+                      },
+                    ]}
+                  />
+                ),
+                props: {
+                  rows: [
+                    {
+                      label: 'Vardas, Pavardė',
+                      value: 'Vardenis Pavardenis',
+                    },
+                  ],
+                },
               },
               {
                 ...phoneField,
@@ -204,32 +253,26 @@ function MultiStepServiceForm() {
                 ...emailField,
                 defaultValue: 'vardenis.pavardenis@gmail.com',
               },
+
               {
-                id: 'formDate',
-                name: 'formDate',
-                type: 'date',
-                label: 'Prašymo data',
-                required: true,
-                defaultValue: '2024-04-06',
-              },
-              // Example field with custom error messages
-              {
-                id: 'customMessageExample',
-                name: 'customMessageExample',
-                type: 'text',
-                label: 'Custom Validation Example',
-                required: true,
-                placeholder: 'Enter at least 5 characters',
-                validation: {
-                  minLength: 5,
-                  maxLength: 20,
-                },
-                customErrorMessages: {
-                  required: 'This custom field is absolutely required!',
-                  minLength:
-                    'You need at least {{min}} characters for this special field',
-                  maxLength: 'Please keep it under {{max}} characters',
-                },
+                id: 'formDateReadOnlyField',
+                name: 'formDateReadOnlyField',
+                type: 'custom',
+                label: 'formDateReadOnlyField',
+                required: false,
+                component: () => (
+                  <ServiceDetails
+                    title=''
+                    isWithoutDivider
+                    textSpacing={{ paddingBottom: '48px' }}
+                    rows={[
+                      {
+                        label: 'Prašymo data',
+                        value: '2024-04-06',
+                      },
+                    ]}
+                  />
+                ),
               },
             ],
           },
