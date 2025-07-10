@@ -1,0 +1,198 @@
+stages:
+  - build
+  - test
+  - security
+  - package
+  - deploy
+
+variables:
+  # Docker image settings
+  DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE
+  DOCKER_TAG: $CI_COMMIT_SHA
+  DOCKER_LATEST_TAG: latest
+
+  # Docker buildkit for improved caching
+  DOCKER_BUILDKIT: 1
+  DOCKER_DRIVER: overlay2
+
+  # Node.js version for consistency
+  NODE_VERSION: '18.14.2'
+
+# Cache node_modules for faster builds
+.node_cache: &node_cache
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+    policy: pull-push
+
+# Build stage - Install dependencies and run tests
+build:
+  stage: build
+  image: node:${NODE_VERSION}-alpine
+  <<: *node_cache
+  script:
+    - echo "Installing dependencies..."
+    - npm ci --silent
+    - echo "Running linting..."
+    - npm run lint
+    - echo "Building application..."
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  only:
+    - merge_requests
+    - main
+    - staging
+    - develop
+
+# Test stage
+test:
+  stage: test
+  image: node:${NODE_VERSION}-alpine
+  <<: *node_cache
+  script:
+    - npm ci --silent
+    - npm run test
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+  only:
+    - merge_requests
+    - main
+    - staging
+    - develop
+
+# Security scan
+security:
+  stage: security
+  image: node:${NODE_VERSION}-alpine
+  script:
+    - npm audit --audit-level moderate
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - staging
+    - develop
+
+# Docker build stage
+docker-build:
+  stage: package
+  image: docker:24-dind
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: '/certs'
+  before_script:
+    # Login to GitLab Container Registry
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    # Enable Docker buildx for advanced features
+    - docker buildx create --use --driver docker-container
+  script:
+    - echo "Building Docker image..."
+    # Build with cache from previous builds
+    - |
+      docker buildx build \
+        --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:cache \
+        --cache-to type=registry,ref=$CI_REGISTRY_IMAGE:cache,mode=max \
+        --tag $DOCKER_IMAGE_NAME:$DOCKER_TAG \
+        --tag $DOCKER_IMAGE_NAME:$DOCKER_LATEST_TAG \
+        --push \
+        --platform linux/amd64 \
+        .
+    - echo "Docker image pushed to $DOCKER_IMAGE_NAME:$DOCKER_TAG"
+  after_script:
+    - docker logout $CI_REGISTRY
+  only:
+    - main
+    - staging
+    - develop
+
+# Docker build for merge requests (no push)
+docker-build-mr:
+  stage: package
+  image: docker:24-dind
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: '/certs'
+  before_script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker buildx create --use --driver docker-container
+  script:
+    - echo "Building Docker image for merge request (no push)..."
+    - |
+      docker buildx build \
+        --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:cache \
+        --tag $DOCKER_IMAGE_NAME:mr-$CI_MERGE_REQUEST_IID \
+        --platform linux/amd64 \
+        .
+    - echo "Docker image built successfully for MR"
+  after_script:
+    - docker logout $CI_REGISTRY
+  only:
+    - merge_requests
+
+# Deploy to staging
+deploy-staging:
+  stage: deploy
+  image: alpine:latest
+  variables:
+    DEPLOY_ENV: staging
+  before_script:
+    - apk add --no-cache curl
+  script:
+    - echo "Deploying to staging environment..."
+    - echo "Image: $DOCKER_IMAGE_NAME:$DOCKER_TAG"
+    # Add your deployment script here
+    # Example: kubectl, docker-compose, or API calls to your deployment system
+    - echo "Deployment completed to staging"
+  environment:
+    name: staging
+    url: https://staging.your-domain.com # Update with your staging URL
+  only:
+    - staging
+  when: manual
+
+# Deploy to production
+deploy-production:
+  stage: deploy
+  image: alpine:latest
+  variables:
+    DEPLOY_ENV: production
+  before_script:
+    - apk add --no-cache curl
+  script:
+    - echo "Deploying to production environment..."
+    - echo "Image: $DOCKER_IMAGE_NAME:$DOCKER_TAG"
+    # Add your deployment script here
+    # Example: kubectl, docker-compose, or API calls to your deployment system
+    - echo "Deployment completed to production"
+  environment:
+    name: production
+    url: https://your-domain.com # Update with your production URL
+  only:
+    - main
+  when: manual
+
+# Clean up old container registry images (optional)
+cleanup:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - echo "Cleaning up old images..."
+    # This would require additional setup with GitLab API
+    # - cleanup-script.sh
+  only:
+    - schedules
+  when: manual
