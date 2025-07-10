@@ -153,13 +153,12 @@ deploy-staging:
     - apk add --no-cache curl
   script:
     - echo "Deploying to staging environment..."
-    - echo "Image: $DOCKER_IMAGE_NAME:$DOCKER_TAG"
-    # Add your deployment script here
-    # Example: kubectl, docker-compose, or API calls to your deployment system
+    - echo "Image:$DOCKER_IMAGE_NAME:$DOCKER_TAG"
+    - echo "Add your deployment script here"
     - echo "Deployment completed to staging"
   environment:
     name: staging
-    url: https://staging.your-domain.com # Update with your staging URL
+    url: https://staging.your-domain.com
   only:
     - staging
   when: manual
@@ -174,13 +173,12 @@ deploy-production:
     - apk add --no-cache curl
   script:
     - echo "Deploying to production environment..."
-    - echo "Image: $DOCKER_IMAGE_NAME:$DOCKER_TAG"
-    # Add your deployment script here
-    # Example: kubectl, docker-compose, or API calls to your deployment system
+    - echo "Image:$DOCKER_IMAGE_NAME:$DOCKER_TAG"
+    - echo "Add your deployment script here"
     - echo "Deployment completed to production"
   environment:
     name: production
-    url: https://your-domain.com # Update with your production URL
+    url: https://your-domain.com
   only:
     - main
   when: manual
@@ -191,8 +189,7 @@ cleanup:
   image: alpine:latest
   script:
     - echo "Cleaning up old images..."
-    # This would require additional setup with GitLab API
-    # - cleanup-script.sh
+    - echo "This would require additional setup with GitLab API"
   only:
     - schedules
   when: manual
