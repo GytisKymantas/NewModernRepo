@@ -11,6 +11,7 @@ type Props = {
 
 function ServiceFormAccordion({ initialAccordionStateArray, children }: Props) {
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
+  const upMd = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
     <Container
@@ -30,14 +31,14 @@ function ServiceFormAccordion({ initialAccordionStateArray, children }: Props) {
           columnGap: 7.5,
           flexWrap: 'nowrap',
           justifyContent: 'center',
-          flexDirection: upSm ? 'row' : 'column',
+          flexDirection: upMd ? 'row' : 'column',
         }}
       >
         <Grid
           item
           sx={{
             display: 'block',
-            flex: upSm ? '0 0 270px' : '0 0 50px',
+            flex: upMd ? '0 0 270px' : '0 0 50px',
           }}
         >
           <ServiceFormContainer steps={initialAccordionStateArray} isVertical={upSm} />

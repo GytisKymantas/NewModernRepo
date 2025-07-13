@@ -5,7 +5,8 @@ import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import ServiceDetails from '@/components/OwnedProperties/ServiceDetails';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import toast, { Toaster } from 'react-hot-toast';
 import {
   FormTableData,
   PricingTableData,
@@ -89,7 +90,7 @@ function MultiStepServiceForm() {
 
   const config: FormBuilderConfig = {
     id: 'service-request-form',
-    title: 'Service Application Request',
+    title: 'Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą',
     description: 'Prašymas laikinai įrašyti pavadinimą į juridinių asmenų registrą',
     multiStep: true,
     steps: [
@@ -108,7 +109,6 @@ function MultiStepServiceForm() {
                 name: 'purpose',
                 type: 'select',
                 label: 'Juridinio asmens teisinė forma',
-                required: true,
                 placeholder: 'Pasirinkite teisinę formą',
                 defaultValue: '',
                 options: [
@@ -132,7 +132,11 @@ function MultiStepServiceForm() {
                 label: 'infoAlert',
                 message: (
                   <Box>
-                    <strong>Reikalavimai pavadinimui</strong>
+                    <Typography
+                      sx={{ fontWeight: '600', paddingTop: { xs: '4px', md: '0' } }}
+                    >
+                      Reikalavimai pavadinimui
+                    </Typography>
                     <ul>
                       <li>
                         pavadinime turi būti teisinę formą nusakantys žodžiai arba jų
@@ -188,7 +192,7 @@ function MultiStepServiceForm() {
                 id: 'termDate',
                 name: 'termDate',
                 type: 'date',
-                label: 'Terminas',
+                label: 'Data',
                 required: true,
                 clearable: true,
                 defaultValue: '2024-04-06',
@@ -448,14 +452,30 @@ function MultiStepServiceForm() {
     ],
     onSubmit: async (data) => {
       console.log('Service request submitted:', data);
-      alert('Service request submitted successfully!');
+
+      toast.success('Dokumentas sėkmingai pasirašytas.', {
+        style: {
+          border: '1px solid #008561',
+          background: '#008561',
+          padding: '16px',
+          color: 'white',
+          width: '350px',
+          whiteSpace: 'nowrap',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: '#008561',
+        },
+      });
     },
     onInvalidSubmit: async (errors, data) => {
       console.log('Invalid submit:', errors, data);
+      toast.error('Invalid submit.');
     },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
       console.log('Draft saved:', data);
+      toast.success('Draft saved successfully!');
     },
     onStepChange: (step, data) => {
       console.log(`Moved to step ${step}:`, data);
@@ -465,6 +485,7 @@ function MultiStepServiceForm() {
     onDiscard: async () => {
       localStorage.removeItem('serviceRequestDraft');
       console.log('Draft discarded');
+      toast.error('Draft discarded.');
     },
     onLoadDraft: async () => {
       const draft = localStorage.getItem('serviceRequestDraft');
@@ -472,7 +493,12 @@ function MultiStepServiceForm() {
     },
   };
 
-  return <FormBuilder config={config} />;
+  return (
+    <>
+      <Toaster />
+      <FormBuilder config={config} />;
+    </>
+  );
 }
 
 export default MultiStepServiceForm;

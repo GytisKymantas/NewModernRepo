@@ -86,10 +86,11 @@ export default function FormActions({
         sx={{
           backgroundColor: theme.palette.primary['50'],
           borderColor: theme.palette.primary['300'],
-          borderRadius: { xs: 0, md: '.375rem' },
-          borderLeftWidth: { xs: 0, md: '1px' },
-          borderRightWidth: { xs: 0, md: '1px' },
+          borderRadius: { xs: 0, sm: '.375rem' },
+          borderLeftWidth: { xs: 0, sm: '1px' },
+          borderRightWidth: { xs: 0, sm: '1px' },
           px: { xs: 2, md: 4 },
+          mx: { xs: 0, sm: '2rem', md: 0 },
           py: 4,
         }}
       >

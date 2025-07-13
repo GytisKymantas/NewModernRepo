@@ -3,6 +3,7 @@ import { Box, Button, DialogActions } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
+import FileView from './FileView';
 
 // Correct form type
 type FormModel = {
@@ -52,6 +53,9 @@ function ViewItemModal({ open, onSubmit, onClose }: Props) {
     onClose();
   };
 
+  const draft = localStorage.getItem('serviceRequestDraft');
+  const parsedDraft = JSON.parse(draft);
+  const fileUploadPath = parsedDraft.fileUpload[0].path;
   return (
     <Dialog onClose={onClose} open={open} maxWidth='md'>
       <DialogContent>
@@ -60,6 +64,7 @@ function ViewItemModal({ open, onSubmit, onClose }: Props) {
             <Box>
               <h2 style={{ margin: '0' }}>Dokumento peržiūra</h2>
               <p style={{ margin: '0' }}>Dokumento pavadinimas.pdf</p>
+              <FileView fileUploadPath={fileUploadPath} />
             </Box>
 
             <Box sx={{ cursor: 'pointer' }} onClick={onClose}>

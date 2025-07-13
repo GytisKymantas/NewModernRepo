@@ -1,9 +1,17 @@
-import { useForm } from 'react-hook-form';
-
+import styled from '@emotion/styled';
+import { Box, Divider } from '@mui/material';
 import {
-  RcSesNumberStepper,
+  RcSesAlert,
+  RcSesCheckbox,
+  RcSesDatepicker,
+  RcSesFileDropzone,
+  RcSesPhoneInput,
+  RcSesRadioButtonGroup,
   RcSesSelect,
+  RcSesTextField,
 } from '@registrucentras/rc-ses-react-components';
+import { useForm } from 'react-hook-form';
+import InfoIcon from '../../../assets/icons/InfoIcon';
 
 type FormModel = {
   purpose: string;
@@ -12,13 +20,107 @@ type FormModel = {
   deadline: string;
   address: string;
   numberOfCopies: number;
+  companyName: string;
+  termDate: string;
+  docNumber: string;
+  phoneNo: string;
+  radioSelection1: string;
+  fileUpload: string;
+  fileUpload2: string;
+  fileUpload3: string;
+  personalCode: string;
+  fullName: string;
+  email: string;
+  formDate: string;
 };
 
-function ServiceDetailsForm() {
+export const HeaderMain = styled.p`
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+`;
+
+export const InfoHeader = styled.p<{ noMargin?: boolean }>`
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f2733;
+  margin: ${({ noMargin }) => (noMargin ? '0' : '0 0 4px 0')};
+`;
+const UnorderedList = styled.ul`
+  max-width: 640px;
+  margin: 0;
+  marginbottom: 4px;
+`;
+
+const ListItem = styled.li`
+  font-size: 15px;
+  font-weight: 400;
+  color: #1f2733;
+`;
+
+export const BodyText = styled.p<{ paddingTop?: string }>`
+  color: #4a5361;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 16px;
+  margin-top: 0;
+  margin-bottom: 2px;
+  padding-top: ${({ paddingTop = '0' }) => paddingTop};
+
+  width: 100%;
+
+  @media (min-width: 600px) {
+    max-width: 248px;
+  }
+`;
+
+export const BodyTextSmall = styled.p`
+  color: #4a5361;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+
+  @media (min-width: 600px) {
+    max-width: 248px;
+  }
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+
+  .MuiFormGroup-root {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-flex-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+`;
+
+const SectionBox = styled.div`
+  border: 1px solid #8e959e;
+  background-color: #f9fafb;
+  padding: 16px;
+  margin-bottom: 24px;
+`;
+
+function ServiceDetailsForm({ className }) {
   const {
     control,
     handleSubmit,
     formState: { errors },
+    register,
+    setValue,
   } = useForm<FormModel>({
     mode: 'all',
     defaultValues: {
@@ -28,18 +130,53 @@ function ServiceDetailsForm() {
       deadline: '',
       address: '',
       numberOfCopies: 0,
+      companyName: '',
+      termDate: '2024-04-06',
+      docNumber: '',
+      phoneNo: '234 15 987',
+      radioSelection1: '',
+      fileUpload: '',
+      fileUpload2: '',
+      fileUpload3: '',
+      personalCode: '39005201234',
+      fullName: 'Vardenis Pavardenis',
+      email: 'vardenis.pavardenis@gmail.com',
+      formDate: '2024-04-06',
     },
   });
 
   return (
-    // eslint-disable-next-line no-console
-    <form onSubmit={handleSubmit(console.log)} noValidate>
+    <StyledForm
+      onSubmit={handleSubmit(() => {})}
+      noValidate
+      id='testid'
+      className={className}
+    >
+      <RcSesAlert severity='error' sx={{ borderRadius: '6px' }}>
+        <InfoHeader noMargin>
+          Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
+          reikiamą informaciją.
+        </InfoHeader>
+      </RcSesAlert>
+
+      <HeaderMain>Prašymo objektas</HeaderMain>
+      <Divider />
+
       <RcSesSelect
         id='purpose'
         name='purpose'
         control={control}
+        placeholder='Pasirinkite teisinę formą'
         rules={{ required: true }}
-        label='Tikslas'
+        sx={{
+          backgroundColor: '#f5f5f5',
+
+          '.MuiInputBase-input::placeholder': {
+            color: '#6B747F',
+            opacity: 1, // Ensure the color isn't faded
+          },
+        }}
+        label='Juridinio asmens teisinė forma'
         errors={errors?.purpose}
         options={[
           { value: 'tikslas1', label: 'Tikslas 1' },
@@ -48,100 +185,253 @@ function ServiceDetailsForm() {
         ]}
       />
 
-      <RcSesSelect
-        id='legalBasis'
-        name='legalBasis'
+      <RcSesTextField
+        id='companyName'
+        label='Laikinai įrašomas pavadinimas'
+        errors={errors?.companyName}
+        placeholder='Įrašykite pavadinimą'
+        required
+        {...register('companyName', { required: true })}
+      />
+
+      <RcSesAlert
+        severity='info'
+        icon={
+          <Box sx={{ marginBottom: '110px' }}>
+            <InfoIcon />
+          </Box>
+        }
+        sx={{ borderRadius: '6px' }}
+      >
+        <InfoHeader>Reikalavimai pavadinimui</InfoHeader>
+        <UnorderedList>
+          <ListItem>
+            pavadinime turi būti teisinę formą nusakantys žodžiai arba jų trumpiniai
+            (pvz., individuali įmonė arba IĮ);
+          </ListItem>
+          <ListItem>simbolinis pavadinimas turi būti išskirtas kabutėmis;</ListItem>
+          <ListItem>
+            pavadinimas neturi būti klaidinantis ar panašus į kitų juridinių asmenų
+            pavadinimus, žinomesnių užsienio įmonių, įstaigų ar organizacijų vardus,
+            prekių ir paslaugų ženklus;
+          </ListItem>
+          <ListItem>
+            filialo pavadinime privalo būti juridinio asmens (steigėjo) pavadinimas ir
+            žodis &bdquo;filialas&ldquo;.
+          </ListItem>
+        </UnorderedList>
+      </RcSesAlert>
+
+      <SectionBox>
+        <RcSesDatepicker
+          id='termDate'
+          name='termDate'
+          clearable
+          control={control}
+          rules={{ required: true }}
+          label='Data'
+          errors={errors?.termDate}
+        />
+
+        <RcSesTextField
+          id='docNumber'
+          label='Dokumento numeris'
+          placeholder='Įrašykite dokumento numerį'
+          required
+          {...register('docNumber', { required: true })}
+          errors={errors?.docNumber}
+        />
+
+        <RcSesFileDropzone
+          id='fileUpload3'
+          name='fileUpload3'
+          control={control}
+          rules={{ required: true }}
+          label='Failo įkėlimas'
+          errors={errors?.fileUpload3}
+          slotProps={{
+            dropzone: {
+              onDrop: (files: File[]) => {
+                setValue('fileUpload3', files[0]?.name || '');
+                files.forEach((file: Blob) => {
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    // File processing logic here
+                  };
+                  reader.readAsArrayBuffer(file);
+                });
+              },
+            },
+            wrapper: {
+              description: 'Maksimalus failo dydis: 5MB',
+              labelSubtitle: 'Tinkami formatai: .doc, .xdoc, .pdf, .pages',
+            },
+          }}
+        />
+      </SectionBox>
+
+      <RcSesCheckbox
+        id='agreement'
+        name='agreement'
         control={control}
-        rules={{ required: true }}
-        label='Teisinis pagrindas'
-        errors={errors?.legalBasis}
+        errors={errors?.agreement}
+        slotProps={{
+          wrapper: {
+            background: 'red',
+          },
+          field: {
+            sx: {
+              padding: '0',
+            },
+            md: {
+              padding: '9px',
+            },
+          },
+          label: {
+            sx: {
+              padding: '0',
+              marginLeft: '1px',
+            },
+          },
+        }}
+        variant='flat'
+        label={
+          <>
+            <BodyText>Sutikimas naudoti prekinį ženklą</BodyText>
+            <BodyTextSmall>
+              Pažymėkite, jei naudojate prekinio ženklo pavadinimą ar jo dalį
+            </BodyTextSmall>
+          </>
+        }
+      >
+        Pridedamas
+      </RcSesCheckbox>
+
+      <Divider />
+
+      <RcSesRadioButtonGroup
+        id='radioSelection1'
+        name='radioSelection1'
+        control={control}
+        label={
+          <>
+            <BodyText>Sutikimas naudoti juridinio asmens pavadinimą</BodyText>
+            <BodyTextSmall>
+              Pažymėkite, jei naudojate Lietuvos ar užsienio juridinio asmens pavadinimą
+              ar jo dalį
+            </BodyTextSmall>
+          </>
+        }
+        errors={errors?.radioSelection1}
+        className='custom-flex-radio-group'
         options={[
-          { value: 'teisinisPagrindas1', label: 'Teisinis pagrindas 1' },
-          { value: 'teisinisPagrindas2', label: 'Teisinis pagrindas 2' },
-          { value: 'teisinisPagrindas3', label: 'Teisinis pagrindas 3' },
+          { label: 'Nepridedamas', value: 'Nepridedamas' },
+          { label: 'Pridedamas Lietuvos juridinio asmens', value: 'JA' },
+          { label: 'Pridedamas užsienio juridinio asmens', value: 'UJA' },
         ]}
       />
 
-      <RcSesSelect
-        id='deadline'
-        name='deadline'
-        control={control}
-        rules={{ required: true }}
-        label='Terminas'
-        errors={errors?.deadline}
-        options={[
-          { value: 'terminas-1', label: 'artimiausiu metu' },
-          { value: 'terminas-2', label: 'iki mėnesio pabaigos' },
-        ]}
+      <HeaderMain>Prašymą teikia</HeaderMain>
+      <Divider />
+
+      <RcSesTextField
+        id='personalCode'
+        label='Asmens kodas'
+        errors={errors?.personalCode}
+        slotProps={{
+          field: {
+            sx: {
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { border: 'none' },
+                '&:hover fieldset': { border: 'none' },
+                '&.Mui-focused fieldset': { border: 'none' },
+              },
+              '& .MuiOutlinedInput-root.Mui-focused': {
+                boxShadow: 'none', // Removes Material UI shadow on focus
+              },
+              '#personalCode': { paddingLeft: '0' },
+
+              '& .MuiOutlinedInput-input': {
+                outline: 'none', // Removes native browser outline inside input
+              },
+            },
+          },
+        }}
+        required
+        {...register('personalCode', { required: true })}
       />
 
-      <RcSesSelect
-        id='address'
-        name='address'
-        control={control}
-        rules={{ required: true }}
-        label='Turto adresas'
-        errors={errors?.address}
-        options={[
-          {
-            value: 'lvivo-g-7',
-            label: 'Lvivo g. 7',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
+      <RcSesTextField
+        id='fullName'
+        label='Vardas, Pavardė'
+        errors={errors?.fullName}
+        required
+        slotProps={{
+          field: {
+            sx: {
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { border: 'none' },
+                '&:hover fieldset': { border: 'none' },
+                '&.Mui-focused fieldset': { border: 'none' },
+              },
+              '& .MuiOutlinedInput-root.Mui-focused': {
+                boxShadow: 'none', // Removes Material UI shadow on focus
+              },
+              '#fullName': { paddingLeft: '0' },
+              '& .MuiOutlinedInput-input': {
+                outline: 'none', // Removes native browser outline inside input
+              },
+            },
           },
-          {
-            value: 'lvivo-g-9',
-            label: 'Lvivo g. 9',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-          {
-            value: 'lvivo-g-11',
-            label: 'Lvivo g. 11',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-          {
-            value: 'lvivo-g-11a',
-            label: 'Lvivo g. 11A',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-          {
-            value: 'lvivo-g-12',
-            label: 'Lvivo g. 12',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-          {
-            value: 'lvivo-g-13',
-            label: 'Lvivo g. 13',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-          {
-            value: 'lvivo-g-13a',
-            label: 'Lvivo g. 13A',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-          {
-            value: 'lvivo-g-13b',
-            label: 'Lvivo g. 13B',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-          {
-            value: 'lvivo-g-1c',
-            label: 'Lvivo g. 13C',
-            description: 'Vilnius, Vilniaus m. sav. 09313',
-          },
-        ]}
+        }}
+        InputProps={{ readOnly: true }}
+        {...register('fullName', { required: true })}
       />
 
-      <RcSesNumberStepper
-        id='numberOfCopies'
-        name='numberOfCopies'
+      <RcSesPhoneInput
         control={control}
-        displayStepperControls
-        errors={errors?.numberOfCopies}
-        label='Egzempliorių skaičius'
-        rules={{ required: false, min: 0, max: 10 }}
-        slotProps={{ wrapper: { labelSubtitle: '(neprivaloma)' } }}
+        id='phoneNo'
+        errors={errors?.phoneNo}
+        label='Telefono nr.'
+        name='phoneNo'
+        rules={{ required: true }}
       />
-    </form>
+
+      <RcSesTextField
+        id='email'
+        label='El. paštas'
+        errors={errors?.email}
+        required
+        {...register('email', { required: true })}
+      />
+
+      <RcSesTextField
+        id='formDate'
+        label='Prašymo data'
+        errors={errors?.formDate}
+        slotProps={{
+          field: {
+            sx: {
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { border: 'none' },
+                '&:hover fieldset': { border: 'none' },
+                '&.Mui-focused fieldset': { border: 'none' },
+              },
+              '& .MuiOutlinedInput-root.Mui-focused': {
+                boxShadow: 'none', // Removes Material UI shadow on focus
+              },
+              '#formDate': { paddingLeft: '0' },
+
+              '& .MuiOutlinedInput-input': {
+                outline: 'none', // Removes native browser outline inside input
+              },
+            },
+          },
+        }}
+        required
+        {...register('formDate', { required: true })}
+      />
+    </StyledForm>
   );
 }
 

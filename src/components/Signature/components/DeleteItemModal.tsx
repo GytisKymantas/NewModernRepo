@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, Button, DialogActions } from '@mui/material';
+import { Box, Button, DialogActions, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
@@ -23,6 +23,8 @@ const StyledFormSection = styled.div`
   background-color: #f9fafb;
   padding: 16px;
   margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
 `;
 
 function DeleteItemModal({ open, onSubmit, onClose }: Props) {
@@ -51,7 +53,7 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
 
   return (
     <Dialog onClose={onClose} open={open} maxWidth='md'>
-      <DialogContent>
+      <DialogContent sx={{ padding: '0 !important' }}>
         <form onSubmit={handleSubmit(handleOnSubmit)} noValidate>
           <StyledFormSection>
             <Box sx={{ margin: '0 auto' }}>
@@ -70,10 +72,29 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
               </svg>
             </Box>
 
-            <h2>Ištrinti dokumentą</h2>
-            <p>Atkreipiame dėmesį, kad jūsų įkeltas dokumentas bus ištrintas.</p>
+            <Typography
+              sx={{
+                fontSize: '24px',
+                fontWeight: '600',
+                letterSpacing: '-0.24px',
+                textAlign: 'center',
+              }}
+            >
+              Ištrinti dokumentą
+            </Typography>
+            <Typography
+              sx={{
+                maxWidth: '398px',
+                lineHeight: '140%',
+                fontSize: '15px',
+                textAlign: 'center',
+                marginTop: '8px',
+              }}
+            >
+              Atkreipiame dėmesį, kad jūsų įkeltas dokumentas bus ištrintas.
+            </Typography>
           </StyledFormSection>
-          <DialogActions>
+          <DialogActions sx={{ justifyContent: 'center' }}>
             <Button type='submit'>Taip</Button>
             <Button color='error' variant='outlined' onClick={onClose}>
               Ne

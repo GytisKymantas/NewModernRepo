@@ -24,6 +24,9 @@ input[type='radio'] {
 input[type='radio' i]:focus-visible {
   outline: none !important;
 }
+.MuiStepLabel-label {
+  margin-top: 0 !important;
+}
 .MuiStepLabel-iconContainer {
   z-index: 3;
 }
@@ -48,7 +51,21 @@ input[type='radio' i]:focus-visible {
 .MuiAccordionDetails-root {
   padding-bottom: 0 !important;
 }
-
+.css-1qxpdxg-MuiPaper-root-MuiAccordion-root.Mui-expanded .MuiAccordionSummary-root {
+  background: none !important;
+}
 .MuiAlert-icon {
   margin-bottom: auto;
+}
+.css-1oxtpma-MuiContainer-root {
+  background-color: white !important;
+}
+
+.MuiAccordionDetails-root {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+#basicInformation-header {
+  background: none !important;
 }

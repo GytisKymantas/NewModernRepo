@@ -7,7 +7,7 @@ import DeleteIcon from '../../../assets/icons/DeleteIcon';
 import DownloadIcon from '../../../assets/icons/DownloadIcon';
 import OverviewIcon from '../../../assets/icons/OverviewIcon';
 import theme from '../../../theme';
-import { InfoHeader } from '../../Service copy/components/ServiceDetailsForm';
+import { InfoHeader } from '../../Service/components/ServiceDetailsForm';
 import PrimaryButton from '../../common/PrimaryButton';
 import DeleteItemModal from './DeleteItemModal';
 import SignaturesSection from './SignaturesSection';
@@ -15,16 +15,15 @@ import ViewItemModal from './ViewObjectModa';
 
 const Wrapper = styled.div`
   background-color: #f9fafb;
-  margin: 0 -2rem;
 `;
 
-const Inner = styled.div`
+const Inner = styled.div<{ isBeingSigned?: boolean }>`
   border-top: 1px solid #eef1f3;
   border-bottom: 1px solid #eef1f3;
   padding: 20px 2rem;
-  background: white;
+  background: ${({ isBeingSigned }) => (isBeingSigned ? '#F9FAFB' : 'white')};
+  margin: 0px -24px 0 -24px;
 `;
-
 const Title = styled.h2`
   color: #1f2733;
   font-size: 16px;
@@ -37,6 +36,7 @@ const Subtitle = styled.p`
   font-family: 'Public Sans';
   font-size: 12px;
   font-weight: 300;
+  margin: 4px 0 0 0;
 `;
 
 const Row = styled.div`
@@ -50,29 +50,19 @@ const Row = styled.div`
   }
 `;
 
-const StatusLabel = styled.div<{ status?: 'inQueue' | 'inProgress' | 'signed' }>`
+const StatusLabel = styled.div<{ status?: string; noMarginRight?: boolean }>`
   color: #1f2733;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
-  background-color: ${({ status }) => {
-    switch (status) {
-      case 'inQueue':
-        return '#F0F2F5';
-      case 'inProgress':
-        return '#dcf4fc';
-      case 'signed':
-        return '#D1FAE7';
-      default:
-        return '#dcf4fc';
-    }
-  }};
+  background-color: ${({ status }) => status || '#F0F2F5'};
   border-radius: 100px;
-  margin-right: 40px;
-  padding: 0 8px;
+  margin-right: ${({ noMarginRight }) => (noMarginRight ? '0' : '40px')};
+
+  padding: 2px 8px;
   display: flex;
   align-items: center;
   height: 24px;
-  min-width: 108px;
+  min-width: 54px;
   justify-content: center;
   letter-spacing: 0.16px;
 `;
@@ -102,17 +92,60 @@ function DocumentInfoSection({ index }: { index: number }) {
   const handleOpenModal = (modal: 'view' | 'delete') => setOpenModal(modal);
   const handleCloseModal = () => setOpenModal(null);
 
+  const getStatusLabelColor = (() => {
+    if (index === 1) {
+      return '#A5F3D3';
+    }
+
+    if (index === 2) {
+      return '#F0F2F5';
+    }
+
+    return '#B9E9FA';
+  })();
+
+  const getStatusLabel = (() => {
+    if (index === 1) {
+      return 'Pasirašytas';
+    }
+
+    if (index === 2) {
+      return 'Pasirašomas';
+    }
+
+    return 'Eilėje';
+  })();
+
+  const handleDownload = () => {
+    const draft = localStorage.getItem('serviceRequestDraft');
+    if (!draft) return;
+
+    try {
+      const parsedDraft = JSON.parse(draft);
+      const filePath = parsedDraft?.fileUpload?.[0]?.path;
+
+      if (filePath) {
+        const link = document.createElement('a');
+        link.href = filePath;
+        link.download = filePath.split('/').pop(); // Gets the filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.error('Error parsing file from localStorage:', error);
+    }
+  };
+
   return (
     <Wrapper>
-      <Inner>
+      <Inner isBeingSigned={index === 1}>
         <Title>{index}. Dokumento tipo pavadinimas</Title>
         <Subtitle>Dokumento pavadinimas.pdf</Subtitle>
 
         <Row>
           <Left>
-            <StatusLabel status={index === 1 ? 'signed' : 'inQueue'}>
-              {index === 1 ? 'Pasirašytas' : 'Pasirašomas'}
-            </StatusLabel>
+            <StatusLabel status={getStatusLabelColor}>{getStatusLabel}</StatusLabel>
 
             <Actions>
               <Box sx={{ cursor: 'pointer' }}>
@@ -127,6 +160,7 @@ function DocumentInfoSection({ index }: { index: number }) {
                       boxShadow: 'none', // Removes shadow on hover
                     },
                   }}
+                  onClick={handleDownload}
                 >
                   Atsisiųsti
                 </PrimaryButton>
@@ -174,7 +208,16 @@ function DocumentInfoSection({ index }: { index: number }) {
           </Left>
         </Row>
 
-        <SignaturesSection />
+        {index !== 0 && (
+          <SignaturesSection
+            signedStatusComponent={
+              <StatusLabel noMarginRight status={index === 1 ? '#B9E9FA' : '#FCE09F'}>
+                {index === 1 ? 'Pasirašė' : 'Laukiama'}
+              </StatusLabel>
+            }
+          />
+        )}
+
         {index === 2 && !upMd && (
           <Box>
             <PrimaryButton sx={{ fontWeight: '600', width: '100%' }}>
@@ -182,20 +225,21 @@ function DocumentInfoSection({ index }: { index: number }) {
             </PrimaryButton>
           </Box>
         )}
+
+        {index === 1 && (
+          <Box sx={{ background: '#FFFFFF' }}>
+            <RcSesAlert severity='warning' sx={{ borderRadius: '6px' }}>
+              <InfoHeader noMargin>
+                Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
+                reikiamą informaciją.
+              </InfoHeader>
+            </RcSesAlert>
+          </Box>
+        )}
       </Inner>
 
-      {index === 2 && (
-        <Box sx={{ padding: '0 24px', background: '#FFFFFF' }}>
-          <RcSesAlert severity='warning' sx={{ borderRadius: '6px' }}>
-            <InfoHeader noMargin>
-              Yra neužpildytų laukų. Prašome peržiūrėti privalomus laukus ir užpildyti
-              reikiamą informaciją.
-            </InfoHeader>
-          </RcSesAlert>
-        </Box>
-      )}
-
       {/* Modals */}
+
       {openModal === 'view' && <ViewItemModal open onClose={handleCloseModal} />}
       {openModal === 'delete' && <DeleteItemModal open onClose={handleCloseModal} />}
     </Wrapper>
