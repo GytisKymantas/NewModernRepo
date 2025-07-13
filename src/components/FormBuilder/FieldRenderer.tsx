@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid, Typography } from '@mui/material';
 import {
   RcSesAlert,
   RcSesCheckbox,
@@ -11,8 +11,8 @@ import {
   RcSesTextField,
 } from '@registrucentras/rc-ses-react-components';
 
-import FileDropzone from '../Service copy/components/FileDropzone';
-import { BodyText } from '../Service copy/components/ServiceDetailsForm';
+import FileDropzone from '../Service/components/FileDropzone';
+import { BodyText, BodyTextSmall } from '../Service/components/ServiceDetailsForm';
 import ObjectIdentifierSearchModal from './components/ObjectIdentifierSearchModal';
 import SearchableField from './components/SearchableField';
 import useFormTranslation from './hooks/useFormTranslation';
@@ -183,13 +183,12 @@ function FieldRenderer({
             options={radioField.options}
             hideNativeRadio={radioField.hideNativeRadio}
             label={
-              <>
-                <strong>{field.label}</strong>
-                <br />
-                <BodyText>
+              <Box sx={{ marginBottom: { md: '28px' } }}>
+                <BodyText>{field.label}</BodyText>
+                <BodyTextSmall>
                   {field.description ? translateText(field.description) : undefined}
-                </BodyText>
-              </>
+                </BodyTextSmall>
+              </Box>
             }
             slotProps={{
               ...field.slotProps,
@@ -210,13 +209,12 @@ function FieldRenderer({
             errors={fieldError}
             variant={checkboxField.variant}
             label={
-              <>
-                <strong>{checkboxField.label}</strong>
-                <br />
-                <BodyText>
+              <Box sx={{ marginBottom: { md: '5px' } }}>
+                <BodyText>{checkboxField.label}</BodyText>
+                <BodyTextSmall>
                   {field.description ? translateText(field.description) : undefined}
-                </BodyText>
-              </>
+                </BodyTextSmall>
+              </Box>
             }
             slotProps={{
               ...field.slotProps,
@@ -238,6 +236,7 @@ function FieldRenderer({
           <RcSesDatepicker
             {...commonProps}
             control={control}
+            rules={{ required: true }}
             errors={fieldError}
             clearable={dateField.clearable}
           />
@@ -262,7 +261,15 @@ function FieldRenderer({
       }
 
       case 'phone': {
-        return <RcSesPhoneInput {...commonProps} control={control} errors={fieldError} />;
+        return (
+          <RcSesPhoneInput
+            {...commonProps}
+            rules={{ required: true }}
+            control={control}
+            errors={fieldError}
+            sx={{ letterSpacing: '1.2px' }}
+          />
+        );
       }
 
       case 'numberStepper': {

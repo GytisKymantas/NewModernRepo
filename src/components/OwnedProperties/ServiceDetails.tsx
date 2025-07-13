@@ -1,7 +1,7 @@
 import { Divider, Typography } from '@mui/material';
 import { Box, SxProps } from '@mui/system';
 import { RcSesFormControlWrapper } from '@registrucentras/rc-ses-react-components';
-import { HeaderMain } from '../Service copy/components/ServiceDetailsForm';
+import { HeaderMain } from '../Service/components/ServiceDetailsForm';
 
 type Row = {
   label: string;

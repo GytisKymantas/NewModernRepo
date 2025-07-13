@@ -5,9 +5,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
 
+import FileDropzone from '@/components/Service/components/FileDropzone';
 import {
   RcSesDatepicker,
-  RcSesFileDropzone,
   RcSesSelect,
   RcSesTextField,
 } from '@registrucentras/rc-ses-react-components';
@@ -98,7 +98,7 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
               errors={errors?.documentNumber}
             />
 
-            <RcSesFileDropzone
+            <FileDropzone
               id='documentFile'
               name='documentFile'
               control={control}

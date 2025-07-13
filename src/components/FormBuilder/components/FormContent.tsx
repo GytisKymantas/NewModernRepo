@@ -1,4 +1,4 @@
-import AccordionWrapper from '@/components/Service copy/components/AccordionWrapper';
+import AccordionWrapperNotExpanded from '@/components/Service/components/AccordionWrapperNotExpanded';
 import { Grid, Typography } from '@mui/material';
 import FieldRenderer, { SubgroupRenderer } from '../FieldRenderer';
 import { StyledAccordionWrapper, StyledFormContent } from '../styled';
@@ -22,10 +22,9 @@ export default function FormContent({
     loadingConfig?.disableFormDuringLoading &&
     loadingStates &&
     Object.values(loadingStates).some(Boolean);
-
   return (
     <StyledAccordionWrapper>
-      <AccordionWrapper
+      <AccordionWrapperNotExpanded
         key={step.id}
         id={step.id}
         controller={accordionController}
@@ -76,7 +75,7 @@ export default function FormContent({
             )}
           </StyledFormContent>
         </form>
-      </AccordionWrapper>
+      </AccordionWrapperNotExpanded>
     </StyledAccordionWrapper>
   );
 }

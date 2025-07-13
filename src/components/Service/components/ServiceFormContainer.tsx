@@ -1,5 +1,6 @@
+import theme from '@/theme';
 import styled from '@emotion/styled';
-import { Box, StepConnector } from '@mui/material';
+import { Box, StepConnector, useMediaQuery } from '@mui/material';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
@@ -55,8 +56,14 @@ function CompletedStepIcon() {
 
 function PendingStepIcon() {
   return (
-    <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-      <circle cx='12' cy='12' r='3' fill='#C5CAD1' />
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='25'
+      height='24'
+      viewBox='0 0 25 24'
+      fill='none'
+    >
+      <circle cx='12.333' cy='12' r='3' fill='#C5CAD1' />
     </svg>
   );
 }
@@ -77,6 +84,7 @@ type Props = {
 function ServiceFormContainer({ steps, isVertical }: Props) {
   const activeStep = steps.findIndex((item) => item.state === 'active') ?? 0;
   const percentage = ((activeStep + 1) / steps.length) * 100;
+  const upMd = useMediaQuery(theme.breakpoints.up('md'));
 
   const getStepIcon = (state: AccordionState['state']) => {
     switch (state) {
@@ -108,13 +116,13 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
           sx={{
             width: '100%',
             backgroundColor: '#ffffff',
-            margin: '0 0 -8px 0',
+            margin: '32px 0 -8px 0',
           }}
         >
           <Stepper
             activeStep={activeStep}
             alternativeLabel
-            orientation={isVertical ? 'vertical' : 'horizontal'}
+            orientation={upMd ? 'vertical' : 'horizontal'}
             connector={<StepConnector sx={{ display: 'none' }} />}
           >
             {steps.map((step, stepIndex) => (
@@ -122,10 +130,11 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
                 <StepLabel
                   StepIconComponent={getStepIcon(step.state)}
                   style={{
-                    flexDirection: 'row',
+                    flexDirection: upMd ? 'row' : 'column',
                     gap: '10px',
-                    alignItems: 'flex-end',
-                    zIndex: '4',
+                    alignItems: upMd ? 'flex-end' : 'center',
+                    zIndex: 7,
+                    fontWeight: 500,
                   }}
                 >
                   {step.title}
@@ -134,14 +143,29 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
                     <Box
                       sx={{
                         position: 'absolute',
-                        top: stepIndex === 0 ? '31px' : '27.5px',
-                        left: '12px',
-                        height: stepIndex === 0 ? '26px' : '33px', // Adjust default height if needed
-                        width: '3px',
+                        top:
+                          stepIndex === 0
+                            ? upMd
+                              ? '27px'
+                              : '10.5px'
+                            : upMd
+                              ? '22.5px'
+                              : '10.5px',
+                        left: upMd ? '12.3px' : '99%',
+                        height:
+                          stepIndex === 0
+                            ? upMd
+                              ? '26px'
+                              : '3px'
+                            : upMd
+                              ? '33px'
+                              : '3px', // Adjust default height if needed
+                        width: upMd ? '3px' : '100%',
                         backgroundColor: '#F0F2F5',
                         transform: 'translateX(-50%)',
                         zIndex: '1',
                       }}
+                      id='stepid'
                     />
                   )}
                 </StepLabel>

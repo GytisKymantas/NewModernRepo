@@ -61,6 +61,7 @@ type Props = Pick<TControllerProps, ImmediateControllerProps> &
   Pick<TFieldProps, ImmediateFieldProps> &
   Pick<TWrapperProps, ImmediateWrapperProps> & {
     id?: string;
+    required?: boolean;
     slotProps?: {
       controller?: Partial<Omit<TControllerProps, ImmediateControllerProps>>;
       dropzone?: Partial<DropzoneOptions>;
@@ -72,7 +73,8 @@ type Props = Pick<TControllerProps, ImmediateControllerProps> &
 function RcSesFileDropzone(props: Props) {
   const { t } = useTranslation('input', { keyPrefix: 'components.RcSesFileDropzone' });
 
-  const { control, errors, label, rules, slotProps, ...fieldProps } = props;
+  const { control, errors, label, rules, slotProps, required, ...fieldProps } = props;
+  console.log(props, 'this is propsz');
   const { name } = fieldProps;
   const { description, ...wrapperProps } = slotProps?.wrapper ?? {};
 
@@ -115,7 +117,7 @@ function RcSesFileDropzone(props: Props) {
       id={id}
       errors={errors}
       label={label}
-      required={!!rules?.required}
+      required={required}
       {...wrapperProps}
     >
       <Box
@@ -242,7 +244,7 @@ function RcSesFileDropzone(props: Props) {
                         textAlign: 'center',
                       }}
                     >
-                      Tinkami formatai: PDF, ADOC, ASIC{' '}
+                      Tinkami formatai: PDF
                     </Typography>
                   </>
                 )}

@@ -16,10 +16,6 @@ const UploadWrapper = styled.div`
   margin: 0 auto;
   transition: background-color 0.2s ease;
 
-  &:hover {
-    background-color: #eef8fc;
-  }
-
   svg {
     flex-shrink: 0;
   }
@@ -39,7 +35,7 @@ function UploadFile() {
   };
 
   return (
-    <Box sx={{ marginBottom: '0px' }}>
+    <Box sx={{ marginBottom: '0px', marginTop: '-24px' }}>
       <UploadWrapper onClick={handleOpenModal}>
         <svg
           width='25'

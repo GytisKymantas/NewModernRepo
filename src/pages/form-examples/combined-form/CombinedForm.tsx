@@ -4,6 +4,7 @@ import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
+import toast from 'react-hot-toast';
 import {
   FormTableData,
   PricingTableData,
@@ -250,7 +251,18 @@ function CombinedForm() {
     ],
     onSubmit: async (data) => {
       console.log('Service request submitted:', data);
-      alert('Service request submitted successfully!');
+      toast.success('Dokumentas sėkmingai pasirašytas', {
+        style: {
+          border: '1px solid #008561',
+          background: '#008561',
+          padding: '16px',
+          color: 'white',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: '#FFFAEE',
+        },
+      });
     },
     onInvalidSubmit: async (errors, data) => {
       console.log('Invalid submit:', errors);

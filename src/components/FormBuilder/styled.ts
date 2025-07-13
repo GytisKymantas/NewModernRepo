@@ -47,20 +47,52 @@ export const StyledAccordionWrapper = styled.div`
   /* Override the problematic margin behavior from rc-ses-react-components */
   .MuiAccordion-root {
     margin: 1rem 0 !important;
+    border:none !important;
+    border-radius:8px !important;
+    background:none !important;
 
     /* Ensure consistent margin for all states */
     &.Mui-expanded:first-of-type {
       margin-top: 1rem !important;
+          background:none !important;
+
     }
 
     &:first-of-type {
       margin-top: 1rem !important;
+      background:none !important;
+
     }
 
     &:last-of-type {
       margin-bottom: 1rem !important;
+      background:none !important;
+
     }
   }
+
+
+
+    @media (min-width: 600px) {
+    .MuiAccordion-root {
+        margin: 1rem 0 !important;
+       border: 1px solid #BEC3CA !important;
+
+ &.Mui-expanded:first-of-type {
+      margin-top: 1rem !important;
+      margin: 1.5rem 2rem 2rem 2rem !important;
+    }
+
+    &:first-of-type {
+      margin-top: 1rem !important;
+      margin: 1.5rem 2rem 2rem 2rem !important;
+    }
+
+    &:last-of-type {
+      margin-bottom: 1rem !important;
+      margin: 1.5rem 2rem 2rem 2rem !important;
+    }
+}
 
   @media (min-width: 900px) {
     .MuiAccordion-root {
@@ -68,11 +100,39 @@ export const StyledAccordionWrapper = styled.div`
 
       &.Mui-expanded:first-of-type {
         margin-top: 1rem !important;
+        margin: 1.5rem 0 !important;
+
       }
 
       &:first-of-type {
         margin-top: 1rem !important;
       }
     }
+  }
+
+`;
+
+export const StyledAccordionWrapperTwo = styled.div`
+  .MuiAccordion-root {
+    border: none !important;
+    margin: 0 !important;
+    background: none !important;
+  }
+  .MuiAccordion-root:last-of-type {
+    border: none !important;
+    margin: 0 !important;
+    background: none !important;
+  }
+
+  .MuiAccordion-root.Mui-expanded:first-of-type {
+    border: none !important;
+    margin: 0 !important;
+    background: none !important;
+  }
+
+  .MuiAccordion-root.Mui-expanded:last-of-type {
+    border: none !important;
+    margin: 0 !important;
+    background: none !important;
   }
 `;

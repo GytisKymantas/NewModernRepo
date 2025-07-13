@@ -8,14 +8,11 @@ function BasicInformationForm() {
       slotProps={{
         field: {
           InputProps: {
-            inputComponent: 'textarea',
-            inputProps: {
-              rows: 10,
-              sx: { minHeight: '200px' },
-            },
+            inputComponent: 'text',
+            inputProps: {},
           },
           slots: {
-            input: 'textarea',
+            input: 'text',
           },
         },
       }}
