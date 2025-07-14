@@ -168,6 +168,7 @@ function FieldRenderer({
             {...commonProps}
             control={control}
             placeholder={translateText(selectField.placeholder)}
+            rules={{ required: true }}
             errors={fieldError}
             options={selectField.options}
             multiple={selectField.multiple}

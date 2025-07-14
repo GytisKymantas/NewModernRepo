@@ -5,6 +5,7 @@ import { useAccordionController } from '@registrucentras/rc-ses-react-components
 import AccordionWrapper from '../../Service/components/AccordionWrapper';
 
 // Styled Components declared outside
+
 const AccordionEntry = styled.div<{
   marginBottom?: string;
   marginTop?: string;
@@ -16,22 +17,19 @@ const AccordionEntry = styled.div<{
   max-height: 16px;
   margin-bottom: ${({ marginBottom }) => marginBottom || '0px'};
 
-  ${({ borderPosition }) =>
-    // eslint-disable-next-line no-nested-ternary
-    borderPosition === 'top'
-      ? 'border-top: 1px solid #DCE0E5;'
-      : borderPosition === 'bottom'
-        ? 'border-bottom: 1px solid #DCE0E5;'
-        : ''}
+  ${({ borderPosition }) => {
+    if (borderPosition === 'top') return 'border-top: 1px solid #DCE0E5;';
+    if (borderPosition === 'bottom') return 'border-bottom: 1px solid #DCE0E5;';
+    return '';
+  }}
 
-  ${({ borderPosition }) =>
-    // eslint-disable-next-line no-nested-ternary
-    borderPosition === 'top'
-      ? 'padding-top: 24px'
-      : borderPosition === 'bottom'
-        ? 'padding-bottom: 24px'
-        : ''}
+  ${({ borderPosition }) => {
+    if (borderPosition === 'top') return 'padding-top: 24px;';
+    if (borderPosition === 'bottom') return 'padding-bottom: 24px;';
+    return '';
+  }}
 `;
+
 const PersonStatus = styled.div`
   display: flex;
   align-items: center;

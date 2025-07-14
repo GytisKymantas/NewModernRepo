@@ -2,7 +2,8 @@
   color: black !important;
 }
 
-.html {
+html,
+body {
   font-family: 'Public Sans';
 }
 

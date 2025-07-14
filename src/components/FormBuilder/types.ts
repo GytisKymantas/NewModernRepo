@@ -262,7 +262,6 @@ export interface CustomFieldProps {
 export interface FormBuilderProps {
   config: FormBuilderConfig;
   initialData?: Record<string, any>;
-  className?: string;
 }
 
 export interface FieldRendererProps {

@@ -107,9 +107,10 @@ function MultiStepServiceForm() {
               {
                 id: 'purpose',
                 name: 'purpose',
-                type: 'select',
+                type: 'multiselect',
                 label: 'Juridinio asmens teisinė forma',
                 placeholder: 'Pasirinkite teisinę formą',
+                required: true,
                 defaultValue: '',
                 options: [
                   { value: 'tikslas1', label: 'Tikslas 1' },
@@ -157,7 +158,7 @@ function MultiStepServiceForm() {
                 ),
                 severity: 'info',
                 icon: (
-                  <Box sx={{ marginBottom: 'auto' }} id='boblazar'>
+                  <Box sx={{ marginBottom: 'auto' }}>
                     <InfoIcon />
                   </Box>
                 ),
@@ -195,7 +196,7 @@ function MultiStepServiceForm() {
                 label: 'Data',
                 required: true,
                 clearable: true,
-                defaultValue: '2024-04-06',
+                defaultValue: '',
               },
               {
                 id: 'documentNumber',
@@ -372,11 +373,11 @@ function MultiStepServiceForm() {
                   rows: [
                     {
                       label: 'Asmens Kodas',
-                      value: formData.personalCode,
+                      value: formData?.personalCode ?? '',
                     },
                     {
                       label: 'Vardas, Pavardė',
-                      value: formData.fullName,
+                      value: formData?.fullName ?? '',
                     },
                   ],
                 },
@@ -476,7 +477,7 @@ function MultiStepServiceForm() {
     },
     onInvalidSubmit: async (errors, data) => {
       console.log('Invalid submit:', errors, data);
-      toast.error('Invalid submit.');
+      toast.error('Yra Klaidų.');
     },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));

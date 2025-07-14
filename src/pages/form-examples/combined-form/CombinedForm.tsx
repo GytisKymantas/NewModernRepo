@@ -15,7 +15,7 @@ import CombinedFormTableData from './CombinedForm.deps';
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
 const searchField = commonFieldConfigs.search('search');
-
+console.log('test');
 function CombinedForm() {
   const localData = localStorage.getItem('serviceRequestDraft');
   const formData = JSON.parse(localData);
@@ -268,6 +268,7 @@ function CombinedForm() {
     },
     onInvalidSubmit: async (errors, data) => {
       console.log('Invalid submit:', errors);
+      toast.error('Yra Klaidų.');
     },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
