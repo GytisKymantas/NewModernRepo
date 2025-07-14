@@ -57,7 +57,6 @@ function AccordionWrapperNotExpanded(props: Props) {
     ...accordionProps
   } = props;
   const { state } = controller;
-  console.log(props, 'this is props from accordion wrapper');
   const { disabled, title } = id in state ? state[id] : { disabled: false, title: '' };
 
   return (

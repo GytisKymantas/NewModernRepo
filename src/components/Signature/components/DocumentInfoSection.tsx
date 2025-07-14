@@ -11,7 +11,7 @@ import { InfoHeader } from '../../Service/components/ServiceDetailsForm';
 import PrimaryButton from '../../common/PrimaryButton';
 import DeleteItemModal from './DeleteItemModal';
 import SignaturesSection from './SignaturesSection';
-import ViewItemModal from './ViewObjectModa';
+import ViewItemModal from './ViewObjectModal';
 
 const Wrapper = styled.div`
   background-color: #f9fafb;

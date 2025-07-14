@@ -74,7 +74,6 @@ function RcSesFileDropzone(props: Props) {
   const { t } = useTranslation('input', { keyPrefix: 'components.RcSesFileDropzone' });
 
   const { control, errors, label, rules, slotProps, required, ...fieldProps } = props;
-  console.log(props, 'this is propsz');
   const { name } = fieldProps;
   const { description, ...wrapperProps } = slotProps?.wrapper ?? {};
 

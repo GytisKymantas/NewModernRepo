@@ -102,6 +102,7 @@ function FieldRenderer({
 
   // Get field error directly - RcSes components expect the error object directly
   const fieldError = errors?.[field.name];
+  console.log(field, 'this is field');
 
   const renderField = () => {
     switch (field.type) {
@@ -166,6 +167,7 @@ function FieldRenderer({
             {...commonProps}
             control={control}
             placeholder={translateText(selectField.placeholder)}
+            rules={{ required: true }}
             errors={fieldError}
             options={selectField.options}
             multiple={selectField.multiple}

@@ -61,6 +61,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
     defaultValues,
     mode: 'onChange',
   });
+  console.log(defaultValues, 'defaultValues');
 
   const formData = watch();
 
@@ -200,7 +201,11 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
           if (draftData) {
             // Set preserved data for form restoration
             setPreservedFormData(draftData);
+            console.log(draftData, ' draftDatadraftData');
+
+            console.log(Object.keys(draftData), ' Object.keys(draftData)');
             Object.keys(draftData).forEach((key) => {
+              console.log(key, 'this is key');
               setValue(key, draftData[key]);
             });
           }
@@ -212,6 +217,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
         }
       }
     };
+
     loadDraft();
   }, [config, setValue]);
 
