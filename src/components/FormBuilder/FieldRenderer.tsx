@@ -102,7 +102,6 @@ function FieldRenderer({
 
   // Get field error directly - RcSes components expect the error object directly
   const fieldError = errors?.[field.name];
-  console.log(field, 'this is field');
 
   const renderField = () => {
     switch (field.type) {
