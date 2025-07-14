@@ -7,13 +7,18 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useMediaQuery } from '@mui/system';
+import { SxProps, useMediaQuery } from '@mui/system';
 
-function PricingTable() {
+type PricingTableProps = {
+  sxStyle?: SxProps;
+  document?: string;
+  price?: number;
+};
+
+function PricingTable({ sxStyle, document, price }: PricingTableProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   return (
-    <TableContainer sx={{ pb: '34.5px' }}>
+    <TableContainer sx={sxStyle}>
       <Table
         sx={{
           backgroundColor: '#f9fafb',
@@ -30,11 +35,8 @@ function PricingTable() {
 
         <TableBody>
           <TableRow>
-            <TableCell sx={{ borderRight: 'none' }}>
-              Laikinas pavadinimo įrašymas į Juridinių asmenų registrą (Prašymas nr.
-              7107622)
-            </TableCell>
-            <TableCell sx={{ borderLeft: 'none' }}>14,76 Eur</TableCell>
+            <TableCell sx={{ borderRight: 'none' }}>{document}</TableCell>
+            <TableCell sx={{ borderLeft: 'none' }}>{price}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell
@@ -53,7 +55,7 @@ function PricingTable() {
                 width: isMobile ? '100px' : undefined,
               }}
             >
-              14,76 Eur
+              {price}
             </TableCell>
           </TableRow>
         </TableBody>

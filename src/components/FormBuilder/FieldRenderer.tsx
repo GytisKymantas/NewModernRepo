@@ -15,6 +15,7 @@ import FileDropzone from '../Service/components/FileDropzone';
 import { BodyText, BodyTextSmall } from '../Service/components/ServiceDetailsForm';
 import ObjectIdentifierSearchModal from './components/ObjectIdentifierSearchModal';
 import SearchableField from './components/SearchableField';
+import TextAreaField from './components/TextAreaField';
 import useFormTranslation from './hooks/useFormTranslation';
 import {
   AlertFieldConfig,
@@ -134,7 +135,8 @@ function FieldRenderer({
       case 'textarea': {
         const textField = field as TextFieldConfig;
         return (
-          <RcSesTextField
+          <TextAreaField
+            sx={textField.sxStyle}
             {...commonProps}
             placeholder={translateText(textField.placeholder)}
             errors={fieldError}

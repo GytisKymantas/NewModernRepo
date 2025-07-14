@@ -1,136 +1,137 @@
-import InfoIcon from '@/assets/icons/InfoIcon';
 import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
+import NaturalPersonModal from '@/components/FormBuilder/modals/NaturalPersonModal';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
-import DocumentCollection from '@/components/Signature/components/DocumentCollection';
-import UploadFile from '@/components/Signature/components/UploadFile';
-import toast from 'react-hot-toast';
-import {
-  FormTableData,
-  PricingTableData,
-  ServiceDetail,
-} from '../MultiStepServiceForm.deps';
-import CombinedFormTableData from './CombinedForm.deps';
+import { ServiceDetail } from '../form-examples/MultiStepServiceForm.deps';
+import { PricingTableData, TableWithModalData } from './statementForm.deps';
 
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
-const searchField = commonFieldConfigs.search('search');
-console.log('test');
-function CombinedForm() {
+
+function NaturalStatementForm() {
   const localData = localStorage.getItem('serviceRequestDraft');
   const formData = JSON.parse(localData);
 
   const config: FormBuilderConfig = {
-    id: 'service-request-form',
-    title: 'Service Application Request',
-    description: 'Complete this multi-step form to submit your service application',
+    id: 'public-statement-form',
+    title: 'Viešas pranešimas',
+    description: 'Viešas pranešimas',
     multiStep: true,
     steps: [
       {
-        id: 'combined-form',
-        title: 'Prašymo Duomenys',
+        id: 'public-statement-form',
+        title: 'Pranešimo duomenys',
+        sxStyle: {
+          pb: '48px',
+        },
+        expanded: true,
         subgroups: [
           {
             fields: [
               {
-                id: 'userFullName',
-                name: 'userFullName',
+                id: 'legal-entity',
+                name: 'legal entity',
                 type: 'custom',
-                label: 'userFullName',
+                label: 'legal entity',
                 required: false,
                 component: ServiceDetail,
                 props: {
+                  title: 'Bendrovė, išleidusi obligacijas',
+                  withHeading: true,
+                },
+              },
+              {
+                id: 'publicStatement',
+                name: 'publicStatement',
+                type: 'custom',
+                label: 'publicStatement',
+                required: false,
+                component: TableWithModalData,
+                props: {
+                  ModalComponent: NaturalPersonModal,
+                },
+              },
+              {
+                id: 'public-announcement',
+                name: 'public-announcement',
+                type: 'custom',
+                label: 'public-announcement',
+                required: false,
+                component: ServiceDetail,
+                props: {
+                  title: 'Viešas pranešimas',
+                  withHeading: true,
+                  sxStyle: { pt: '48.5px' },
+                },
+              },
+              {
+                id: 'Kategorija',
+                name: 'Kategorija',
+                type: 'select',
+                label: 'Kategorija',
+                required: true,
+                placeholder: 'Pasirinkite pranešimo kategoriją',
+                defaultValue: '',
+                options: [
+                  { value: 'tikslas1', label: 'Tikslas 1' },
+                  { value: 'tikslas2', label: 'Tikslas 2' },
+                  { value: 'tikslas3', label: 'Tikslas 3' },
+                ],
+              },
+              {
+                id: 'Tekstas',
+                name: 'Tekstas',
+                type: 'textarea',
+                label: 'Tekstas',
+                placeholder: 'Įveskite viešąjį pranešimą',
+                required: true,
+                // sxStyle: { }
+              },
+              {
+                id: 'submittedBy',
+                name: 'submittedBy',
+                type: 'custom',
+                label: 'submittedBy',
+                required: false,
+                component: ServiceDetail,
+                props: {
+                  title: 'Prašymą teikia',
+                  withHeading: true,
                   rows: [
                     {
-                      label: 'Teikėjo vardas, pavardė',
-                      value: formData.companyName ?? 'Vardenis Pavardenis',
+                      label: 'Asmens Kodas',
+                      value: 303180528,
                     },
                     {
-                      label: 'Teikėjo asmens kodas',
-                      value: formData.personalCode ?? '39005201234',
+                      label: 'Vardas, Pavardė',
+                      value: 'Vardenis Pavardenis',
                     },
                   ],
                 },
               },
               {
-                ...searchField,
-                id: 'SearchableField',
-                required: false,
-                type: 'search',
-                props: {
-                  withTriggerText: true,
-                },
-              },
-              {
                 ...phoneField,
                 required: true,
-                label: 'Kontaktinis telefonas',
+                label: 'Telefono nr.',
               },
               {
                 ...emailField,
                 required: true,
                 label: 'El. paštas',
               },
-              {
-                id: 'requestDate',
-                name: 'requestDate',
-                type: 'custom',
-                label: 'requestDate',
-                required: false,
-                component: ServiceDetail,
-                props: {
-                  rows: [
-                    {
-                      label: 'Prašymo data',
-                      value: '2099-01-01',
-                    },
-                  ],
-                  textSpacing: {
-                    pb: '48px',
-                  },
-                },
-              },
             ],
+
             id: '',
           },
         ],
       },
       {
-        id: 'documents',
-        title: 'Dokumentų pasirašymas',
-        fields: [
-          {
-            id: 'infoAlert',
-            name: 'infoAlert',
-            type: 'alert',
-            label: 'infoAlert',
-            message: <div>Visi dokumentai yra pasirašomi eilės tvarka.</div>,
-            severity: 'info',
-            icon: <InfoIcon />,
-          },
-          {
-            id: 'DocumentSection',
-            name: 'DocumentSection',
-            type: 'custom',
-            label: 'DocumentSection',
-            required: false,
-            placeholder: '',
-            component: DocumentCollection,
-          },
-          {
-            id: 'uploadFile',
-            name: 'uploadFile',
-            type: 'custom',
-            label: 'uploadFile',
-            required: false,
-            placeholder: '',
-            component: UploadFile,
-          },
-        ],
-      },
-      {
         id: 'request_view',
-        title: 'Prašymo pateikimas',
+        title: 'Pranešimo užsakymas',
+        expanded: true,
+        sxStyle: {
+          pb: '48px',
+        },
         subgroups: [
           {
             id: 'request-object',
@@ -159,36 +160,42 @@ function CombinedForm() {
                 },
               },
               {
-                id: 'requestObject',
-                name: 'requestObject',
+                id: 'publicRequestObject',
+                name: 'publicRequestObject',
                 type: 'custom',
-                label: 'requestObject',
+                label: 'publicRequestObject',
                 required: false,
                 component: ServiceDetail,
                 props: {
                   sxStyle: { pt: '34.5px' },
-                  title: 'Prašymo objektas',
+                  title: 'Viešą pranešimą teikiantis juridinis asmuo',
                   withHeading: true,
                   rows: [
                     {
-                      label: 'Jungtinė pažyma',
-                      value:
-                        formData.companyName ??
-                        'Apie fizinį asmenį, dalyvaujantį viešųjų pirkimų procedūroje',
+                      label: 'Pavadinimas',
+                      value: 'UAB Pavadinimas',
+                    },
+                    {
+                      label: 'Juridinio asmens kodas',
+                      value: '303180528',
+                    },
+                    {
+                      label: 'Buveinės adresas',
+                      value: 'Pakruojis, Saulėtekio g. 1, LT-83140',
                     },
                   ],
                 },
               },
               {
-                id: 'requestUser',
-                name: 'requestUser',
+                id: 'publicStatementUser',
+                name: 'publicStatementUser',
                 type: 'custom',
-                label: 'requestUser',
+                label: 'Viešą pranešimą pateikė',
                 required: false,
                 component: ServiceDetail,
                 props: {
                   sxStyle: { pt: '34.5px' },
-                  title: 'Prašymą teikia',
+                  title: 'Viešą pranešimą pateikė',
                   withHeading: true,
                   rows: [
                     {
@@ -203,29 +210,26 @@ function CombinedForm() {
                 },
               },
               {
-                id: 'documents',
-                name: 'documents',
+                id: 'requestUser',
+                name: 'requestUser',
                 type: 'custom',
-                label: 'Custom Field',
+                label: 'Viešas pranešimas',
                 required: false,
                 component: ServiceDetail,
                 props: {
-                  withHeading: true,
                   sxStyle: { pt: '34.5px' },
-                  title: 'Teikiami Dokumentai',
-                },
-              },
-              {
-                id: 'tableData',
-                name: 'tableData',
-                type: 'custom',
-                label: 'tableData',
-                component: FormTableData,
-                props: {
-                  sxStyle: { borderCollapse: 'collapse' },
-                  title: 'Teikiami Dokumentai',
-                  cols: CombinedFormTableData.cols,
-                  rows: CombinedFormTableData.rows,
+                  title: 'Viešas pranešimas',
+                  withHeading: true,
+                  rows: [
+                    {
+                      label: 'Kategorija',
+                      value: formData.companyName ?? '39005201234',
+                    },
+                    {
+                      label: 'Tekstas',
+                      value: formData.companyName ?? 'Vardenis Pavardenis',
+                    },
+                  ],
                 },
               },
               {
@@ -233,10 +237,12 @@ function CombinedForm() {
                 name: 'servicePrice',
                 type: 'custom',
                 label: 'servicePrice',
+                required: false,
                 component: ServiceDetail,
                 props: {
+                  sxStyle: { pt: '34.5px' },
+                  title: 'Paslaugos Kaina',
                   withHeading: true,
-                  title: 'Paslaugos kaina',
                 },
               },
               {
@@ -245,6 +251,10 @@ function CombinedForm() {
                 type: 'custom',
                 label: 'pricingTableData',
                 component: PricingTableData,
+                props: {
+                  document: 'Viešo pranešimo publikavimo prašymas (Prašymas nr. 7107622)',
+                  price: '7,83 Eur',
+                },
               },
             ],
           },
@@ -253,22 +263,11 @@ function CombinedForm() {
     ],
     onSubmit: async (data) => {
       console.log('Service request submitted:', data);
-      toast.success('Dokumentas sėkmingai pasirašytas', {
-        style: {
-          border: '1px solid #008561',
-          background: '#008561',
-          padding: '16px',
-          color: 'white',
-        },
-        iconTheme: {
-          primary: 'white',
-          secondary: '#FFFAEE',
-        },
-      });
+      localStorage.setItem('submittedData', JSON.stringify(data));
+      alert('Service request submitted successfully!');
     },
     onInvalidSubmit: async (errors, data) => {
       console.log('Invalid submit:', errors);
-      toast.error('Yra Klaidų.');
     },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
@@ -292,4 +291,4 @@ function CombinedForm() {
   return <FormBuilder config={config} />;
 }
 
-export default CombinedForm;
+export default NaturalStatementForm;

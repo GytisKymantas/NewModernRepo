@@ -30,25 +30,28 @@ function ServiceDetails({
       {withHeading && (
         <Box sx={sxStyle}>
           <HeaderMain>{title}</HeaderMain>
-          {!isWithoutDivider && <Divider />}
+          <Divider />
         </Box>
       )}
-      {rows &&
-        rows.map(({ label, value }) => (
-          <Box sx={textSpacing} key={`${label}-${value}`}>
-            <RcSesFormControlWrapper label={label}>
-              <Typography
-                sx={{
-                  maxWidth: '100%',
-                  width: '100%',
-                  textAlign: 'left',
-                }}
-              >
-                {value}
-              </Typography>
-            </RcSesFormControlWrapper>
-          </Box>
-        ))}
+      {rows && (
+        <Box sx={textSpacing}>
+          {rows.map(({ label, value }) => (
+            <Box key={`${label}-${value}`}>
+              <RcSesFormControlWrapper label={label}>
+                <Typography
+                  sx={{
+                    maxWidth: '100%',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                >
+                  {value}
+                </Typography>
+              </RcSesFormControlWrapper>
+            </Box>
+          ))}
+        </Box>
+      )}
     </>
   );
 }
