@@ -353,7 +353,7 @@ function MultiStepServiceForm() {
                   rows: [
                     {
                       label: 'Laikinai įrašomas pavadinimas',
-                      value: formData.companyName,
+                      value: formData.companyName ?? 'Pavadinimas',
                     },
                   ],
                 },
@@ -444,6 +444,12 @@ function MultiStepServiceForm() {
                 type: 'custom',
                 label: 'pricingTableData',
                 component: PricingTableData,
+                props: {
+                  sxStyle: { pb: '34.5px' },
+                  document:
+                    'Laikinas pavadinimo įrašymas į Juridinių asmenų registrą (Prašymas nr. 7107622)',
+                  price: '14,76 Eur',
+                },
               },
             ],
           },

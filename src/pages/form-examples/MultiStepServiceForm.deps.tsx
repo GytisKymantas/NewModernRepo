@@ -28,8 +28,8 @@ function FormTableData({ sxStyle, cols, rows }: CustomFieldProps) {
   return <FormTable sxStyle={sxStyle} rows={rows} cols={cols} />;
 }
 
-function PricingTableData() {
-  return <PricingTable />;
+function PricingTableData({ sxStyle, document, price }: CustomFieldProps) {
+  return <PricingTable sxStyle={sxStyle} document={document} price={price} />;
 }
 
 const sampleTableData = {

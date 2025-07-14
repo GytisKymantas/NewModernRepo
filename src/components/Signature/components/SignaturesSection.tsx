@@ -17,6 +17,7 @@ const AccordionEntry = styled.div<{
   margin-bottom: ${({ marginBottom }) => marginBottom || '0px'};
 
   ${({ borderPosition }) =>
+    // eslint-disable-next-line no-nested-ternary
     borderPosition === 'top'
       ? 'border-top: 1px solid #DCE0E5;'
       : borderPosition === 'bottom'
@@ -24,6 +25,7 @@ const AccordionEntry = styled.div<{
         : ''}
 
   ${({ borderPosition }) =>
+    // eslint-disable-next-line no-nested-ternary
     borderPosition === 'top'
       ? 'padding-top: 24px'
       : borderPosition === 'bottom'

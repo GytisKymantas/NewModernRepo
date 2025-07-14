@@ -17,6 +17,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import './i18n/i18n';
 import Home from './pages/Home';
 import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
+import LegalStatementForm from './pages/public-statement/LegalStatementForm';
+import NaturalStatementForm from './pages/public-statement/NaturalStatementForm';
 import './styles.css';
 import theme from './theme';
 // import Service from './components/Service';
@@ -68,6 +70,22 @@ const router = createBrowserRouter(
         element={
           <AuthGuard>
             <CombinedForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/public-statement/legal'
+        element={
+          <AuthGuard>
+            <LegalStatementForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/public-statement/natural'
+        element={
+          <AuthGuard>
+            <NaturalStatementForm />
           </AuthGuard>
         }
       />

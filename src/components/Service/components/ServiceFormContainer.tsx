@@ -144,6 +144,7 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
                       sx={{
                         position: 'absolute',
                         top:
+                          // eslint-disable-next-line no-nested-ternary
                           stepIndex === 0
                             ? upMd
                               ? '27px'
@@ -153,6 +154,7 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
                               : '10.5px',
                         left: upMd ? '12.3px' : '99%',
                         height:
+                          // eslint-disable-next-line no-nested-ternary
                           stepIndex === 0
                             ? upMd
                               ? '26px'

@@ -1,5 +1,5 @@
 import AccordionWrapperNotExpanded from '@/components/Service/components/AccordionWrapperNotExpanded';
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import FieldRenderer, { SubgroupRenderer } from '../FieldRenderer';
 import { StyledAccordionWrapper, StyledFormContent } from '../styled';
 import { FormContentProps } from '../types';
@@ -16,6 +16,7 @@ export default function FormContent({
   accordionController,
   loadingStates,
   loadingConfig,
+  sxStyle,
 }: FormContentProps) {
   // Determine if form should be disabled
   const isFormDisabled =
@@ -30,7 +31,7 @@ export default function FormContent({
         controller={accordionController}
         data-testid={`accordion-${step.id}`}
       >
-        <form onSubmit={onSubmit} noValidate>
+        <Box component='form' onSubmit={onSubmit} noValidate sx={sxStyle}>
           <StyledFormContent data-testid={`step-content-${step.id}`}>
             {step.description && (
               <Typography variant='body1' color='text.secondary' sx={{ mb: 2 }}>
@@ -74,7 +75,7 @@ export default function FormContent({
               </Grid>
             )}
           </StyledFormContent>
-        </form>
+        </Box>
       </AccordionWrapperNotExpanded>
     </StyledAccordionWrapper>
   );

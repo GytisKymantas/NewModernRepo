@@ -63,7 +63,7 @@ function AccordionWrapperNotExpanded(props: Props) {
   return (
     <Accordion
       disabled={disabled}
-      expanded={true}
+      expanded
       {...accordionProps}
       // onChange={handleOnChange}
       className={className}

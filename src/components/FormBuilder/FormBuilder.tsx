@@ -23,6 +23,10 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [preservedFormData, setPreservedFormData] = useState<Record<string, any>>({});
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [currentStep]);
+
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
   const { translateValidation } = useFormTranslation();
 
@@ -154,7 +158,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
         }
 
         acc[step.id] = {
-          expanded: index === currentStep,
+          expanded: step.expanded ?? index === currentStep,
           state,
           title: step.title,
         };
@@ -443,6 +447,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
           accordionController={accordionController}
           loadingStates={combinedLoadingStates}
           loadingConfig={config.loading}
+          sxStyle={currentStepConfig.sxStyle}
         />
         <FormActions
           multiStep={config.multiStep}

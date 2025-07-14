@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 
@@ -13,8 +14,8 @@ function FileView({ fileUploadPath }: any) {
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    setNumPages(numPages);
+  function onDocumentLoadSuccess({ numPages: totalPages }: { numPages: number }): void {
+    setNumPages(totalPages);
   }
   return (
     <div>

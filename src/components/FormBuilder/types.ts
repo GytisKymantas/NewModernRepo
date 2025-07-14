@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { SxProps } from '@mui/system';
 import { ComponentType, ReactNode } from 'react';
 import { Control, FieldErrors, RegisterOptions } from 'react-hook-form';
 import { z } from 'zod';
@@ -96,6 +97,7 @@ export interface TextFieldConfig extends BaseFieldConfig {
   multiline?: boolean;
   rows?: number;
   maxLength?: number;
+  sxStyle?: SxProps;
 }
 
 export interface SearchFieldConfig extends BaseFieldConfig {
@@ -197,10 +199,12 @@ export interface FieldSubgroup {
 export interface FormStep {
   id: string;
   title: string;
+  expanded?: boolean;
   description?: string;
   fields?: FieldConfig[]; // Direct fields (backwards compatibility)
   subgroups?: FieldSubgroup[]; // New subgroup support
   validation?: z.ZodSchema;
+  sxStyle?: SxProps;
 }
 
 // Loading state configuration
@@ -236,6 +240,12 @@ export interface FormBuilderConfig {
   onDiscard?: () => void | Promise<void>;
 }
 
+export type ModalComponentProps = {
+  open: boolean;
+  onSubmit: (value: string) => void;
+  onClose: () => void;
+};
+
 export interface CustomFieldProps {
   id: string;
   name: string;
@@ -246,6 +256,7 @@ export interface CustomFieldProps {
   disabled?: boolean;
   isWithoutDivider?: boolean;
   [key: string]: any;
+  ModalComponent?: React.JSXElementConstructor<ModalComponentProps>;
 }
 
 export interface FormBuilderProps {
@@ -317,4 +328,5 @@ export interface FormContentProps {
   accordionController: any;
   loadingStates?: LoadingStates;
   loadingConfig?: LoadingConfig;
+  sxStyle?: SxProps;
 }
