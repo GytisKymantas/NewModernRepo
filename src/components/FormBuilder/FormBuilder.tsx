@@ -16,7 +16,7 @@ import { FormBuilderProps } from './types';
 import { formatFormDataForSubmission, getDefaultValues } from './utils';
 import { createFormValidation } from './validation';
 
-function FormBuilder({ config, initialData, className }: FormBuilderProps) {
+function FormBuilder({ config, initialData }: FormBuilderProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
