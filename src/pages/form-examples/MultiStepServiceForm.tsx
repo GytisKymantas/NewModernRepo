@@ -158,7 +158,7 @@ function MultiStepServiceForm() {
                 ),
                 severity: 'info',
                 icon: (
-                  <Box sx={{ marginBottom: 'auto' }} id='boblazar'>
+                  <Box sx={{ marginBottom: 'auto' }}>
                     <InfoIcon />
                   </Box>
                 ),
