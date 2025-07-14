@@ -1,3 +1,4 @@
+/* eslint-disable */
 import theme from '@/theme';
 import styled from '@emotion/styled';
 import { Box, StepConnector, useMediaQuery } from '@mui/material';
@@ -139,34 +140,70 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
                 >
                   {step.title}
                   {/* Vertical Line */}
-                  {(stepIndex === 0 || stepIndex === 1) && (
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        top:
-                          stepIndex === 0
-                            ? upMd
-                              ? '27px'
-                              : '10.5px'
-                            : upMd
-                              ? '22.5px'
-                              : '10.5px',
-                        left: upMd ? '12.3px' : '99%',
-                        height:
-                          stepIndex === 0
-                            ? upMd
-                              ? '26px'
-                              : '3px'
-                            : upMd
-                              ? '33px'
-                              : '3px', // Adjust default height if needed
-                        width: upMd ? '3px' : '100%',
-                        backgroundColor: '#F0F2F5',
-                        transform: 'translateX(-50%)',
-                        zIndex: '1',
-                      }}
-                      id='stepid'
-                    />
+
+                  {steps.length === 2 ? (
+                    <>
+                      {stepIndex === 0 && (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top:
+                              stepIndex === 0
+                                ? upMd
+                                  ? '27px'
+                                  : '10.5px'
+                                : upMd
+                                  ? '22.5px'
+                                  : '10.5px',
+                            left: upMd ? '12.3px' : '99%',
+                            height:
+                              stepIndex === 0
+                                ? upMd
+                                  ? '26px'
+                                  : '3px'
+                                : upMd
+                                  ? '33px'
+                                  : '3px', // Adjust default height if needed
+                            width: upMd ? '3px' : '100%',
+                            backgroundColor: '#F0F2F5',
+                            transform: 'translateX(-50%)',
+                            zIndex: '1',
+                          }}
+                          id='stepid'
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {(stepIndex === 0 || stepIndex === 1) && (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top:
+                              stepIndex === 0
+                                ? upMd
+                                  ? '27px'
+                                  : '10.5px'
+                                : upMd
+                                  ? '22.5px'
+                                  : '10.5px',
+                            left: upMd ? '12.3px' : '99%',
+                            height:
+                              stepIndex === 0
+                                ? upMd
+                                  ? '26px'
+                                  : '3px'
+                                : upMd
+                                  ? '33px'
+                                  : '3px', // Adjust default height if needed
+                            width: upMd ? '3px' : '100%',
+                            backgroundColor: '#F0F2F5',
+                            transform: 'translateX(-50%)',
+                            zIndex: '1',
+                          }}
+                        />
+                      )}
+                    </>
                   )}
                 </StepLabel>
               </Step>

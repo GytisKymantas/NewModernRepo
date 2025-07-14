@@ -15,7 +15,7 @@ import CombinedFormTableData from './CombinedForm.deps';
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
 const searchField = commonFieldConfigs.search('search');
-
+console.log('test');
 function CombinedForm() {
   const localData = localStorage.getItem('serviceRequestDraft');
   const formData = JSON.parse(localData);
@@ -43,11 +43,11 @@ function CombinedForm() {
                   rows: [
                     {
                       label: 'Teikėjo vardas, pavardė',
-                      value: formData.companyName,
+                      value: formData?.companyName ?? 'ff',
                     },
                     {
                       label: 'Teikėjo asmens kodas',
-                      value: formData.personalCode,
+                      value: formData?.personalCode ?? 'ff',
                     },
                   ],
                 },
@@ -149,11 +149,11 @@ function CombinedForm() {
                   rows: [
                     {
                       label: 'Prašymo numeris',
-                      value: formData.companyName,
+                      value: formData?.companyName ?? 'ff',
                     },
                     {
                       label: 'Prašymo būsena',
-                      value: formData.companyName,
+                      value: formData?.companyName ?? 'ff',
                     },
                   ],
                 },
@@ -172,7 +172,7 @@ function CombinedForm() {
                   rows: [
                     {
                       label: 'Jungtinė pažyma',
-                      value: formData.companyName,
+                      value: formData?.companyName ?? 'ff',
                     },
                   ],
                 },
@@ -191,11 +191,11 @@ function CombinedForm() {
                   rows: [
                     {
                       label: 'Asmens kodas',
-                      value: formData.companyName,
+                      value: formData?.companyName ?? 'ff',
                     },
                     {
                       label: 'Vardas, Pavardė',
-                      value: formData.companyName,
+                      value: formData?.companyName ?? 'ff',
                     },
                   ],
                 },
@@ -266,6 +266,7 @@ function CombinedForm() {
     },
     onInvalidSubmit: async (errors, data) => {
       console.log('Invalid submit:', errors);
+      toast.error('Yra Klaidų.');
     },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));

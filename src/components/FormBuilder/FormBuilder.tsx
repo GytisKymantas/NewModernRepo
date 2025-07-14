@@ -16,7 +16,7 @@ import { FormBuilderProps } from './types';
 import { formatFormDataForSubmission, getDefaultValues } from './utils';
 import { createFormValidation } from './validation';
 
-function FormBuilder({ config, initialData, className }: FormBuilderProps) {
+function FormBuilder({ config, initialData }: FormBuilderProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
@@ -200,6 +200,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
           if (draftData) {
             // Set preserved data for form restoration
             setPreservedFormData(draftData);
+
             Object.keys(draftData).forEach((key) => {
               setValue(key, draftData[key]);
             });
@@ -212,6 +213,7 @@ function FormBuilder({ config, initialData, className }: FormBuilderProps) {
         }
       }
     };
+
     loadDraft();
   }, [config, setValue]);
 
