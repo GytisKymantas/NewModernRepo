@@ -29,14 +29,18 @@ function PricingTable({ sxStyle, document, price }: PricingTableProps) {
         <TableHead>
           <TableRow>
             <TableCell sx={{ backgroundColor: '#f9fafb' }}>Paslauga</TableCell>
-            <TableCell sx={{ backgroundColor: '#f9fafb' }}>Kaina</TableCell>
+            <TableCell align='right' sx={{ backgroundColor: '#f9fafb' }}>
+              Kaina
+            </TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
           <TableRow>
             <TableCell sx={{ borderRight: 'none' }}>{document}</TableCell>
-            <TableCell sx={{ borderLeft: 'none' }}>{price}</TableCell>
+            <TableCell align='right' sx={{ borderLeft: 'none' }}>
+              {price}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell
@@ -52,8 +56,9 @@ function PricingTable({ sxStyle, document, price }: PricingTableProps) {
               sx={{
                 fontWeight: 'bold',
                 borderLeft: 'none',
-                width: isMobile ? '100px' : undefined,
+                width: '100px',
               }}
+              align='right'
             >
               {price}
             </TableCell>
