@@ -16,6 +16,8 @@ import { AuthGuard, CallbackHandler, SilentCallback } from './components/auth';
 import { AuthProvider } from './contexts/AuthContext';
 import './i18n/i18n';
 import Home from './pages/Home';
+import OrderForm from './pages/esi-preparation/OrderForm';
+import OrderReviewForm from './pages/esi-preparation/OrderReviewForm';
 import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
 import LegalStatementForm from './pages/public-statement/LegalStatementForm';
 import NaturalStatementForm from './pages/public-statement/NaturalStatementForm';
@@ -86,6 +88,22 @@ const router = createBrowserRouter(
         element={
           <AuthGuard>
             <NaturalStatementForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/esi-preparation/order'
+        element={
+          <AuthGuard>
+            <OrderForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/esi-preparation/review'
+        element={
+          <AuthGuard>
+            <OrderReviewForm />
           </AuthGuard>
         }
       />

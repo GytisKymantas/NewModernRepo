@@ -434,9 +434,13 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
           ],
         }}
         title={config.description}
+        headerDescription={config.headerDescription}
       />
 
-      <ServiceFormAccordion initialAccordionStateArray={initialAccordionStateArray}>
+      <ServiceFormAccordion
+        initialAccordionStateArray={initialAccordionStateArray}
+        multiStep={config.multiStep}
+      >
         <FormContent
           step={currentStepConfig}
           control={control}
