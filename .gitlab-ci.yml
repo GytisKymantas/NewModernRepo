@@ -26,23 +26,19 @@ build:
   image: node:${NODE_VERSION}-alpine
   <<: *node_cache
   script:
-    - echo "🚀 Starting build process..."
-    - echo "📦 Installing dependencies..."
+    - echo "Starting build process..."
+    - echo "Installing dependencies..."
     - npm ci --silent --legacy-peer-deps
-    - echo "✅ Dependencies installed successfully"
-    - echo "🔍 Running linting..."
+    - echo "Dependencies installed successfully"
+    - echo "Running linting..."
     - npm run lint
-    - echo "✅ Linting passed"
-    - echo "🏗️ Building application for standalone deployment..."
+    - echo "Linting passed"
+    - echo "Building application for standalone deployment..."
     - npm run build:standalone
-    - echo "✅ Build completed successfully"
-    - echo "📁 Build artifacts:"
+    - echo "Build completed successfully"
+    - echo "Build artifacts:"
     - ls -la dist/
-    - echo "📊 Build summary:"
-    - echo "  - Build mode: Standalone"
-    - echo "  - Output directory: dist/"
-    - echo "  - Main files: $(ls dist/*.html dist/*.js dist/*.css 2>/dev/null | wc -l) files"
-    - echo "  - Total size: $(du -sh dist/ | cut -f1)"
+    - echo "Build summary - Standalone mode, output in dist/"
   artifacts:
     paths:
       - dist/
