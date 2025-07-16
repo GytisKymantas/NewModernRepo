@@ -2,6 +2,7 @@ const { merge } = require('webpack-merge');
 const singleSpaDefaults = require('webpack-config-single-spa-react-ts');
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /*
  * @MICROFRONTEND
@@ -44,6 +45,11 @@ module.exports = (webpackConfigEnv, argv) => {
         ? [
             new webpack.ProvidePlugin({
               React: 'react',
+            }),
+            new HtmlWebpackPlugin({
+              template: 'public/index.html',
+              filename: 'index.html',
+              inject: true,
             }),
           ]
         : []),
