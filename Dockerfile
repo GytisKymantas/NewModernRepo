@@ -8,7 +8,7 @@ COPY package-lock.json /usr/src/app/package-lock.json
 RUN npm ci --silent --legacy-peer-deps
 COPY . /usr/src/app
 
-RUN npm run build
+RUN npm run build:standalone
 
 # production environment
 FROM nginx:1.23.3-alpine
