@@ -91,7 +91,6 @@ function DocumentInfoSection({ index }: { index: number }) {
 
   const handleOpenModal = (modal: 'view' | 'delete') => setOpenModal(modal);
   const handleCloseModal = () => setOpenModal(null);
-
   const getStatusLabelColor = (() => {
     if (index === 1) {
       return '#A5F3D3';

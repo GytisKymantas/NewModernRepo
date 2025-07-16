@@ -46,9 +46,10 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
   });
 
   const handleOnSubmit = (data: FormModel) => {
-    if (onSubmit) onSubmit(data);
-    reset();
-    onClose();
+    // if (onSubmit) onSubmit(data);
+    // reset();
+    console.log('handleOnSubmit');
+    // onClose();
   };
 
   return (
@@ -95,7 +96,7 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
             </Typography>
           </StyledFormSection>
           <DialogActions sx={{ justifyContent: 'center' }}>
-            <Button type='submit'>Taip</Button>
+            <Button onClick={onClose}>Taip</Button>
             <Button color='error' variant='outlined' onClick={onClose}>
               Ne
             </Button>

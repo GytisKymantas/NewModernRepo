@@ -1,10 +1,12 @@
 import InfoIcon from '@/assets/icons/InfoIcon';
 import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
+import NotaryPersonModal from '@/components/FormBuilder/modals/NotaryPersonModal';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import ServiceDetails from '@/components/OwnedProperties/ServiceDetails';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
+import { TableWithModalData } from '@/pages/public-statement/statementForm.deps';
 import { Box, Typography } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import {
@@ -12,7 +14,7 @@ import {
   PricingTableData,
   ServiceDetail,
   sampleTableData,
-} from './MultiStepServiceForm.deps';
+} from '../MultiStepServiceForm.deps';
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
@@ -53,21 +55,6 @@ function PersonalCodeField() {
   );
 }
 
-function CompanyCodeField() {
-  return (
-    <ServiceDetails
-      title=''
-      isWithoutDivider
-      rows={[
-        {
-          label: 'Juridinio asmens kodas',
-          value: '303180528',
-        },
-      ]}
-    />
-  );
-}
-
 function NameField() {
   return (
     <ServiceDetails
@@ -77,21 +64,6 @@ function NameField() {
         {
           label: 'Vardas, Pavardė',
           value: 'Vardenis Pavardenis',
-        },
-      ]}
-    />
-  );
-}
-
-function CompanyNameField() {
-  return (
-    <ServiceDetails
-      title=''
-      isWithoutDivider
-      rows={[
-        {
-          label: 'Pavadinimas',
-          value: 'UAB Testinis variantas',
         },
       ]}
     />
@@ -114,7 +86,7 @@ function FormDateField() {
   );
 }
 
-function MultiStepServiceForm() {
+function MultiStepServiceFormNotary() {
   const localData = localStorage.getItem('serviceRequestDraft');
   const formData = JSON.parse(localData);
 
@@ -235,25 +207,47 @@ function MultiStepServiceForm() {
           },
           {
             id: 'bordered-section',
-            title: 'Atstovaujamas juridinis asmuo',
+            title: 'Atstovaujamas asmuo',
             variant: 'default',
             fields: [
               {
-                id: 'personalCodeReadOnlyField',
-                name: 'personalCodeReadOnlyField',
+                id: 'publicStatement',
+                name: 'publicStatement',
                 type: 'custom',
-                label: 'personalCodeReadOnlyField',
+                label: 'publicStatement',
                 required: false,
-                component: CompanyCodeField,
+                component: TableWithModalData,
+                props: {
+                  ModalComponent: NotaryPersonModal,
+                },
+              },
+            ],
+          },
+          {
+            id: 'bordered-section',
+            title: 'Atstovaujamo asmens kontaktiniai duomenys',
+            variant: 'default',
+            fields: [
+              {
+                ...phoneField,
+                label: 'Telefono nr.',
+                required: true,
               },
               {
-                id: 'firstLastNameReadOnlyField',
-                name: 'firstLastNameReadOnlyField',
-                type: 'custom',
-                label: 'firstLastNameReadOnlyField',
-                required: false,
-                component: CompanyNameField,
+                ...emailField,
+                defaultValue: 'vardenis.pavardenis@gmail.com',
               },
+              // {
+              //   id: 'publicStatement',
+              //   name: 'publicStatement',
+              //   type: 'custom',
+              //   label: 'publicStatement',
+              //   required: false,
+              //   component: TableWithModalData,
+              //   props: {
+              //     ModalComponent: NaturalPersonModal,
+              //   },
+              // },
             ],
           },
           {
@@ -515,4 +509,4 @@ function MultiStepServiceForm() {
   );
 }
 
-export default MultiStepServiceForm;
+export default MultiStepServiceFormNotary;

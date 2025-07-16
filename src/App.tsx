@@ -16,6 +16,8 @@ import { AuthGuard, CallbackHandler, SilentCallback } from './components/auth';
 import { AuthProvider } from './contexts/AuthContext';
 import './i18n/i18n';
 import Home from './pages/Home';
+import MultiStepServiceFormNotary from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormNotary';
+import MultiStepServiceFormPerson from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormPerson';
 import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
 import LegalStatementForm from './pages/public-statement/LegalStatementForm';
 import NaturalStatementForm from './pages/public-statement/NaturalStatementForm';
@@ -58,10 +60,26 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path='form-examples/multi-step-service'
+        path='form-examples/multi-step-service-company'
         element={
           <AuthGuard>
             <MultiStepServiceForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/multi-step-service-notary'
+        element={
+          <AuthGuard>
+            <MultiStepServiceFormNotary />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/multi-step-service-person'
+        element={
+          <AuthGuard>
+            <MultiStepServiceFormPerson />
           </AuthGuard>
         }
       />

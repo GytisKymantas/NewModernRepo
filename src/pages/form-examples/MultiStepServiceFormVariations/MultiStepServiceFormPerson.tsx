@@ -12,7 +12,7 @@ import {
   PricingTableData,
   ServiceDetail,
   sampleTableData,
-} from './MultiStepServiceForm.deps';
+} from '../MultiStepServiceForm.deps';
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
@@ -53,21 +53,6 @@ function PersonalCodeField() {
   );
 }
 
-function CompanyCodeField() {
-  return (
-    <ServiceDetails
-      title=''
-      isWithoutDivider
-      rows={[
-        {
-          label: 'Juridinio asmens kodas',
-          value: '303180528',
-        },
-      ]}
-    />
-  );
-}
-
 function NameField() {
   return (
     <ServiceDetails
@@ -77,21 +62,6 @@ function NameField() {
         {
           label: 'Vardas, Pavardė',
           value: 'Vardenis Pavardenis',
-        },
-      ]}
-    />
-  );
-}
-
-function CompanyNameField() {
-  return (
-    <ServiceDetails
-      title=''
-      isWithoutDivider
-      rows={[
-        {
-          label: 'Pavadinimas',
-          value: 'UAB Testinis variantas',
         },
       ]}
     />
@@ -114,7 +84,7 @@ function FormDateField() {
   );
 }
 
-function MultiStepServiceForm() {
+function MultiStepServiceFormPerson() {
   const localData = localStorage.getItem('serviceRequestDraft');
   const formData = JSON.parse(localData);
 
@@ -206,7 +176,53 @@ function MultiStepServiceForm() {
               },
             ],
           },
-
+          {
+            id: 'bordered-section',
+            title: '',
+            variant: 'bordered',
+            fields: [
+              {
+                id: 'DocumentTypedOnlyField',
+                name: 'DocumentTypedOnlyField',
+                type: 'custom',
+                label: 'DocumentTypedOnlyField',
+                required: false,
+                component: DocumentTypeField,
+              },
+              {
+                id: 'termDate',
+                name: 'termDate',
+                type: 'date',
+                label: 'Data',
+                required: true,
+                clearable: true,
+                defaultValue: '',
+              },
+              {
+                id: 'documentNumber',
+                name: 'documentNumber',
+                type: 'text',
+                label: 'Dokumento numeris',
+                required: true,
+                placeholder: 'Įrašykite dokumento numerį',
+              },
+              {
+                id: 'fileUpload',
+                name: 'fileUpload',
+                type: 'file',
+                label: 'Dokumentas',
+                required: true,
+                accept: '.doc,.docx,.pdf,.pages',
+                maxSize: 5 * 1024 * 1024, // 5MB
+                description: 'Maksimalus failo dydis: 5MB',
+                slotProps: {
+                  // wrapper: {
+                  //   labelSubtitle: 'Tinkami formatai: .doc, .xdoc, .pdf, .pages',
+                  // },
+                },
+              },
+            ],
+          },
           {
             id: 'agreements',
             title: '',
@@ -230,29 +246,6 @@ function MultiStepServiceForm() {
                     className: 'custom-flex-radio-group',
                   },
                 },
-              },
-            ],
-          },
-          {
-            id: 'bordered-section',
-            title: 'Atstovaujamas juridinis asmuo',
-            variant: 'default',
-            fields: [
-              {
-                id: 'personalCodeReadOnlyField',
-                name: 'personalCodeReadOnlyField',
-                type: 'custom',
-                label: 'personalCodeReadOnlyField',
-                required: false,
-                component: CompanyCodeField,
-              },
-              {
-                id: 'firstLastNameReadOnlyField',
-                name: 'firstLastNameReadOnlyField',
-                type: 'custom',
-                label: 'firstLastNameReadOnlyField',
-                required: false,
-                component: CompanyNameField,
               },
             ],
           },
@@ -515,4 +508,4 @@ function MultiStepServiceForm() {
   );
 }
 
-export default MultiStepServiceForm;
+export default MultiStepServiceFormPerson;
