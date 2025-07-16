@@ -68,7 +68,6 @@ build-and-push-image:
     - build
   only:
     - staging
-  when: manual
   before_script:
     - docker --version
   script:

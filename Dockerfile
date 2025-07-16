@@ -1,11 +1,19 @@
 # build environment
 FROM node:18.14.2-alpine as build
 
+# Install build dependencies for native modules
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git \
+    curl
+
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
 COPY package-lock.json /usr/src/app/package-lock.json
-RUN npm ci --silent --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 COPY . /usr/src/app
 
 RUN npm run build:standalone
