@@ -1,18 +1,11 @@
 stages:
   - build
   - security
-  - package
-  - deploy
+  - docker
+  # - deploy  # Disabled until GitLab variables are configured
 
 variables:
-  # Docker image settings
-  DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE
-  DOCKER_TAG: $CI_COMMIT_SHA
-  DOCKER_LATEST_TAG: latest
-
-  # Docker buildkit for improved caching
-  DOCKER_BUILDKIT: 1
-  DOCKER_DRIVER: overlay2
+  DOCKER_REGISTRY: 'dockerrep.registrucentras.lt:5000'
 
   # Node.js version for consistency
   NODE_VERSION: '18.14.2'
@@ -62,97 +55,56 @@ security:
     - staging
     - develop
 
-# Docker build stage
-docker-build:
-  stage: package
-  image: docker:20.10.16
-  services:
-    - docker:20.10.16-dind
+build-and-push-image:
+  stage: docker
+  image: docker:stable
   variables:
-    DOCKER_HOST: tcp://docker:2376
-    DOCKER_TLS_CERTDIR: '/certs'
     DOCKER_DRIVER: overlay2
-  before_script:
-    # Wait for Docker daemon to be ready
-    - until docker info; do sleep 1; done
-    # Login to GitLab Container Registry
-    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-  script:
-    - echo "Building Docker image..."
-    - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG -t $DOCKER_IMAGE_NAME:$DOCKER_LATEST_TAG .
-    - echo "Pushing Docker image..."
-    - docker push $DOCKER_IMAGE_NAME:$DOCKER_TAG
-    - docker push $DOCKER_IMAGE_NAME:$DOCKER_LATEST_TAG
-    - echo "Docker image pushed to $DOCKER_IMAGE_NAME:$DOCKER_TAG"
-  after_script:
-    - docker logout $CI_REGISTRY
-  only:
-    - main
-    - staging
-    - develop
-
-# Docker build for merge requests (no push)
-docker-build-mr:
-  stage: package
-  image: docker:20.10.16
+    DOCKER_HOST: tcp://docker:2375
+    NO_PROXY: 'docker'
   services:
-    - docker:20.10.16-dind
-  variables:
-    DOCKER_HOST: tcp://docker:2376
-    DOCKER_TLS_CERTDIR: '/certs'
-    DOCKER_DRIVER: overlay2
-  before_script:
-    # Wait for Docker daemon to be ready
-    - until docker info; do sleep 1; done
-    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-  script:
-    - echo "Building Docker image for merge request (no push)..."
-    - docker build -t $DOCKER_IMAGE_NAME:mr-$CI_MERGE_REQUEST_IID .
-    - echo "Docker image built successfully for MR"
-  after_script:
-    - docker logout $CI_REGISTRY
-  only:
-    - merge_requests
-
-# Deploy to staging
-deploy-staging:
-  stage: deploy
-  image: alpine:latest
-  variables:
-    DEPLOY_ENV: staging
-  before_script:
-    - apk add --no-cache curl
-  script:
-    - echo "Deploying to staging environment..."
-    - echo "Image:$DOCKER_IMAGE_NAME:$DOCKER_TAG"
-    - echo "Add your deployment script here"
-    - echo "Deployment completed to staging"
-  environment:
-    name: staging
-    url: https://staging.your-domain.com
+    - docker:18.09.7-dind
+  needs:
+    - build
   only:
     - staging
   when: manual
-
-# Deploy to production
-deploy-production:
-  stage: deploy
-  image: alpine:latest
-  variables:
-    DEPLOY_ENV: production
   before_script:
-    - apk add --no-cache curl
+    - docker --version
   script:
-    - echo "Deploying to production environment..."
-    - echo "Image:$DOCKER_IMAGE_NAME:$DOCKER_TAG"
-    - echo "Add your deployment script here"
-    - echo "Deployment completed to production"
-  environment:
-    name: production
-    url: https://your-domain.com
-  only:
-    - main
-  when: manual
+    - echo "Image tag - $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
+    - docker build --build-arg NO_PROXY=docker -t $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA .
+    - docker push $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
+
+# Deploy to staging using Docker registry (DISABLED - deploy manually for now)
+# deploy-staging:
+#   stage: deploy
+#   image: alpine:latest
+#   needs:
+#     - build-and-push-image
+#   only:
+#     - staging
+#   when: manual
+#   before_script:
+#     - apk add --no-cache openssh-client docker-compose
+#     - eval $(ssh-agent -s)
+#     - echo "$STAGING_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - ssh-keyscan -H $STAGING_SERVER_HOST >> ~/.ssh/known_hosts
+#   script:
+#     - echo "Deploying React app to staging server $STAGING_SERVER_HOST..."
+#     - echo "$STAGING_ENV_FILE" | base64 -d > .env
+#     - echo "DOCKER_IMAGE_NAME=$DOCKER_REGISTRY/$CI_PROJECT_NAME" >> .env
+#     - echo "DOCKER_TAG=latest_$CI_COMMIT_SHORT_SHA" >> .env
+#     # Transfer compose files and env to server
+#     - scp .env docker-compose.yml docker-compose.debug.yml devadmin@$STAGING_SERVER_HOST:~/self-service-jar-provider-ui/
+#     # Pull and run from registry
+#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose -f docker-compose.yml -f docker-compose.debug.yml pull"
+#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose -f docker-compose.yml -f docker-compose.debug.yml up -d --force-recreate"
+#   environment:
+#     name: staging
+#     url: https://$STAGING_SERVER_HOST
 
 # Clean up old container registry images (optional)
 cleanup:
