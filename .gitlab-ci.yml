@@ -75,7 +75,6 @@ build-and-push-image:
     - echo "Image tag - $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
     - docker build --build-arg NO_PROXY=docker -t $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
-
 # Deploy to staging using Docker registry (DISABLED - deploy manually for now)
 # deploy-staging:
 #   stage: deploy
@@ -98,21 +97,21 @@ build-and-push-image:
 #     - echo "DOCKER_IMAGE_NAME=$DOCKER_REGISTRY/$CI_PROJECT_NAME" >> .env
 #     - echo "DOCKER_TAG=latest_$CI_COMMIT_SHORT_SHA" >> .env
 #     # Transfer compose files and env to server
-#     - scp .env docker-compose.yml docker-compose.debug.yml devadmin@$STAGING_SERVER_HOST:~/self-service-jar-provider-ui/
+#     - scp .env docker-compose.yml devadmin@$STAGING_SERVER_HOST:~/self-service-jar-provider-ui/
 #     # Pull and run from registry
-#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose -f docker-compose.yml -f docker-compose.debug.yml pull"
-#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose -f docker-compose.yml -f docker-compose.debug.yml up -d --force-recreate"
+#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose pull"
+#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose up -d --force-recreate"
 #   environment:
 #     name: staging
 #     url: https://$STAGING_SERVER_HOST
 
-# Clean up old container registry images (optional)
-cleanup:
-  stage: deploy
-  image: alpine:latest
-  script:
-    - echo "Cleaning up old images..."
-    - echo "This would require additional setup with GitLab API"
-  only:
-    - schedules
-  when: manual
+# Clean up old container registry images (optional) - DISABLED
+# cleanup:
+#   stage: docker
+#   image: alpine:latest
+#   script:
+#     - echo "Cleaning up old images..."
+#     - echo "This would require additional setup with GitLab API"
+#   only:
+#     - schedules
+#   when: manual
