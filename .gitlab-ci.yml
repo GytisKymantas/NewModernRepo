@@ -54,9 +54,9 @@ security:
   stage: security
   image: node:${NODE_VERSION}-alpine
   script:
-    - echo "🔒 Running security audit..."
+    - echo "Running security audit..."
     - npm audit --audit-level moderate
-    - echo "✅ Security audit completed"
+    - echo "Security audit completed"
   allow_failure: true
   only:
     - merge_requests
@@ -79,36 +79,36 @@ build-and-push-image:
     - staging
   when: manual
   before_script:
-    - echo "🐳 Docker environment:"
+    - echo "Docker environment:"
     - docker --version
-    - echo "🏷️ Image details:"
-    - echo "  - Registry: $DOCKER_REGISTRY"
-    - echo "  - Project: $CI_PROJECT_NAME"
-    - echo "  - Tag: latest_$CI_COMMIT_SHORT_SHA"
-    - echo "  - Full image: $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Image details:"
+    - echo "Registry: $DOCKER_REGISTRY"
+    - echo "Project: $CI_PROJECT_NAME"
+    - echo "Tag: latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Full image: $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
   script:
-    - echo "🔨 Building Docker image..."
+    - echo "Building Docker image..."
     - docker build --build-arg NO_PROXY=docker -t $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA .
-    - echo "✅ Docker image built successfully"
-    - echo "📊 Image information:"
+    - echo "Docker image built successfully"
+    - echo "Image information:"
     - docker images $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
-    - echo "📤 Pushing to registry..."
+    - echo "Pushing to registry..."
     - docker push $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
-    - echo "✅ Image pushed successfully"
+    - echo "Image pushed successfully"
     - echo ""
-    - echo "🎉 BUILD SUMMARY"
-    - echo "═══════════════════════════════════════════════════════"
-    - echo "📋 Build Information:"
-    - echo "  - Branch: $CI_COMMIT_REF_NAME"
-    - echo "  - Commit: $CI_COMMIT_SHORT_SHA"
-    - echo "  - Pipeline: $CI_PIPELINE_ID"
-    - echo "🐳 Docker Image:"
-    - echo "  - Image: $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
-    - echo "  - Registry: $DOCKER_REGISTRY"
-    - echo "🚀 Manual Deployment:"
-    - echo "  - Update .env with: DOCKER_TAG=latest_$CI_COMMIT_SHORT_SHA"
-    - echo "  - Run: docker-compose pull && docker-compose up -d"
-    - echo "═══════════════════════════════════════════════════════"
+    - echo "BUILD SUMMARY"
+    - echo "======================================="
+    - echo "Build Information:"
+    - echo "Branch: $CI_COMMIT_REF_NAME"
+    - echo "Commit: $CI_COMMIT_SHORT_SHA"
+    - echo "Pipeline: $CI_PIPELINE_ID"
+    - echo "Docker Image:"
+    - echo "Image: $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Registry: $DOCKER_REGISTRY"
+    - echo "Manual Deployment:"
+    - echo "Update .env with: DOCKER_TAG=latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Run: docker-compose pull && docker-compose up -d"
+    - echo "======================================="
 # Deploy to staging using Docker registry (DISABLED - deploy manually for now)
 # deploy-staging:
 #   stage: deploy
