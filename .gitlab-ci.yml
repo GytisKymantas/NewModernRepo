@@ -6,8 +6,6 @@ stages:
 
 variables:
   DOCKER_REGISTRY: 'dockerrep.registrucentras.lt:5000'
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375
 
   # Node.js version for consistency
   NODE_VERSION: '18.14.2'
@@ -28,19 +26,12 @@ build:
   image: node:${NODE_VERSION}-alpine
   <<: *node_cache
   script:
-    - echo "Starting build process..."
     - echo "Installing dependencies..."
     - npm ci --silent --legacy-peer-deps
-    - echo "Dependencies installed successfully"
     - echo "Running linting..."
     - npm run lint
-    - echo "Linting passed"
     - echo "Building application for standalone deployment..."
     - npm run build:standalone
-    - echo "Build completed successfully"
-    - echo "Build artifacts:"
-    - ls -la dist/
-    - echo "Build summary - Standalone mode, output in dist/"
   artifacts:
     paths:
       - dist/
@@ -56,9 +47,7 @@ security:
   stage: security
   image: node:${NODE_VERSION}-alpine
   script:
-    - echo "Running security audit..."
     - npm audit --audit-level moderate
-    - echo "Security audit completed"
   allow_failure: true
   only:
     - merge_requests
@@ -69,6 +58,10 @@ security:
 build-and-push-image:
   stage: docker
   image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375
+    NO_PROXY: 'docker'
   services:
     - docker:18.09.7-dind
   needs:
@@ -77,36 +70,11 @@ build-and-push-image:
     - staging
   when: manual
   before_script:
-    - echo "Docker environment:"
     - docker --version
-    - echo "Image details:"
-    - echo "Registry=$DOCKER_REGISTRY"
-    - echo "Project=$CI_PROJECT_NAME"
-    - echo "Tag=latest_$CI_COMMIT_SHORT_SHA"
-    - echo "Full image=$DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
   script:
-    - echo "Building Docker image..."
+    - echo "Image tag - $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
     - docker build --build-arg NO_PROXY=docker -t $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA .
-    - echo "Docker image built successfully"
-    - echo "Image information:"
-    - docker images $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
-    - echo "Pushing to registry..."
     - docker push $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
-    - echo "Image pushed successfully"
-    - echo ""
-    - echo "BUILD SUMMARY"
-    - echo "======================================="
-    - echo "Build Information:"
-    - echo "Branch: $CI_COMMIT_REF_NAME"
-    - echo "Commit: $CI_COMMIT_SHORT_SHA"
-    - echo "Pipeline: $CI_PIPELINE_ID"
-    - echo "Docker Image:"
-    - echo "Image: $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
-    - echo "Registry: $DOCKER_REGISTRY"
-    - echo "Manual Deployment:"
-    - echo "Update .env with: DOCKER_TAG=latest_$CI_COMMIT_SHORT_SHA"
-    - echo "Run: docker-compose pull && docker-compose up -d"
-    - echo "======================================="
 # Deploy to staging using Docker registry (DISABLED - deploy manually for now)
 # deploy-staging:
 #   stage: deploy
