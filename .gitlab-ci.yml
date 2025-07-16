@@ -30,8 +30,8 @@ build:
     - npm ci --silent --legacy-peer-deps
     - echo "Running linting..."
     - npm run lint
-    - echo "Building application..."
-    - npm run build
+    - echo "Building application for standalone deployment..."
+    - npm run build:standalone
   artifacts:
     paths:
       - dist/
