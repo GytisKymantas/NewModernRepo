@@ -6,6 +6,8 @@ stages:
 
 variables:
   DOCKER_REGISTRY: 'dockerrep.registrucentras.lt:5000'
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
 
   # Node.js version for consistency
   NODE_VERSION: '18.14.2'
@@ -67,10 +69,6 @@ security:
 build-and-push-image:
   stage: docker
   image: docker:stable
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://docker:2375
-    NO_PROXY: 'docker'
   services:
     - docker:18.09.7-dind
   needs:
