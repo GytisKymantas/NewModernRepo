@@ -4,9 +4,13 @@ FROM node:20.16.0 as build
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
+# Configure Node.js for containerized environments
+ENV NODE_OPTIONS="--max-old-space-size=4096 --max-semi-space-size=128"
+ENV UV_THREADPOOL_SIZE=4
+
 COPY package.json /usr/src/app/package.json
 COPY package-lock.json /usr/src/app/package-lock.json
-RUN npm ci --legacy-peer-deps
+RUN npm ci --legacy-peer-deps --no-audit --no-fund
 COPY . /usr/src/app
 
 RUN npm run build:standalone

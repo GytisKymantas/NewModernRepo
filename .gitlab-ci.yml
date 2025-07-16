@@ -62,8 +62,11 @@ build-and-push-image:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://docker:2375
     NO_PROXY: 'docker'
+    # Increase Docker build resources
+    DOCKER_BUILDKIT: '0'
   services:
-    - docker:18.09.7-dind
+    - name: docker:18.09.7-dind
+      command: ['--mtu=1460', '--storage-driver=overlay2']
   needs:
     - build
   only:
