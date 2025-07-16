@@ -1,13 +1,5 @@
 # build environment
-FROM node:18.14.2-alpine as build
-
-# Install build dependencies for native modules
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    git \
-    curl
+FROM node:18.14.2 as build
 
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
