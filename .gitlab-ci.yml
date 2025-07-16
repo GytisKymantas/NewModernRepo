@@ -8,7 +8,7 @@ variables:
   DOCKER_REGISTRY: 'dockerrep.registrucentras.lt:5000'
 
   # Node.js version for consistency
-  NODE_VERSION: '20.16.0'
+  NODE_VERSION: '22.3.0'
 
 # Cache node_modules for faster builds
 .node_cache: &node_cache
