@@ -7,8 +7,9 @@ type Props = {
   breadcrumbsProps: React.ComponentProps<typeof RcSesBreadcrumbs>;
   children?: React.ReactNode;
   title: string;
+  headerDescription?: string;
 };
-function ServiceHeader({ breadcrumbsProps, children, title }: Props) {
+function ServiceHeader({ breadcrumbsProps, children, title, headerDescription }: Props) {
   // Theme debug removed for production
   return (
     <Box sx={{ backgroundColor: '#F3FBFE' }}>
@@ -38,6 +39,14 @@ function ServiceHeader({ breadcrumbsProps, children, title }: Props) {
         >
           {title}
         </Typography>
+        {headerDescription && (
+          <Typography variant='body1' sx={{ marginTop: '8px' }}>
+            Šiame puslapyje Jūs galite užsisakyti Nekilnojamojo turto registro išrašus,
+            pažymas bei kitus dokumentus. Užsakytą NTR išrašą, pažymą ar kitą dokumentą
+            galėsite gauti elektroniniu būdu arba atsiimti pasirinktame VĮ Registrų centro
+            padalinyje.
+          </Typography>
+        )}
 
         {!!children && (
           <Box

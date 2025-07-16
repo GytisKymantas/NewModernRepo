@@ -228,6 +228,7 @@ export interface FormBuilderConfig {
   id: string;
   title: string;
   description?: string;
+  headerDescription?: string;
   loading?: LoadingConfig; // New loading configuration
   multiStep?: boolean;
   steps: FormStep[];

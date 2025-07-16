@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import palette from '@/theme/palette';
 import styled from '@emotion/styled';
 import {
   Accordion,
@@ -73,7 +74,15 @@ function AccordionWrapperNotExpanded(props: Props) {
         aria-controls={`${id}-content`}
         expandIcon={null}
         // expandIcon={canToggle === false ? null : <CaretDownIcon />}
-        sx={sxStyle ?? { backgroundColor: 'white', borderRadius: '8px' }}
+        sx={
+          sxStyle ?? {
+            backgroundColor: {
+              sm: palette.grey[50],
+              xs: 'white',
+            },
+            borderRadius: '8px',
+          }
+        }
       >
         {titleComponent ? (
           <Box sx={{ margin: '0' }}>{titleComponent}</Box>
