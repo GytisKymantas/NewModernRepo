@@ -80,10 +80,10 @@ build-and-push-image:
     - echo "Docker environment:"
     - docker --version
     - echo "Image details:"
-    - echo "Registry: $DOCKER_REGISTRY"
-    - echo "Project: $CI_PROJECT_NAME"
-    - echo "Tag: latest_$CI_COMMIT_SHORT_SHA"
-    - echo "Full image: $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Registry=$DOCKER_REGISTRY"
+    - echo "Project=$CI_PROJECT_NAME"
+    - echo "Tag=latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Full image=$DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
   script:
     - echo "Building Docker image..."
     - docker build --build-arg NO_PROXY=docker -t $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA .
