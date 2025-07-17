@@ -1,5 +1,5 @@
 # build environment
-FROM node:22.3.0 as build
+FROM node:18.14.2 as build
 
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
