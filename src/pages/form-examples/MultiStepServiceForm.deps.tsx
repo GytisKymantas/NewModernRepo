@@ -75,4 +75,4 @@ const sampleTableData = {
   ],
 };
 
-export { FormTableData, PricingTable, PricingTableData, ServiceDetail, sampleTableData };
+export { FormTableData, PricingTable, PricingTableData, sampleTableData, ServiceDetail };

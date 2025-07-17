@@ -133,13 +133,11 @@ Routes are automatically protected when `REACT_APP_AUTH_ENABLED=true`:
 ### Key Features
 
 1. **Automatic Token Management**: Tokens are automatically:
-
    - Injected into API requests
    - Refreshed when expired
    - Cleared when invalid
 
 2. **Error Handling**: 401 responses trigger:
-
    - Silent token refresh attempt
    - Redirect to login if refresh fails
 

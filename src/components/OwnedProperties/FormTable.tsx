@@ -55,7 +55,7 @@ function MobileTable<Row extends Record<string, any>>({
                   justifyContent:
                     typeof col.cellAlign === 'function'
                       ? col.cellAlign(row)
-                      : col.cellAlign ?? 'left',
+                      : (col.cellAlign ?? 'left'),
                 }}
               >
                 <Box sx={{ alignSelf: 'flex-start', pt: '16px' }}>
@@ -110,7 +110,7 @@ function FormTable<Row extends Record<string, any>>({
                 const alignment =
                   typeof col.cellAlign === 'function'
                     ? col.cellAlign(row)
-                    : col.cellAlign ?? 'left';
+                    : (col.cellAlign ?? 'left');
 
                 return (
                   <TableCell

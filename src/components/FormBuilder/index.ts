@@ -46,12 +46,12 @@
 // Import for internal use in commonFieldConfigs
 import { createCustomValidationRules } from './validation';
 
-export { default as FieldRenderer, SubgroupRenderer } from './FieldRenderer';
-export { default as FormBuilder } from './FormBuilder';
 export { default as FormActions } from './components/FormActions';
 export { default as FormContent } from './components/FormContent';
 export { default as FormHeader } from './components/FormHeader';
 export * from './components/StepIcons';
+export { default as FieldRenderer, SubgroupRenderer } from './FieldRenderer';
+export { default as FormBuilder } from './FormBuilder';
 export * from './styled';
 export type * from './types';
 export * from './utils';
@@ -153,7 +153,7 @@ export const commonFieldConfigs = {
 
 // Function to create field configs with custom Zod validation (for advanced use cases)
 export const createTranslatedFieldConfigs = (
-  translateFunction?: (key: string, values?: Record<string, any>) => string,
+  translateFunction?: (key: string, values?: Record<string, string | number>) => string,
 ) => {
   const validationRules = createCustomValidationRules(translateFunction);
 
