@@ -355,7 +355,7 @@ function MultiStepServiceFormNotary() {
                   rows: [
                     {
                       label: 'Laikinai įrašomas pavadinimas',
-                      value: formData.companyName ?? 'Pavadinimas',
+                      value: formData?.companyName ?? 'Pavadinimas',
                     },
                   ],
                 },
