@@ -77,7 +77,6 @@ export const getDefaultValues = (steps: any[]): Record<string, any> => {
         case 'email':
         case 'password':
         case 'phone':
-        case 'search':
           defaultValues[field.name] = '';
           break;
         case 'number':
@@ -289,4 +288,12 @@ export const createFileAcceptPatterns = {
 export const validateFileAccept = (file: File, acceptString: string): boolean => {
   if (!acceptString) return true;
   return accept(file, acceptString);
+};
+
+export const renderIfMatch = (checkValue, targetField, watchFn) => {
+  const checkedVal = watchFn(targetField);
+  if (checkValue === checkedVal) {
+    return true;
+  }
+  return null;
 };

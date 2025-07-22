@@ -1,75 +1,123 @@
 import InfoIcon from '@/assets/icons/InfoIcon';
 import FormBuilder from '@/components/FormBuilder/FormBuilder';
-import { commonFieldConfigs } from '@/components/FormBuilder/index';
+import PersonModal from '@/components/FormBuilder/modals/PersonModal';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
 import toast from 'react-hot-toast';
 import {
+  CombinedFormTableData,
   FormTableData,
   PricingTableData,
+  SearchableModalInput,
   ServiceDetail,
-} from '../MultiStepServiceForm.deps';
-import CombinedFormTableData from './CombinedForm.deps';
+} from './CombinedForm.deps';
 
-const emailField = commonFieldConfigs.email('email');
-const phoneField = commonFieldConfigs.phone('phone');
-const searchField = commonFieldConfigs.search('search');
-console.log('test');
-function CombinedForm() {
-  const localData = localStorage.getItem('serviceRequestDraft');
+function CombinedFormAccountant() {
+  const localData = localStorage.getItem('combinedFormData');
   const formData = JSON.parse(localData);
+
+  const stepperData = localStorage.getItem('serviceRequestDraft');
+  const localStepperData = JSON.parse(stepperData);
 
   const config: FormBuilderConfig = {
     id: 'service-request-form',
-    title: 'Service Application Request',
-    description: 'Complete this multi-step form to submit your service application',
+    title: 'Prašymas išduoti jungtinę pažymą',
+    description: 'Prašymas išduoti jungtinę pažymą',
     multiStep: true,
     steps: [
       {
         id: 'combined-form',
-        title: 'Prašymo Duomenys',
+        title: 'Prašymo duomenys',
         subgroups: [
           {
             fields: [
               {
-                id: 'userFullName',
-                name: 'userFullName',
+                id: 'radioSelection',
+                name: 'radioSelection',
+                type: 'radio',
+                label: 'Jungtinė pažyma',
+                required: true,
+                options: [
+                  {
+                    value:
+                      'Apie viešųjų pirkimų procedūroje dalyvaujantį tiekėją - juridinį asmenį ir jo vadovą',
+                    label:
+                      'Apie viešųjų pirkimų procedūroje dalyvaujantį tiekėją - juridinį asmenį ir jo vadovą',
+                  },
+                  {
+                    value:
+                      'Apie viešųjų pirkimų procedūroje dalyvaujantį tiekėją - juridinį asmenį, jo vadovą ir buhalterį',
+                    label:
+                      'Apie viešųjų pirkimų procedūroje dalyvaujantį tiekėją - juridinį asmenį, jo vadovą ir buhalterį',
+                  },
+                ],
+                slotProps: {
+                  field: {
+                    className: 'custom-flex-radio-group',
+                  },
+                },
+              },
+              {
+                id: 'userName',
+                name: 'userName',
                 type: 'custom',
-                label: 'userFullName',
+                label: 'userName',
                 required: false,
                 component: ServiceDetail,
                 props: {
                   rows: [
                     {
-                      label: 'Teikėjo vardas, pavardė',
-                      value: formData.companyName ?? 'Vardenis Pavardenis',
+                      label: 'Teikėjo pavadinimas',
+                      value: formData?.name ?? 'UAB Pavadinimas',
                     },
                     {
-                      label: 'Teikėjo asmens kodas',
-                      value: formData.personalCode ?? '39005201234',
+                      label: 'Teikėjo kodas',
+                      value: formData?.name ?? '303180528',
+                    },
+                    {
+                      label: 'Kontaktinis telefonas',
+                      value: formData?.name ?? '+370 654-23-123',
+                    },
+                    {
+                      label: 'El. paštas',
+                      value: formData?.name ?? 'vardenis.pavardenis@gmail.com',
                     },
                   ],
                 },
               },
               {
-                ...searchField,
-                id: 'SearchableField',
-                required: false,
-                type: 'search',
+                id: 'accountant',
+                name: 'accountant',
+                type: 'custom',
+                label: 'accountant',
+                component: ServiceDetail,
                 props: {
-                  withTriggerText: true,
+                  rows: [
+                    {
+                      label: 'Teikėjo pavadinimas',
+                      value: formData?.name ?? 'UAB Pavadinimas',
+                    },
+                  ],
                 },
               },
               {
-                ...phoneField,
-                required: true,
-                label: 'Kontaktinis telefonas',
-              },
-              {
-                ...emailField,
-                required: true,
-                label: 'El. paštas',
+                id: 'accountantField',
+                name: 'accountantField',
+                type: 'custom',
+                label: 'Buhalteris',
+                shouldRenderConditionally: {
+                  shouldRender: true,
+                  checkValue:
+                    'Apie viešųjų pirkimų procedūroje dalyvaujantį tiekėją - juridinį asmenį, jo vadovą ir buhalterį',
+                  targetField: 'radioSelection',
+                },
+                required: false,
+                component: SearchableModalInput,
+                props: {
+                  placeholderText: 'Pridėti asmenį',
+                  ModalComponent: PersonModal,
+                },
               },
               {
                 id: 'requestDate',
@@ -83,6 +131,10 @@ function CombinedForm() {
                     {
                       label: 'Prašymo data',
                       value: '2099-01-01',
+                    },
+                    {
+                      label: 'Prašymą vykdo',
+                      value: 'Kauno regionas',
                     },
                   ],
                   textSpacing: {
@@ -137,10 +189,10 @@ function CombinedForm() {
             variant: 'default',
             fields: [
               {
-                id: 'requestObject',
-                name: 'requestObject',
+                id: 'requestInformation',
+                name: 'requestInformation',
                 type: 'custom',
-                label: 'requestObject',
+                label: 'requestInformation',
                 required: false,
                 component: ServiceDetail,
                 props: {
@@ -149,11 +201,15 @@ function CombinedForm() {
                   rows: [
                     {
                       label: 'Prašymo numeris',
-                      value: formData.companyName ?? '7107622',
+                      value: formData?.companyName ?? '7107622',
                     },
                     {
                       label: 'Prašymo būsena',
-                      value: formData.companyName ?? 'Laukiama apmokėjimo',
+                      value: formData?.companyName ?? 'Laukiama apmokėjimo',
+                    },
+                    {
+                      label: 'Prašymą vykdo',
+                      value: formData?.companyName ?? 'Kauno regionas',
                     },
                   ],
                 },
@@ -166,15 +222,19 @@ function CombinedForm() {
                 required: false,
                 component: ServiceDetail,
                 props: {
-                  sxStyle: { pt: '34.5px' },
+                  sxStyle: { pt: '48px' },
                   title: 'Prašymo objektas',
                   withHeading: true,
                   rows: [
                     {
                       label: 'Jungtinė pažyma',
                       value:
-                        formData.companyName ??
+                        localStepperData?.radioSelection ??
                         'Apie fizinį asmenį, dalyvaujantį viešųjų pirkimų procedūroje',
+                    },
+                    {
+                      label: 'Pristatymo būdas',
+                      value: 'Registrų centro savitarna',
                     },
                   ],
                 },
@@ -187,17 +247,17 @@ function CombinedForm() {
                 required: false,
                 component: ServiceDetail,
                 props: {
-                  sxStyle: { pt: '34.5px' },
+                  sxStyle: { pt: '48px' },
                   title: 'Prašymą teikia',
                   withHeading: true,
                   rows: [
                     {
                       label: 'Asmens kodas',
-                      value: formData.companyName ?? '39005201234',
+                      value: formData?.companyName ?? '39005201234',
                     },
                     {
                       label: 'Vardas, Pavardė',
-                      value: formData.companyName ?? 'Vardenis Pavardenis',
+                      value: formData?.companyName ?? 'Vardenis Pavardenis',
                     },
                   ],
                 },
@@ -211,7 +271,7 @@ function CombinedForm() {
                 component: ServiceDetail,
                 props: {
                   withHeading: true,
-                  sxStyle: { pt: '34.5px' },
+                  sxStyle: { pt: '48px' },
                   title: 'Teikiami Dokumentai',
                 },
               },
@@ -222,7 +282,7 @@ function CombinedForm() {
                 label: 'tableData',
                 component: FormTableData,
                 props: {
-                  sxStyle: { borderCollapse: 'collapse' },
+                  sxStyle: { borderCollapse: 'collapse', pb: '0' },
                   title: 'Teikiami Dokumentai',
                   cols: CombinedFormTableData.cols,
                   rows: CombinedFormTableData.rows,
@@ -236,6 +296,7 @@ function CombinedForm() {
                 component: ServiceDetail,
                 props: {
                   withHeading: true,
+                  sxStyle: { pt: '48px' },
                   title: 'Paslaugos kaina',
                 },
               },
@@ -245,6 +306,11 @@ function CombinedForm() {
                 type: 'custom',
                 label: 'pricingTableData',
                 component: PricingTableData,
+                props: {
+                  sxStyle: { pb: '48px' },
+                  document: 'Prašymas išduoti jungtinę pažymą (Prašymas nr. 7107622)',
+                  price: '12,42 Eur',
+                },
               },
             ],
           },
@@ -252,7 +318,8 @@ function CombinedForm() {
       },
     ],
     onSubmit: async (data) => {
-      console.log('Service request submitted:', data);
+      localStorage.setItem('combinedFormData', JSON.stringify(data));
+      console.log(data);
       toast.success('Dokumentas sėkmingai pasirašytas', {
         style: {
           border: '1px solid #008561',
@@ -292,4 +359,4 @@ function CombinedForm() {
   return <FormBuilder config={config} />;
 }
 
-export default CombinedForm;
+export default CombinedFormAccountant;

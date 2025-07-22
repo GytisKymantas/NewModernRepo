@@ -99,10 +99,10 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
               {localData ? (
                 <>
                   <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
-                    {localData.publicStatement.legalName}
+                    {localData?.publicStatement?.legalName}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
-                    {localData.publicStatement.address}
+                    {localData?.publicStatement?.address}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
                     <PrimaryButton

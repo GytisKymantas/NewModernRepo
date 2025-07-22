@@ -27,6 +27,7 @@ type FormTableProps<Row> = {
   sxStyle?: SxProps;
   cols: Column<Row>[];
   rows: Row[];
+  hasAdditionalRowActions?: boolean;
 };
 
 type MobileTableProps<Row> = {
@@ -77,6 +78,7 @@ function FormTable<Row extends Record<string, any>>({
   sxStyle,
   cols,
   rows,
+  hasAdditionalRowActions,
 }: FormTableProps<Row>) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -113,19 +115,11 @@ function FormTable<Row extends Record<string, any>>({
                     : col.cellAlign ?? 'left';
 
                 return (
-                  <TableCell
-                    sx={{
-                      '&:not(:first-of-type):not(:last-of-type)': {
-                        borderLeft: 'none',
-                        borderRight: 'none',
-                      },
-                      '&:last-of-type': { borderLeft: 'none' },
-                      '&:first-of-type': { borderRight: 'none' },
-                    }}
-                    key={String(col.key)}
-                    align={alignment}
-                  >
+                  <TableCell key={String(col.key)} align={alignment}>
                     {row[col.key]}
+                    {hasAdditionalRowActions && col.key === 'doc' && (
+                      <Box mt={1}>{row.actions}</Box>
+                    )}
                   </TableCell>
                 );
               })}

@@ -150,11 +150,11 @@ function NaturalStatementForm() {
                   rows: [
                     {
                       label: 'Prašymo numeris',
-                      value: formData.companyName ?? '7107622',
+                      value: formData?.companyName ?? '7107622',
                     },
                     {
                       label: 'Prašymo būsena',
-                      value: formData.companyName ?? 'Laukiama apmokėjimo',
+                      value: formData?.companyName ?? 'Laukiama apmokėjimo',
                     },
                   ],
                 },
@@ -200,11 +200,11 @@ function NaturalStatementForm() {
                   rows: [
                     {
                       label: 'Asmens kodas',
-                      value: formData.companyName ?? '39005201234',
+                      value: formData?.companyName ?? '39005201234',
                     },
                     {
                       label: 'Vardas, Pavardė',
-                      value: formData.companyName ?? 'Vardenis Pavardenis',
+                      value: formData?.companyName ?? 'Vardenis Pavardenis',
                     },
                   ],
                 },
@@ -223,11 +223,11 @@ function NaturalStatementForm() {
                   rows: [
                     {
                       label: 'Kategorija',
-                      value: formData.companyName ?? '39005201234',
+                      value: formData?.companyName ?? '39005201234',
                     },
                     {
                       label: 'Tekstas',
-                      value: formData.companyName ?? 'Vardenis Pavardenis',
+                      value: formData?.companyName ?? 'Vardenis Pavardenis',
                     },
                   ],
                 },
