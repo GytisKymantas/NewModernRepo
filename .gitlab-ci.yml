@@ -1,0 +1,139 @@
+stages:
+  - build
+  - security
+  - docker
+  # - deploy  # Disabled until GitLab variables are configured
+
+variables:
+  DOCKER_REGISTRY: 'dockerrep.registrucentras.lt:5000'
+
+  # Node.js version for consistency
+  NODE_VERSION: '18.14.2'
+
+# Cache node_modules for faster builds
+.node_cache: &node_cache
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+    policy: pull-push
+
+# Build stage - Install dependencies and run tests
+build:
+  stage: build
+  image: node:${NODE_VERSION}-alpine
+  <<: *node_cache
+  script:
+    - echo "Installing dependencies..."
+    - npm ci --silent --legacy-peer-deps
+    - echo "Running linting..."
+    - npm run lint
+    - echo "Building application for standalone deployment..."
+    - npm run build:standalone
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  only:
+    - merge_requests
+    - main
+    - staging
+    - develop
+
+# Security scan
+security:
+  stage: security
+  image: node:${NODE_VERSION}-alpine
+  script:
+    - npm audit --audit-level moderate
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - staging
+    - develop
+
+build-and-push-image:
+  stage: docker
+  image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375
+    NO_PROXY: 'docker'
+    # Increase Docker build resources
+    DOCKER_BUILDKIT: '0'
+  services:
+    - name: docker:18.09.7-dind
+      command: ['--mtu=1460', '--storage-driver=overlay2']
+  needs:
+    - build
+  only:
+    - staging
+  before_script:
+    - docker --version
+  script:
+    - echo "Building Docker image..."
+    - echo "Image tag - $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
+    - docker build --build-arg NO_PROXY=docker -t $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA .
+    - echo "Docker image built successfully"
+    - echo "Image information:"
+    - docker images $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
+    - echo "Pushing to registry..."
+    - docker push $DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA
+    - echo "Image pushed successfully"
+    - echo ""
+    - echo "BUILD SUMMARY"
+    - echo "======================================="
+    - echo "Build Information:"
+    - echo "Branch=$CI_COMMIT_REF_NAME"
+    - echo "Commit=$CI_COMMIT_SHORT_SHA"
+    - echo "Pipeline=$CI_PIPELINE_ID"
+    - echo "Docker Image:"
+    - echo "Image=$DOCKER_REGISTRY/$CI_PROJECT_NAME:latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Registry=$DOCKER_REGISTRY"
+    - echo "Manual Deployment:"
+    - echo "Update .env with DOCKER_TAG=latest_$CI_COMMIT_SHORT_SHA"
+    - echo "Run docker-compose pull && docker-compose up -d"
+    - echo "======================================="
+# Deploy to staging using Docker registry (DISABLED - deploy manually for now)
+# deploy-staging:
+#   stage: deploy
+#   image: alpine:latest
+#   needs:
+#     - build-and-push-image
+#   only:
+#     - staging
+#   when: manual
+#   before_script:
+#     - apk add --no-cache openssh-client docker-compose
+#     - eval $(ssh-agent -s)
+#     - echo "$STAGING_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - ssh-keyscan -H $STAGING_SERVER_HOST >> ~/.ssh/known_hosts
+#   script:
+#     - echo "Deploying React app to staging server $STAGING_SERVER_HOST..."
+#     - echo "$STAGING_ENV_FILE" | base64 -d > .env
+#     - echo "DOCKER_IMAGE_NAME=$DOCKER_REGISTRY/$CI_PROJECT_NAME" >> .env
+#     - echo "DOCKER_TAG=latest_$CI_COMMIT_SHORT_SHA" >> .env
+#     # Transfer compose files and env to server
+#     - scp .env docker-compose.yml devadmin@$STAGING_SERVER_HOST:~/self-service-jar-provider-ui/
+#     # Pull and run from registry
+#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose pull"
+#     - ssh devadmin@$STAGING_SERVER_HOST "cd ~/self-service-jar-provider-ui && docker-compose up -d --force-recreate"
+#   environment:
+#     name: staging
+#     url: https://$STAGING_SERVER_HOST
+
+# Clean up old container registry images (optional) - DISABLED
+# cleanup:
+#   stage: docker
+#   image: alpine:latest
+#   script:
+#     - echo "Cleaning up old images..."
+#     - echo "This would require additional setup with GitLab API"
+#   only:
+#     - schedules
+#   when: manual

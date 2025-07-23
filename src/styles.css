@@ -1,0 +1,72 @@
+.MuiInputBase-input::placeholder {
+  color: black !important;
+}
+
+html,
+body {
+  font-family: 'Public Sans';
+}
+
+.MuiFormGroup-root.MuiRadioGroup-root {
+  display: flex;
+  flex-direction: column !important;
+}
+.rc-ses-form-field-wrapper.MuiBox-root.css-jx62xo {
+  margin-bottom: auto;
+}
+#personalCode .MuiOutlinedInput-notchedOutline {
+  border: none !important;
+  border-radius: 50%;
+}
+
+input[type='radio'] {
+  border-radius: 50%;
+}
+input[type='radio' i]:focus-visible {
+  outline: none !important;
+}
+.MuiStepLabel-label {
+  margin-top: 0 !important;
+}
+.MuiStepLabel-iconContainer {
+  z-index: 3;
+}
+
+#basicInformation-content .css-34zkho-MuiAccordionDetails-root {
+  padding: 0;
+  margin-top: -12px;
+}
+.rc-ses-form-field-wrapper.MuiBox-root.css-jx62xo {
+  padding: 0;
+}
+
+#basicInformation-header .MuiAccordionSummary-content {
+  margin: 0;
+  padding: 20px 0;
+}
+
+.css-telt6a-MuiContainer-root {
+  background: white !important;
+}
+
+.MuiAccordionDetails-root {
+  padding-bottom: 0 !important;
+}
+.css-1qxpdxg-MuiPaper-root-MuiAccordion-root.Mui-expanded .MuiAccordionSummary-root {
+  background: none !important;
+}
+.MuiAlert-icon {
+  margin-bottom: auto;
+}
+.css-1oxtpma-MuiContainer-root {
+  background-color: white !important;
+}
+
+.MuiAccordionDetails-root {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+#basicInformation-header {
+  background: none !important;
+}

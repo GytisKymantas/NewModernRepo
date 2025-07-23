@@ -1,6 +1,5 @@
-import React from 'react'
-import { getToken } from '@rc-ses/mfe-host'
-import { RcSesTextField } from '@registrucentras/rc-ses-react-components'
+import { getToken } from '@rc-ses/mfe-host';
+import { RcSesTextField } from '@registrucentras/rc-ses-react-components';
 
 function BasicInformationForm() {
   return (
@@ -8,21 +7,18 @@ function BasicInformationForm() {
       label='JWT'
       slotProps={{
         field: {
-          InputProps:{
-            inputComponent: 'textarea',
-            inputProps: {
-              rows: 10,
-              sx: { minHeight: '200px' },
-            }
+          InputProps: {
+            inputComponent: 'text',
+            inputProps: {},
           },
           slots: {
-            input: 'textarea'
+            input: 'text',
           },
         },
       }}
       value={getToken()}
     />
-  )
+  );
 }
 
-export default BasicInformationForm
+export default BasicInformationForm;

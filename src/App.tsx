@@ -1,16 +1,31 @@
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { getMFEBaseUrl } from '@rc-ses/mfe-host';
+import { lt } from 'date-fns/locale/lt';
 import React from 'react';
+import MultiStepServiceForm from './pages/form-examples/MultiStepServiceForm';
+
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-
+import { AuthGuard, CallbackHandler, SilentCallback } from './components/auth';
+import { AuthProvider } from './contexts/AuthContext';
+import './i18n/i18n';
+import Home from './pages/Home';
+import OrderForm from './pages/esi-preparation/OrderForm';
+import OrderReviewForm from './pages/esi-preparation/OrderReviewForm';
+import MultiStepServiceFormNotary from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormNotary';
+import MultiStepServiceFormPerson from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormPerson';
+import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
+import LegalStatementForm from './pages/public-statement/LegalStatementForm';
+import NaturalStatementForm from './pages/public-statement/NaturalStatementForm';
+import './styles.css';
 import theme from './theme';
-import Service from './components/Service';
-import { getMFEBaseUrl, getOwnedPropertiesUrlFragment, getServiceFormUrlFragment } from '@rc-ses/mfe-host';
-import OwnedProperties from './components/OwnedProperties';
+// import Service from './components/Service';
 
 /*
  * Pavyzdine router'io konfigūracija, jei nėra aktualūs "Mano turtas" micro-frontend'ai.
@@ -33,14 +48,84 @@ import OwnedProperties from './components/OwnedProperties';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path={getServiceFormUrlFragment()} element={<Service />}>
-        <Route path='09eec1a3-0674-479b-85fe-b9140879de7b' element={<Service />} />
-        <Route path='77ca7f18-07d3-4f4a-8da7-758e4fa7aee1' element={<Service />} />
-      </Route>
-      <Route path={getOwnedPropertiesUrlFragment()} element={<OwnedProperties />}>
-        <Route path='177c5181-8710-443e-8335-327365835826' element={<OwnedProperties />} />
-      </Route>
-    </>
+      {/* Auth callback routes - these should not be protected */}
+      <Route path='/callback' element={<CallbackHandler />} />
+      <Route path='/silent-callback' element={<SilentCallback />} />
+
+      {/* Protected routes */}
+      <Route
+        path='/'
+        element={
+          <AuthGuard>
+            <Home />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/multi-step-service-company'
+        element={
+          <AuthGuard>
+            <MultiStepServiceForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/multi-step-service-notary'
+        element={
+          <AuthGuard>
+            <MultiStepServiceFormNotary />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/multi-step-service-person'
+        element={
+          <AuthGuard>
+            <MultiStepServiceFormPerson />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='form-examples/combined-form'
+        element={
+          <AuthGuard>
+            <CombinedForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/public-statement/legal'
+        element={
+          <AuthGuard>
+            <LegalStatementForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/public-statement/natural'
+        element={
+          <AuthGuard>
+            <NaturalStatementForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/esi-preparation/order'
+        element={
+          <AuthGuard>
+            <OrderForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='/esi-preparation/review'
+        element={
+          <AuthGuard>
+            <OrderReviewForm />
+          </AuthGuard>
+        }
+      />
+    </>,
   ),
   { basename: getMFEBaseUrl() },
 );
@@ -48,10 +133,14 @@ const router = createBrowserRouter(
 export default function App() {
   return (
     <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouterProvider router={router} />
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={lt}>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </LocalizationProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </React.StrictMode>
   );
 }

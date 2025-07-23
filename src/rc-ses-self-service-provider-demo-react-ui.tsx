@@ -22,8 +22,7 @@ const lifecycles = singleSpaReact({
   React,
   ReactDOMClient,
   rootComponent: App,
-  errorBoundary(err, info, props) {
-    console.debug(err, info, props);
+  errorBoundary() {
     return <div>This renders when a catastrophic error occurs</div>;
   },
 });

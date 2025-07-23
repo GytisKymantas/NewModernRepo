@@ -1,10 +1,9 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { RcSesCheckbox } from '@registrucentras/rc-ses-react-components'
+import { RcSesCheckbox } from '@registrucentras/rc-ses-react-components';
+import { useForm } from 'react-hook-form';
 
 type FormModel = {
-  agreement: boolean
-}
+  agreement: boolean;
+};
 
 function TermsAndConditionsForm() {
   const {
@@ -16,11 +15,11 @@ function TermsAndConditionsForm() {
     defaultValues: {
       agreement: false,
     },
-  })
+  });
 
   return (
     // eslint-disable-next-line no-console
-    <form onSubmit={handleSubmit(console.debug)} noValidate>
+    <form onSubmit={handleSubmit(console.log)} noValidate>
       <RcSesCheckbox
         id='agreement'
         name='agreement'
@@ -51,7 +50,7 @@ function TermsAndConditionsForm() {
         nebus įvykdytas.
       </RcSesCheckbox>
     </form>
-  )
+  );
 }
 
-export default TermsAndConditionsForm
+export default TermsAndConditionsForm;

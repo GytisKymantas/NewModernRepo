@@ -1,11 +1,10 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
 
-import { RcSesTextField } from '@registrucentras/rc-ses-react-components'
+import { RcSesTextField } from '@registrucentras/rc-ses-react-components';
 
 type FormModel = {
-  additionalServices: string
-}
+  additionalServices: string;
+};
 
 function AdditionalServicesForm() {
   const {
@@ -15,7 +14,7 @@ function AdditionalServicesForm() {
     defaultValues: {
       additionalServices: 'Tekstinė reikšmė',
     },
-  })
+  });
 
   return (
     <RcSesTextField
@@ -24,7 +23,7 @@ function AdditionalServicesForm() {
       errors={errors?.additionalServices}
       {...register('additionalServices', { required: true, disabled: true })}
     />
-  )
+  );
 }
 
-export default AdditionalServicesForm
+export default AdditionalServicesForm;
