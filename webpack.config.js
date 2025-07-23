@@ -32,6 +32,7 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   const isStandalone = webpackConfigEnv && webpackConfigEnv.standalone;
+  const isProduction = argv.mode === 'production';
 
   return merge(defaultConfig, {
     externals: isStandalone
@@ -46,11 +47,16 @@ module.exports = (webpackConfigEnv, argv) => {
             new webpack.ProvidePlugin({
               React: 'react',
             }),
-            new HtmlWebpackPlugin({
-              template: 'public/index.html',
-              filename: 'index.html',
-              inject: true,
-            }),
+            // Only use HtmlWebpackPlugin for production builds, not dev server
+            ...(isProduction
+              ? [
+                  new HtmlWebpackPlugin({
+                    filename: 'index.html',
+                    inject: true,
+                    template: 'public/index.html',
+                  }),
+                ]
+              : []),
           ]
         : []),
     ],
