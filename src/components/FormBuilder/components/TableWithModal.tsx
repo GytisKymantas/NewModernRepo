@@ -10,7 +10,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 
 import AddIcon from '@/assets/icons/AddIcon';
 import ChangeAddressIcon from '@/assets/icons/ChangeAddressIcon';
@@ -20,7 +20,7 @@ import { useController, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 type ModalComponentProps = {
-  open: boolean;
+  open: any;
   onSubmit: (value: string) => void;
   onClose: () => void;
 };
@@ -44,6 +44,8 @@ type CombinedProps = Pick<TControllerProps, ImmediateControllerProps> &
     withTriggerText?: boolean;
   };
 
+export type ModalStates = 'person' | 'address' | '';
+
 const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) => {
   const { t } = useTranslation('input', {
     keyPrefix: 'components.RcSesSearchableField',
@@ -59,13 +61,16 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
     ...fieldProps
   } = props;
   const { name } = fieldProps;
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<ModalStates>('');
   const [localData, setLocalData] = useState(null);
-  const submittedData = localStorage.getItem('submittedData');
+  const [submitedData, setSubmitedData] = useState([]);
 
-  useEffect(() => {
-    if (submittedData) setLocalData(JSON.parse(submittedData));
-  }, [submittedData]);
+  // const submittedData = localStorage.getItem('submittedData');
+
+  // useEffect(() => {
+  //   if (submittedData) setLocalData(JSON.parse(submittedData));
+  // }, [submittedData]);
+
   const {
     field: { onChange },
   } = useController({
@@ -76,6 +81,15 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
     ...slotProps?.controller,
   });
 
+  const handleSubmit = (data: any) => {
+    setSubmitedData((prev) => [...prev, data]);
+    setModalOpen('');
+    console.log(data, 'data any');
+  };
+
+  console.log(submitedData, 'submitedData');
+
+  // const { watch } = useFormContext();
   return (
     <>
       <TableContainer>
@@ -95,20 +109,23 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
           </TableHead>
 
           <TableBody>
-            <TableRow>
-              {localData ? (
-                <>
+            {submitedData && submitedData.length > 0 ? (
+              submitedData.map((person, index) => (
+                <TableRow key={index}>
                   <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
-                    {localData.publicStatement.legalName}
+                    {person.firstName}
+                    {person.lastName}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
-                    {localData.publicStatement.address}
+                    {person.personalCo}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
+                    {person.address}
+
                     <PrimaryButton
                       variant='text'
                       size='small'
-                      onClick={() => setModalOpen(true)}
+                      onClick={() => setModalOpen('address')}
                       startIcon={<ChangeAddressIcon />}
                       sx={{
                         color: '#1F2733',
@@ -121,22 +138,24 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
                       Keisti Asmenį
                     </PrimaryButton>
                   </TableCell>
-                </>
-              ) : (
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
                 <TableCell
                   colSpan={3}
                   sx={{ textAlign: 'center', color: palette.grey[600] }}
                 >
-                  Nenurodytas atstovaujamas asmuo
+                  Nenurodytas atstovaujamas asmuo xx
                 </TableCell>
-              )}
-            </TableRow>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
       <PrimaryButton
         variant='contained'
-        onClick={() => setModalOpen(true)}
+        onClick={() => setModalOpen('person')}
         size='medium'
         startIcon={<AddIcon />}
         sx={{
@@ -151,8 +170,8 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
       </PrimaryButton>
       <ModalComponent
         open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSubmit={(val: string) => onChange(val)}
+        onClose={() => setModalOpen('')}
+        onSubmit={handleSubmit}
       />
     </>
   );

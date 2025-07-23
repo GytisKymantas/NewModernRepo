@@ -224,7 +224,7 @@ function MultiStepServiceFormNotary() {
             ],
           },
           {
-            id: 'bordered-section',
+            id: 'bordered-section-contacts',
             title: 'Atstovaujamo asmens kontaktiniai duomenys',
             variant: 'default',
             fields: [
@@ -355,7 +355,7 @@ function MultiStepServiceFormNotary() {
                   rows: [
                     {
                       label: 'Laikinai įrašomas pavadinimas',
-                      value: formData.companyName ?? 'Pavadinimas',
+                      value: formData?.companyName ?? 'Pavadinimas',
                     },
                   ],
                 },
