@@ -224,7 +224,7 @@ function MultiStepServiceFormNotary() {
             ],
           },
           {
-            id: 'bordered-section',
+            id: 'bordered-section-contacts',
             title: 'Atstovaujamo asmens kontaktiniai duomenys',
             variant: 'default',
             fields: [
