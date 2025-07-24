@@ -15,7 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import { RcSesTextField } from '@registrucentras/rc-ses-react-components';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 type FormModel = {
@@ -39,14 +39,15 @@ type Props = {
   onSubmit: (value: string) => void;
   onClose: () => void;
 };
-function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
-  const [results, setResults] = React.useState<FormModelOutput[]>();
+function SearchModal({ open, onSubmit, onClose }: Props) {
+  const [results, setResults] = React.useState<FormModelOutput[] | FormModel[]>();
+  const formRef = useRef(null);
 
   const {
-    handleSubmit,
-    formState: { errors },
     register,
     reset,
+    handleSubmit,
+    formState: { errors },
   } = useForm<FormModel>({
     mode: 'all',
     defaultValues: {
@@ -60,47 +61,51 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
   });
 
   const handleOnReset = () => {
-    setResults([]);
+    setResults(undefined);
     reset();
   };
 
   const handleOnSubmit = () => {
-    setResults([]);
-    reset();
-    onSubmit('1099-2018-8012');
+    handleOnReset();
     onClose();
   };
 
   const handleOnSearch = () => {
     setResults([
       {
-        regNo: '44/446848',
+        regNo: '10/201729',
         type: 'Mišrus pastatas',
         uniqueIdentifier: '1099-2018-8012',
         address: 'Vilnius, Vydūno g. 17',
       },
       {
-        regNo: '44/446848',
-        type: 'Mišrus pastatas',
-        uniqueIdentifier: '1111-1111-1111',
-        address: 'Vilnius, Vydūno g. 17',
+        regNo: '10/201728',
+        type: 'Negyvenamoji patalpa',
+        uniqueIdentifier: '1096-2030-1019:0080	',
+        address: 'Vilnius, Savanorių pr. 25',
+      },
+      {
+        regNo: '10/2017287	',
+        type: 'Negyvenamoji patalpa',
+        uniqueIdentifier: '1096-2030-1019:0080',
+        address: 'Vilnius, Savanorių pr. 25',
       },
     ]);
   };
 
   return (
     <Dialog onClose={onClose} open={open} maxWidth='md'>
-      <DialogTitle>Nekilnojamo turto objekto paieška</DialogTitle>
+      <DialogTitle>Adreso Lietuvoje paieška</DialogTitle>
+      <Divider />
 
       <DialogContent>
-        <form onSubmit={handleSubmit(handleOnSearch)} noValidate>
+        <form ref={formRef} onSubmit={handleSubmit(handleOnSubmit)} noValidate>
           <Grid container columnSpacing={2} sx={{ mb: 2 }}>
             <Grid item xs={12} md={12}>
               <RcSesTextField
                 required
                 label='Savivaldybė'
-                errors={errors?.addressNo}
-                {...register('district', { required: true })}
+                placeholder='Pasirinkite savivaldybę'
                 slotProps={{ wrapper: { labelOnTop: false } }}
               />
             </Grid>
@@ -108,36 +113,35 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
               <RcSesTextField
                 required
                 label='Gyvenamoji vietovė'
-                errors={errors?.city}
-                {...register('city')}
-                slotProps={{ wrapper: { labelOnTop: false }, field: { name: 'test' } }}
+                placeholder='Įrašykite gyvenamąją vietovę'
+                slotProps={{ wrapper: { labelOnTop: false } }}
               />
             </Grid>
-
             <Grid item xs={12} md={12}>
               <RcSesTextField
                 label='Gatvė'
                 required
+                placeholder='Įrašykite gatvę'
                 errors={errors?.street}
                 {...register('street', { required: true })}
                 slotProps={{ wrapper: { labelOnTop: false } }}
               />
             </Grid>
-
             <Grid item xs={12} md={12}>
               <RcSesTextField
                 required
                 label='Namo nr.'
+                placeholder='Įrašykite namo numerį'
                 errors={errors?.housingNo}
                 {...register('housingNo', { required: true })}
                 slotProps={{ wrapper: { labelOnTop: false } }}
               />
             </Grid>
-
             <Grid item xs={12} md={12}>
               <RcSesTextField
                 required
                 label='Buto nr.'
+                placeholder='Įrašykite buto numerį'
                 errors={errors?.aptNo}
                 {...register('aptNo', { required: true })}
                 slotProps={{ wrapper: { labelOnTop: false } }}
@@ -145,52 +149,58 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
             </Grid>
           </Grid>
 
-          <Stack justifyContent='flex-end' direction='row' spacing={1}>
-            <Button type='submit'>Ieškoti</Button>
+          <Stack
+            justifyContent='flex-end'
+            direction='row'
+            spacing={1}
+            sx={{ pb: '32px' }}
+          >
+            <Button onClick={handleOnSearch}>Ieškoti</Button>
             <Button variant='outlined' onClick={handleOnReset}>
               Išvalyti
             </Button>
           </Stack>
-        </form>
-
-        <Divider />
-        {results && (
-          <TableContainer sx={{ background: 'red' }}>
-            <Table sx={{ background: 'blue' }}>
-              <TableHead sx={{ background: 'yellow' }}>
-                <TableRow>
-                  <TableCell>Reg.&nbsp;Nr.</TableCell>
-                  <TableCell>Objektas</TableCell>
-                  <TableCell>Unikalus&nbsp;Nr.</TableCell>
-                  <TableCell>Adresas</TableCell>
-                  <TableCell>Veiksmai</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {results?.map((row) => (
-                  <TableRow key={row.regNo}>
-                    <TableCell component='th' scope='row'>
-                      {row.regNo}
-                    </TableCell>
-                    <TableCell>{row.type}</TableCell>
-                    <TableCell>{row.uniqueIdentifier}</TableCell>
-                    <TableCell>{row.address}</TableCell>
-                    <TableCell>
-                      {' '}
-                      <Button onClick={handleOnSubmit}>Pridėti</Button>
-                    </TableCell>
+          {results && (
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Reg. Nr.</TableCell>
+                    <TableCell>Objektas</TableCell>
+                    <TableCell>Unikalus nr.</TableCell>
+                    <TableCell>Adresas</TableCell>
+                    <TableCell>Veiksmai</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
+                </TableHead>
+                <TableBody>
+                  {results?.map((row) => (
+                    <TableRow key={`${row.regNo}`}>
+                      <TableCell component='th' scope='row'>
+                        {row.regNo}
+                      </TableCell>
+                      <TableCell>{row.type}</TableCell>
+                      <TableCell>{row.uniqueIdentifier}</TableCell>
+                      <TableCell>{row.address}</TableCell>
+                      <TableCell>
+                        <Button
+                          type='submit'
+                          onClick={() => {
+                            onSubmit(row.address);
+                          }}
+                        >
+                          Pridėti
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </form>
       </DialogContent>
 
       <DialogActions>
-        {/* <Button disabled={!results?.length} onClick={handleOnSubmit}>
-          Pridėti
-        </Button> */}
         <Button color='error' variant='outlined' onClick={onClose}>
           Atšaukti
         </Button>
@@ -199,4 +209,4 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
   );
 }
 
-export default ObjectIdentifierSearchModal;
+export default SearchModal;

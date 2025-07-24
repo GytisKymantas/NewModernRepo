@@ -8,6 +8,11 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 ENV NODE_OPTIONS="--max-old-space-size=4096 --max-semi-space-size=128"
 ENV UV_THREADPOOL_SIZE=4
 
+# Configure npm proxy settings
+RUN npm config set proxy http://httpUser:httpPassword@91.199.55.3:3128 && \
+    npm config set https-proxy http://httpsUser:httpsPassword@91.199.55.3:3128 && \
+    npm config set registry https://registry.npmjs.org/
+
 COPY package.json /usr/src/app/package.json
 COPY package-lock.json /usr/src/app/package-lock.json
 RUN npm ci --legacy-peer-deps --no-audit --no-fund

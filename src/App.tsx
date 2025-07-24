@@ -16,11 +16,12 @@ import { AuthGuard, CallbackHandler, SilentCallback } from './components/auth';
 import { AuthProvider } from './contexts/AuthContext';
 import './i18n/i18n';
 import Home from './pages/Home';
+import CombinedForm from './pages/combined-form/CombinedForm';
+import CombinedFormAccountant from './pages/combined-form/CombinedFormAccountant';
 import OrderForm from './pages/esi-preparation/OrderForm';
 import OrderReviewForm from './pages/esi-preparation/OrderReviewForm';
 import MultiStepServiceFormNotary from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormNotary';
 import MultiStepServiceFormPerson from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormPerson';
-import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
 import LegalStatementForm from './pages/public-statement/LegalStatementForm';
 import NaturalStatementForm from './pages/public-statement/NaturalStatementForm';
 import './styles.css';
@@ -86,10 +87,18 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path='form-examples/combined-form'
+        path='combined-form/natural'
         element={
           <AuthGuard>
             <CombinedForm />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/accountant'
+        element={
+          <AuthGuard>
+            <CombinedFormAccountant />
           </AuthGuard>
         }
       />

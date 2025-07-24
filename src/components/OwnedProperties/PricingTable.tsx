@@ -24,6 +24,9 @@ function PricingTable({ sxStyle, document, price }: PricingTableProps) {
           backgroundColor: '#f9fafb',
           borderCollapse: 'collapse',
           width: '100%',
+          '& .MuiTableCell-root': {
+            borderRight: '1px solid rgba(224,224,224,1)',
+          },
         }}
       >
         <TableHead>
