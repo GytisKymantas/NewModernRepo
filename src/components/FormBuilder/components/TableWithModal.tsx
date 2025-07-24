@@ -10,19 +10,21 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 
 import AddIcon from '@/assets/icons/AddIcon';
 import ChangeAddressIcon from '@/assets/icons/ChangeAddressIcon';
 import PrimaryButton from '@/components/common/PrimaryButton';
 import palette from '@/theme/palette';
 import { useController, UseControllerProps } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 type ModalComponentProps = {
-  open: boolean;
+  open: any;
   onSubmit: (value: string) => void;
   onClose: () => void;
+  currentIndex?: number;
 };
 
 type TControllerProps = UseControllerProps<any, any>;
@@ -44,6 +46,8 @@ type CombinedProps = Pick<TControllerProps, ImmediateControllerProps> &
     withTriggerText?: boolean;
   };
 
+export type ModalStates = 'person' | 'address' | '';
+
 const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) => {
   const { t } = useTranslation('input', {
     keyPrefix: 'components.RcSesSearchableField',
@@ -59,13 +63,10 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
     ...fieldProps
   } = props;
   const { name } = fieldProps;
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [localData, setLocalData] = useState(null);
-  const submittedData = localStorage.getItem('submittedData');
+  const [modalOpen, setModalOpen] = useState<ModalStates>('');
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const [submitedData, setSubmitedData] = useState([]);
 
-  useEffect(() => {
-    if (submittedData) setLocalData(JSON.parse(submittedData));
-  }, [submittedData]);
   const {
     field: { onChange },
   } = useController({
@@ -76,67 +77,152 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
     ...slotProps?.controller,
   });
 
+  const handleSubmit = (data: any) => {
+    if (modalOpen === 'address') {
+      setSubmitedData((prev) => {
+        const updated = [...prev];
+        updated[currentIndex] = {
+          ...updated[currentIndex],
+          address: data.address, // Only update address
+        };
+        return updated;
+      });
+    } else {
+      setSubmitedData((prev) => [...prev, data]);
+    }
+    setModalOpen('');
+    console.log(data, 'data submitted');
+  };
+
+
+
   return (
     <>
-      <TableContainer>
-        <Table
-          sx={{
-            backgroundColor: '#f9fafb',
-            borderCollapse: 'collapse',
-            width: '100%',
-          }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ backgroundColor: '#f9fafb' }}>Juridinis Asmuo</TableCell>
-              <TableCell sx={{ backgroundColor: '#f9fafb' }}>Buveinė</TableCell>
-              <TableCell sx={{ backgroundColor: '#f9fafb' }}>Veiksmai</TableCell>
-            </TableRow>
-          </TableHead>
+      {submitedData.length > 0 && (
+        <TableContainer>
+          <Table
+            sx={{
+              backgroundColor: '#f9fafb',
+              borderCollapse: 'collapse',
+              width: '100%',
+            }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ backgroundColor: '#f9fafb' }}>Juridinis Asmuo</TableCell>
+                <TableCell sx={{ backgroundColor: '#f9fafb' }}>Buveinė</TableCell>
+                <TableCell sx={{ backgroundColor: '#f9fafb' }}>Veiksmai</TableCell>
+              </TableRow>
+            </TableHead>
 
-          <TableBody>
-            <TableRow>
-              {localData ? (
-                <>
-                  <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
-                    {localData.publicStatement.legalName}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
-                    {localData.publicStatement.address}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
-                    <PrimaryButton
-                      variant='text'
-                      size='small'
-                      onClick={() => setModalOpen(true)}
-                      startIcon={<ChangeAddressIcon />}
+            <TableBody>
+              {submitedData && submitedData.length > 0 ? (
+                submitedData.map((person, index) => (
+                  <TableRow key={index}>
+                    <TableCell
                       sx={{
-                        color: '#1F2733',
-                        '&:hover': {
-                          backgroundColor: 'inherit',
-                          boxShadow: 'none',
-                        },
+                        textAlign: 'center',
+                        color: palette.grey[600],
+                        display: 'flex',
+                        flexDirection: 'column',
                       }}
                     >
-                      Keisti Asmenį
-                    </PrimaryButton>
-                  </TableCell>
-                </>
+                      {person.firstName} {person.lastName}
+                      <PrimaryButton
+                        variant='text'
+                        size='small'
+                        onClick={() => {
+                          setSubmitedData((prev) => {
+                            const updated = [...prev];
+                            updated[index] = {
+                              ...updated[index],
+                              firstName: 'bam',
+                              lastName: 'bim',
+
+                              // Only update name
+                            };
+
+                            toast.success('Vardas pakeistas.', {
+                              style: {
+                                border: '1px solid #008561',
+                                background: '#008561',
+                                padding: '16px',
+                                color: 'white',
+                                width: '350px',
+                                whiteSpace: 'nowrap',
+                              },
+                              iconTheme: {
+                                primary: 'white',
+                                secondary: '#008561',
+                              },
+                            });
+
+                            return updated;
+                          });
+                        }}
+                        startIcon={<ChangeAddressIcon />}
+                        sx={{
+                          color: '#1F2733',
+                          '&:hover': {
+                            backgroundColor: 'inherit',
+                            boxShadow: 'none',
+                          },
+                        }}
+                      >
+                        Keisti Asmenį
+                      </PrimaryButton>
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', color: palette.grey[600] }}>
+                      {person.personalCo}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        textAlign: 'center',
+                        color: palette.grey[600],
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      {person.address}
+
+                      <PrimaryButton
+                        variant='text'
+                        size='small'
+                        onClick={() => {
+                          setModalOpen('address');
+                          setCurrentIndex(index);
+                        }}
+                        startIcon={<ChangeAddressIcon />}
+                        sx={{
+                          color: '#1F2733',
+                          '&:hover': {
+                            backgroundColor: 'inherit',
+                            boxShadow: 'none',
+                          },
+                        }}
+                      >
+                        Keisti Asmenį
+                      </PrimaryButton>
+                    </TableCell>
+                  </TableRow>
+                ))
               ) : (
-                <TableCell
-                  colSpan={3}
-                  sx={{ textAlign: 'center', color: palette.grey[600] }}
-                >
-                  Nenurodytas atstovaujamas asmuo
-                </TableCell>
+                <TableRow>
+                  <TableCell
+                    colSpan={3}
+                    sx={{ textAlign: 'center', color: palette.grey[600] }}
+                  >
+                    Nenurodytas atstovaujamas asmuo
+                  </TableCell>
+                </TableRow>
               )}
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <PrimaryButton
         variant='contained'
-        onClick={() => setModalOpen(true)}
+        onClick={() => setModalOpen('person')}
         size='medium'
         startIcon={<AddIcon />}
         sx={{
@@ -151,8 +237,9 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
       </PrimaryButton>
       <ModalComponent
         open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSubmit={(val: string) => onChange(val)}
+        onClose={() => setModalOpen('')}
+        currentIndex={currentIndex}
+        onSubmit={handleSubmit}
       />
     </>
   );
