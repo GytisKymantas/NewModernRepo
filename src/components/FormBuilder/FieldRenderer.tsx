@@ -210,12 +210,16 @@ function FieldRenderer({
             errors={fieldError}
             variant={checkboxField.variant}
             label={
-              <Box sx={{ marginBottom: { md: '5px' } }}>
-                <BodyText>{checkboxField.label}</BodyText>
-                <BodyTextSmall>
-                  {field.description ? translateText(field.description) : undefined}
-                </BodyTextSmall>
-              </Box>
+              !checkboxField.label && !checkboxField.description ? null : (
+                <Box sx={{ marginBottom: { md: '5px' } }}>
+                  {checkboxField.label && <BodyText>{checkboxField.label}</BodyText>}
+                  {checkboxField.description && (
+                    <BodyTextSmall>
+                      {translateText(checkboxField.description)}
+                    </BodyTextSmall>
+                  )}
+                </Box>
+              )
             }
             slotProps={{
               ...field.slotProps,

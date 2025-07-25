@@ -133,11 +133,12 @@ export interface RadioFieldConfig extends BaseFieldConfig {
   hideNativeRadio?: boolean;
 }
 
-export interface CheckboxFieldConfig extends BaseFieldConfig {
+export interface CheckboxFieldConfig extends Omit<BaseFieldConfig, 'label'> {
   type: 'checkbox';
   variant?: 'flat' | 'outlined';
   title?: string;
-  children?: ReactNode;
+  children: ReactNode;
+  label?: string;
 }
 
 export interface DateFieldConfig extends BaseFieldConfig {
