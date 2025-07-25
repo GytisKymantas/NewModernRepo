@@ -10,13 +10,277 @@ import { PricingTable } from '../form-examples/MultiStepServiceForm.deps';
 const CombinedFormTableData = {
   cols: [
     { key: 'doc', label: 'Dokumentas' },
-    { key: 'status', label: 'Būsena', headerAlign: 'center', cellAlign: 'center' },
+    { key: 'status', label: 'Būsena', headerAlign: 'left', cellAlign: 'left' },
   ],
   rows: [
     {
       doc: 'Prašymas išduoti pažymą apie viešuosiuose pirkimuose dalyvaujantį tiekėją',
       status: 'Pasirašytas',
       actions: (
+        <>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<OverviewIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            Peržiūrėti
+          </PrimaryButton>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<DownloadIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+            onClick={() => {}}
+          >
+            Atsisiųsti
+          </PrimaryButton>
+        </>
+      ),
+    },
+  ],
+};
+
+const DelayedTableTada = {
+  cols: [
+    {
+      key: 'delayedDate',
+      label: 'Atidėjimo data',
+      cellStyles: { verticalAlign: 'top' },
+    },
+    {
+      key: 'receivedDocs',
+      label: 'Gauti dokumentai',
+      headerAlign: 'left',
+      cellAlign: 'left',
+    },
+    {
+      key: 'submittedDocs',
+      label: 'Pateikti dokumentai',
+      headerAlign: 'left',
+      cellAlign: 'left',
+    },
+  ],
+  rows: [
+    {
+      delayedDate: '2025-07-13',
+      receivedDocs: 'Pranešimas dėl termino trūkumams pašalinti nustatymo',
+      submittedDocs:
+        'Prašymas išduoti pažymą apie viešuosiuose pirkimuose dalyvaujantį tiekėją',
+      receivedDocsActions: (
+        <>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<OverviewIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            Peržiūrėti
+          </PrimaryButton>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<DownloadIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+            onClick={() => {}}
+          >
+            Atsisiųsti
+          </PrimaryButton>
+        </>
+      ),
+      submittedDocsActions: (
+        <>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<OverviewIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            Peržiūrėti
+          </PrimaryButton>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<DownloadIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+            onClick={() => {}}
+          >
+            Atsisiųsti
+          </PrimaryButton>
+        </>
+      ),
+    },
+  ],
+};
+
+const CompletedTableTada = {
+  cols: [
+    {
+      key: 'delayedDate',
+      label: 'Atidėjimo data',
+      cellStyles: { verticalAlign: 'top' },
+    },
+    {
+      key: 'receivedDocs',
+      label: 'Gauti dokumentai',
+      headerAlign: 'left',
+      cellAlign: 'left',
+    },
+    {
+      key: 'submittedDocs',
+      label: 'Pateikti dokumentai',
+      headerAlign: 'left',
+      cellAlign: 'left',
+    },
+  ],
+  rows: [
+    {
+      delayedDate: '2025-07-13',
+      receivedDocs: 'Pranešimas dėl termino trūkumams pašalinti nustatymo',
+      submittedDocs:
+        'Prašymas išduoti pažymą apie viešuosiuose pirkimuose dalyvaujantį tiekėją',
+      receivedDocsActions: (
+        <>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<OverviewIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            Peržiūrėti
+          </PrimaryButton>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<DownloadIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+            onClick={() => {}}
+          >
+            Atsisiųsti
+          </PrimaryButton>
+        </>
+      ),
+      submittedDocsActions: (
+        <>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<OverviewIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            Peržiūrėti
+          </PrimaryButton>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<DownloadIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+            onClick={() => {}}
+          >
+            Atsisiųsti
+          </PrimaryButton>
+        </>
+      ),
+    },
+    {
+      delayedDate: '2025-07-13',
+      receivedDocs: 'Pranešimas dėl termino trūkumams pašalinti nustatymo',
+      submittedDocs:
+        'Prašymas išduoti pažymą apie viešuosiuose pirkimuose dalyvaujantį tiekėją',
+      receivedDocsActions: (
+        <>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<OverviewIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            Peržiūrėti
+          </PrimaryButton>
+          <PrimaryButton
+            variant='text'
+            size='small'
+            startIcon={<DownloadIcon />}
+            sx={{
+              color: '#1F2733',
+              '&:hover': {
+                backgroundColor: 'inherit',
+                boxShadow: 'none',
+              },
+            }}
+            onClick={() => {}}
+          >
+            Atsisiųsti
+          </PrimaryButton>
+        </>
+      ),
+      submittedDocsActions: (
         <>
           <PrimaryButton
             variant='text'
@@ -103,6 +367,7 @@ function SearchableModalInput({
   errors,
   withTriggerText,
   placeholderText,
+  sxStyle,
   ModalComponent,
 }: SearchableModalInputProps): JSX.Element {
   return (
@@ -115,12 +380,15 @@ function SearchableModalInput({
       errors={errors}
       withTriggerText={withTriggerText}
       placeholderText={placeholderText}
+      sxStyle={sxStyle}
     />
   );
 }
 
 export {
   CombinedFormTableData,
+  CompletedTableTada,
+  DelayedTableTada,
   FormTableData,
   PricingTableData,
   SearchableModalInput,

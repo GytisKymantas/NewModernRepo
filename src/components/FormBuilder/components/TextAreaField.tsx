@@ -1,11 +1,13 @@
 import {
   OutlinedTextFieldProps as MuiOutlinedTextFieldProps,
   SxProps,
-  TextareaAutosize,
+  TextField,
+  Typography,
 } from '@mui/material';
-import { forwardRef, useMemo } from 'react';
+import { forwardRef, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import palette from '@/theme/palette';
 import {
   RcSesFormControlWrapper,
   RcSesFormControlWrapperProps,
@@ -36,9 +38,9 @@ type Props = Pick<TFieldProps, ImmediateFieldProps> &
 
 const RcSesTextField = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
   const { errors, label, slotProps, ...fieldProps } = props;
-
+  const [text, setText] = useState<string>('');
+  const charCount = text.replace(/\s/g, '').length;
   const id = useMemo(() => fieldProps.id ?? uuidv4(), [fieldProps.id]);
-
   return (
     <RcSesFormControlWrapper
       id={id}
@@ -47,16 +49,30 @@ const RcSesTextField = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
       required={props.required}
       {...slotProps?.wrapper}
     >
-      <TextareaAutosize
+      <TextField
         {...fieldProps}
         id={id}
-        minRows={5}
         maxRows={20}
+        minRows={5}
+        // inputProps={{ maxLength: 300 }}
+        multiline
         style={{
           width: '100%',
         }}
-        ref={ref}
+        inputRef={ref}
+        {...slotProps?.field}
+        onChange={(e) => setText(e.target.value)}
       />
+      <Typography
+        variant='body1'
+        sx={{
+          pt: '4px',
+          color: palette.grey[700],
+          fontSize: '14px',
+        }}
+      >
+        Ženklų skaičius: {charCount}
+      </Typography>
     </RcSesFormControlWrapper>
   );
 });

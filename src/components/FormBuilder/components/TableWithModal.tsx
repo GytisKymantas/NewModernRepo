@@ -94,8 +94,6 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
     console.log(data, 'data submitted');
   };
 
-
-
   return (
     <>
       {submitedData.length > 0 && (
