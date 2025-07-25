@@ -5,6 +5,7 @@ import ObjectSearchModal from '@/components/FormBuilder/modals/ObjectSearchModal
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
+import palette from '@/theme/palette';
 import toast from 'react-hot-toast';
 import {
   CombinedFormTableData,
@@ -260,13 +261,27 @@ function CombinedForm() {
                 },
               },
               {
+                id: 'infoAlert',
+                name: 'infoAlert',
+                type: 'alert',
+                label: 'infoAlert',
+                message: (
+                  <div style={{ color: palette.grey[900] }}>
+                    Įvykdžius užsakymą, pažyma bus pateikta Registrų centro savitarnos
+                    portale.
+                  </div>
+                ),
+                severity: 'info',
+                icon: <InfoIcon />,
+              },
+              {
                 id: 'pricingTableData',
                 name: 'pricingTableData',
                 type: 'custom',
                 label: 'pricingTableData',
                 component: PricingTableData,
                 props: {
-                  sxStyle: { pb: '48px' },
+                  sxStyle: { mb: '36px' },
                   document: 'Prašymas išduoti jungtinę pažymą (Prašymas nr. 7107622)',
                   price: '12,42 Eur',
                 },

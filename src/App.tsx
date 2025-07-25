@@ -16,8 +16,15 @@ import { AuthGuard, CallbackHandler, SilentCallback } from './components/auth';
 import { AuthProvider } from './contexts/AuthContext';
 import './i18n/i18n';
 import Home from './pages/Home';
-import CombinedForm from './pages/combined-form/CombinedForm';
-import CombinedFormAccountant from './pages/combined-form/CombinedFormAccountant';
+import {
+  CombinedForm,
+  CombinedFormAccountant,
+  CombinedFormOrderCompleted,
+  CombinedFormOrderConfirmed,
+  CombinedFormOrderDelayed,
+  CombinedFormOrderInProgress,
+  CombinedFormOrderRejected,
+} from './pages/combined-form';
 import OrderForm from './pages/esi-preparation/OrderForm';
 import OrderReviewForm from './pages/esi-preparation/OrderReviewForm';
 import MultiStepServiceFormNotary from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormNotary';
@@ -102,6 +109,48 @@ const router = createBrowserRouter(
           </AuthGuard>
         }
       />
+      {/* combined form order status form start */}
+      <Route
+        path='combined-form/order-in-progress'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderInProgress />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-confirmed'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderConfirmed />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-rejected'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderRejected />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-delayed'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderDelayed />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-completed'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderCompleted />
+          </AuthGuard>
+        }
+      />
+      {/* combined form order status form end */}
       <Route
         path='/public-statement/legal'
         element={

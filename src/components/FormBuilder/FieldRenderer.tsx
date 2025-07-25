@@ -143,15 +143,6 @@ function FieldRenderer({
               ...field.slotProps,
               field: {
                 ...field.slotProps?.field,
-                InputProps: {
-                  inputComponent: 'textarea',
-                  inputProps: {
-                    rows: textField.rows || 4,
-                  },
-                },
-                slots: {
-                  input: 'textarea',
-                },
               },
             }}
           />

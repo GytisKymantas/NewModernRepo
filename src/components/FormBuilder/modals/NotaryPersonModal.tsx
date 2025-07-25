@@ -190,7 +190,6 @@ function NotaryPersonModal({ open, onSubmit, onClose, currentIndex }: Props) {
     }
   };
 
-
   return (
     <Dialog onClose={onClose} open={!!open} maxWidth='md'>
       <DialogTitle> {isAddressModal ? 'Adreso Paieška' : 'Asmens Paieška'}</DialogTitle>

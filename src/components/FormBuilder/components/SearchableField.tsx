@@ -7,6 +7,7 @@ import {
   IconButton,
   InputAdornment,
   OutlinedTextFieldProps,
+  SxProps,
   TextField,
   Typography,
 } from '@mui/material';
@@ -44,6 +45,7 @@ type CombinedProps = Pick<TControllerProps, ImmediateControllerProps> &
     };
     withTriggerText?: boolean;
     placeholderText?: string;
+    sxStyle?: SxProps;
   };
 
 const SearchableField = React.forwardRef<HTMLInputElement, CombinedProps>(
@@ -60,6 +62,7 @@ const SearchableField = React.forwardRef<HTMLInputElement, CombinedProps>(
       slotProps,
       withTriggerText,
       placeholderText,
+      sxStyle,
       ...fieldProps
     } = props;
     const { name } = fieldProps;
@@ -83,7 +86,7 @@ const SearchableField = React.forwardRef<HTMLInputElement, CombinedProps>(
       ...slotProps?.controller,
     });
     return (
-      <Box>
+      <Box sx={sxStyle}>
         <FormControlWrapper
           id={id}
           errors={errors}

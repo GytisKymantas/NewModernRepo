@@ -1,4 +1,3 @@
-import theme from '@/theme';
 import {
   Box,
   Card,
@@ -12,7 +11,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 type ColAlignment = 'left' | 'center' | 'right';
 
@@ -21,6 +19,7 @@ type Column<Row> = {
   label: React.ReactNode;
   headerAlign?: ColAlignment;
   cellAlign?: ColAlignment | ((row: Row) => ColAlignment);
+  cellStyles?: SxProps;
 };
 
 type FormTableProps<Row> = {
@@ -80,15 +79,31 @@ function FormTable<Row extends Record<string, any>>({
   rows,
   hasAdditionalRowActions,
 }: FormTableProps<Row>) {
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  return !isMobile ? (
-    <TableContainer sx={{ pb: '34.5px', ...sxStyle }}>
+  return (
+    <TableContainer
+      sx={{
+        border: '2px solid #c5cad1',
+        borderRadius: '8px',
+        ...sxStyle,
+      }}
+    >
       <Table
         sx={{
           backgroundColor: '#f9fafb',
-          borderCollapse: 'collapse',
           width: '100%',
+          borderCollapse: 'separate',
+          borderSpacing: 0,
+          '& .MuiTableCell-root': {
+            borderRight: 'none',
+            borderLeft: 'none',
+            borderTop: 'none',
+          },
+          '& .MuiTableCell-root:not(:last-of-type)': {
+            borderRight: '2px solid #c5cad1',
+          },
+          '& tbody .MuiTableRow-root:not(:last-of-type)': {
+            borderBottom: '2px solid #c5cad1',
+          },
         }}
       >
         <TableHead>
@@ -115,11 +130,20 @@ function FormTable<Row extends Record<string, any>>({
                     : col.cellAlign ?? 'left';
 
                 return (
-                  <TableCell key={String(col.key)} align={alignment}>
+                  <TableCell key={String(col.key)} align={alignment} sx={col.cellStyles}>
                     {row[col.key]}
-                    {hasAdditionalRowActions && col.key === 'doc' && (
-                      <Box mt={1}>{row.actions}</Box>
+                    {hasAdditionalRowActions && (
+                      <>
+                        {col.key === 'doc' && <Box mt={1}>{row.actions}</Box>}
+                        {col.key === 'receivedDocs' && row.receivedDocsActions && (
+                          <Box mt={1}>{row.receivedDocsActions}</Box>
+                        )}
+                        {col.key === 'submittedDocs' && row.submittedDocsActions && (
+                          <Box mt={1}>{row.submittedDocsActions}</Box>
+                        )}
+                      </>
                     )}
+                    {/*  jeigu key receivedDocs, submittedDocs arba docs, tada galima actions prideti */}
                   </TableCell>
                 );
               })}
@@ -128,9 +152,9 @@ function FormTable<Row extends Record<string, any>>({
         </TableBody>
       </Table>
     </TableContainer>
-  ) : (
-    <MobileTable cols={cols} rows={rows} />
   );
 }
 
 export default FormTable;
+
+// border bottom for row should decrease by 1 px
