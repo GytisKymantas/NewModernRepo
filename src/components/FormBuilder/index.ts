@@ -153,7 +153,7 @@ export const commonFieldConfigs = {
 
 // Function to create field configs with custom Zod validation (for advanced use cases)
 export const createTranslatedFieldConfigs = (
-  translateFunction?: (key: string, values?: Record<string, any>) => string,
+  translateFunction?: (key: string, values?: Record<string, string | number>) => string,
 ) => {
   const validationRules = createCustomValidationRules(translateFunction);
 

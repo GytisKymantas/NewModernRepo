@@ -18,12 +18,24 @@ type PricingTableProps = {
 function PricingTable({ sxStyle, document, price }: PricingTableProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <TableContainer sx={sxStyle}>
+    <TableContainer sx={{ borderRadius: '8px', border: '2px solid #c5cad1', ...sxStyle }}>
       <Table
         sx={{
           backgroundColor: '#f9fafb',
-          borderCollapse: 'collapse',
           width: '100%',
+          borderCollapse: 'separate',
+          borderSpacing: 0,
+          '& .MuiTableCell-root': {
+            borderRight: 'none',
+            borderLeft: 'none',
+            borderTop: 'none',
+          },
+          '& .MuiTableCell-root:not(:last-of-type)': {
+            borderRight: '2px solid #c5cad1',
+          },
+          '& tbody .MuiTableRow-root:not(:last-of-type)': {
+            borderBottom: '2px solid #c5cad1',
+          },
         }}
       >
         <TableHead>

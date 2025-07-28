@@ -137,21 +137,23 @@ function OrderForm() {
                 },
               },
               {
-                id: 'checkAlert',
-                name: 'checkAlert',
-                type: 'alert',
-                label: 'checkAlert',
-                message: (
-                  <Box>
-                    <ul>TBA</ul>
-                  </Box>
-                ),
-                severity: 'info',
-                icon: (
-                  <Box sx={{ marginBottom: 'auto' }}>
-                    <InfoIcon />
-                  </Box>
-                ),
+                id: 'termsAndConditions',
+                name: 'termsAndConditions',
+                type: 'checkbox',
+                required: true,
+                children: `Sutinku, kad vadovaujantis Juridinių asmenų registro nuostatų, 
+                patvirtintų Lietuvos Respublikos Vyriausybės 2003 m. lapkričio 12 d. nutarimu Nr. 
+                1407, 109 punktu, prašome parengti elektroninį sertifikuotą registro išrašą 
+                juridiniam asmeniui ir pateikti prieigos raktą prie išrašo. Ir atlikus užsakymą, 
+                prieiga (prieigos raktas) prie ESI juridiniam asmeniui, filialui ar atstovybei 
+                bus išsiunčiamas elektroniniu būdu Juridinių asmenų registre įrašytais kontaktais: 
+                elektroninio pašto adresu ir trumpąja žinute į mobilųjį telefoną.`,
+                variant: 'flat',
+                slotProps: {
+                  wrapper: {
+                    hideLabel: true,
+                  },
+                },
               },
               {
                 id: 'servicePrice',

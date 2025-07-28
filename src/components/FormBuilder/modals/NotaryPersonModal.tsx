@@ -24,6 +24,7 @@ import {
 } from '@registrucentras/rc-ses-react-components';
 import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { ModalStates } from '../components/TableWithModal';
 
 type FormModel = {
@@ -36,6 +37,8 @@ type FormModel = {
   street: string;
   houseNumber: string;
   apartmentNumber: string;
+  radioSelectionPerson: string;
+  radioSelectionAddress: string;
 };
 
 export type FormModelOutput = {
@@ -49,10 +52,12 @@ type Props = {
   open: ModalStates;
   onSubmit: (data: FormModel) => void;
   onClose: () => void;
+  currentIndex?: number;
 };
-function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
-  const [results, setResults] = React.useState<FormModelOutput[] | FormModel[]>();
+function NotaryPersonModal({ open, onSubmit, onClose, currentIndex }: Props) {
+  const [results, setResults] = React.useState<any>();
   const formRef = useRef(null);
+  const isAddressModal = open === 'address';
 
   const {
     control,
@@ -61,6 +66,7 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
     handleSubmit,
     formState: { errors },
     getValues,
+    watch,
   } = useForm<FormModel>({
     mode: 'all',
     defaultValues: {
@@ -69,13 +75,32 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
       lastName: '',
       actions: null,
       municipality: '',
-      address: '',
+      address: 'Vilnius default',
       street: '',
+      radioSelectionPerson: 'LRFA',
+      radioSelectionAddress: 'Kaunas',
       houseNumber: '',
       apartmentNumber: '',
     },
   });
   const values = getValues();
+
+  const watchedFirstName = watch('firstName');
+  const watchedLastName = watch('lastName');
+  const watchedPersonalCo = watch('personalCo');
+  const watchedSelectionPerson = watch('radioSelectionPerson');
+  const watchedSelectionAddress = watch('radioSelectionAddress');
+  const watchedSelectionStreet = watch('street');
+
+  const isDisabled =
+    !watchedFirstName ||
+    !watchedLastName ||
+    !watchedPersonalCo ||
+    !watchedSelectionPerson ||
+    !watchedSelectionAddress;
+
+  const isDisabledAdressModalCTA =
+    !watchedSelectionPerson || !watchedSelectionAddress || !watchedSelectionStreet;
 
   const handleOnReset = () => {
     setResults(undefined);
@@ -87,33 +112,88 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
     onClose();
     onSubmit(values);
     handleOnReset();
+
+    toast.success('Asmuo pridėtas.', {
+      style: {
+        border: '1px solid #008561',
+        background: '#008561',
+        padding: '16px',
+        color: 'white',
+        width: '350px',
+        whiteSpace: 'nowrap',
+      },
+      iconTheme: {
+        primary: 'white',
+        secondary: '#008561',
+      },
+    });
+  };
+
+  const handleOnSubmitIfAddress = () => {
+    console.log('Submitting form with values:', values);
+    onClose();
+    onSubmit({ address: 'Updated Address' } as any);
+    handleOnReset();
+    toast.success('Adresas pakeistas.', {
+      style: {
+        border: '1px solid #008561',
+        background: '#008561',
+        padding: '16px',
+        color: 'white',
+        width: '350px',
+        whiteSpace: 'nowrap',
+      },
+      iconTheme: {
+        primary: 'white',
+        secondary: '#008561',
+      },
+    });
   };
 
   const handleOnSearch = () => {
     console.log('Searching with form values:', values);
 
-    setResults([
-      {
-        personalCo: '1099-2018-8012',
-        legalName: 'UAB Technologijos',
-        address: 'Vilniaus g. 10, Vilnius',
-        actions: null,
-      },
-      {
-        personalCo: '2055-6633-9922',
-        legalName: 'MB Inovacijos',
-        address: 'Kauno g. 20, Kaunas',
-        actions: null,
-      },
-    ]);
+    if (isAddressModal) {
+      setResults([
+        {
+          personalCo: '3931145343',
+          firstName: 'Vardas',
+          birthDay: '1992-10-21',
+          lastName: 'Pavarde',
+          address: 'Vilniaus g. 10, Vilnius',
+          actions: null,
+        },
+        {
+          personalCo: '3931145343',
+          firstName: 'Vardas',
+          birthDay: '1992-10-21',
+          lastName: 'Pavarde',
+          address: 'Vilniaus g. 10, Vilnius',
+          actions: null,
+        },
+      ]);
+    } else {
+      setResults([
+        {
+          personalCo: '1099-2018-8012',
+          legalName: 'UAB Technologijos',
+          address: 'Vilniaus g. 10, Vilnius',
+          actions: null,
+        },
+        {
+          personalCo: '2055-6633-9922',
+          legalName: 'MB Inovacijos',
+          address: 'Kauno g. 20, Kaunas',
+          actions: null,
+        },
+      ]);
+    }
   };
-  console.log('openopenopen:', open);
 
-  console.log('Form values inside modal:', values);
 
   return (
     <Dialog onClose={onClose} open={!!open} maxWidth='md'>
-      <DialogTitle>Asmens Paieška</DialogTitle>
+      <DialogTitle> {isAddressModal ? 'Adreso Paieška' : 'Asmens Paieška'}</DialogTitle>
       <Divider />
       <Box sx={{ maxWidth: '808px', width: '100%', margin: '0 auto' }}>
         <RcSesAlert severity='warning'>
@@ -125,13 +205,14 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
         <form ref={formRef} onSubmit={handleSubmit(handleOnSubmit)} noValidate>
           <Grid container columnSpacing={2} sx={{ mb: 2 }}>
             <Grid item xs={12} md={12}>
-              {open === 'address' ? (
+              {isAddressModal ? (
                 <>
                   <RcSesSelect
                     id='Savivaldybė'
                     name='Municipality'
                     control={control}
                     placeholder='Pasirinkite Savivaldybė'
+                    {...register('radioSelectionAddress', { required: true })}
                     rules={{ required: true }}
                     sx={{
                       backgroundColor: '#f5f5f5',
@@ -150,7 +231,7 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
                     ]}
                   />
                   <RcSesTextField
-                    label='Asmens Kodas'
+                    label='Adresas'
                     {...register('address', { required: true })}
                     slotProps={{ wrapper: { labelOnTop: false } }}
                   />
@@ -173,9 +254,10 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
               ) : (
                 <>
                   <RcSesRadioButtonGroup
-                    id='radioSelection1'
-                    name='radioSelection1'
+                    id='radioSelectionPerson'
+                    name='radioSelectionPerson'
                     control={control}
+                    {...register('radioSelectionPerson', { required: true })}
                     label={
                       <>
                         <BodyText>Asmens tipas</BodyText>
@@ -215,7 +297,12 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
             spacing={1}
             sx={{ pb: '32px' }}
           >
-            <Button onClick={handleOnSearch}>Ieškoti</Button>
+            <Button
+              onClick={handleOnSearch}
+              disabled={isAddressModal ? isDisabledAdressModalCTA : isDisabled}
+            >
+              Ieškoti
+            </Button>
             <Button variant='outlined' onClick={handleOnReset}>
               Išvalyti
             </Button>
@@ -225,30 +312,58 @@ function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
               <Table sx={{ background: 'blue' }}>
                 <TableHead sx={{ background: 'yellow' }}>
                   <TableRow>
-                    <TableCell>Juridinio asmens kodas</TableCell>
-                    <TableCell>Juridinio asmens pavadinimas</TableCell>
-                    <TableCell>Adresas</TableCell>
-                    <TableCell>Veiksmai</TableCell>
+                    {isAddressModal ? (
+                      <>
+                        <TableCell>Vardas</TableCell>
+                        <TableCell>Pavardė</TableCell>
+                        <TableCell>Asmens kodas</TableCell>
+                        <TableCell>Gimimo data</TableCell>
+                        <TableCell>Korespondencijos adresas</TableCell>
+                        <TableCell>Veiksmai</TableCell>
+                      </>
+                    ) : (
+                      <>
+                        <TableCell>Juridinio asmens kodas</TableCell>
+                        <TableCell>Juridinio asmens pavadinimas</TableCell>
+                        <TableCell>Adresas</TableCell>
+                        <TableCell>Veiksmai</TableCell>
+                      </>
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {results?.map((row) => (
                     <TableRow key={`${row.legalName}`}>
-                      <TableCell component='th' scope='row'>
-                        {row.personalCo}
-                      </TableCell>
-                      <TableCell>{row.legalName}</TableCell>
-                      <TableCell>{row.address}</TableCell>
-                      <TableCell>
-                        <Button
-                          type='submit'
-                          // onClick={() => {
-                          //   onSubmit(row);
-                          // }}
-                        >
-                          Pridėti
-                        </Button>
-                      </TableCell>
+                      {isAddressModal ? (
+                        <>
+                          <TableCell component='th' scope='row'>
+                            {row.firstName}
+                          </TableCell>
+                          <TableCell>{row.lastName}</TableCell>
+                          <TableCell> {row.personalCo}</TableCell>
+                          <TableCell>{row.birthDay}</TableCell>
+                          <TableCell>{row.address}</TableCell>
+                          <TableCell>
+                            <Button type='button' onClick={handleOnSubmitIfAddress}>
+                              Pridėti
+                            </Button>
+                          </TableCell>
+                        </>
+                      ) : (
+                        <>
+                          <TableCell component='th' scope='row'>
+                            {row.personalCo}
+                          </TableCell>
+                          <TableCell>{row.legalName}</TableCell>
+                          <TableCell>{row.address}</TableCell>
+
+                          <TableCell>
+                            <Button type='button' onClick={handleOnSubmit}>
+                              Pridėti
+                            </Button>
+                          </TableCell>
+                        </>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>

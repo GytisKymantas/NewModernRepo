@@ -13,8 +13,6 @@ import {
 
 import FileDropzone from '../Service/components/FileDropzone';
 import { BodyText, BodyTextSmall } from '../Service/components/ServiceDetailsForm';
-import ObjectIdentifierSearchModal from './components/ObjectIdentifierSearchModal';
-import SearchableField from './components/SearchableField';
 import TextAreaField from './components/TextAreaField';
 import useFormTranslation from './hooks/useFormTranslation';
 import {
@@ -26,12 +24,11 @@ import {
   FileFieldConfig,
   NumberStepperConfig,
   RadioFieldConfig,
-  SearchFieldConfig,
   SelectFieldConfig,
   SubgroupRendererProps,
   TextFieldConfig,
 } from './types';
-import { parseAcceptTypes, useConditionalLogic } from './utils';
+import { parseAcceptTypes, renderIfMatch, useConditionalLogic } from './utils';
 
 // Styled components for subgroups
 const SubgroupContainer = styled.div<{ variant: string }>`
@@ -83,6 +80,7 @@ function FieldRenderer({
   errors,
   register,
   formData,
+  watch,
 }: FieldRendererProps) {
   const { translateText } = useFormTranslation();
   const shouldShow = useConditionalLogic(field, formData);
@@ -145,15 +143,6 @@ function FieldRenderer({
               ...field.slotProps,
               field: {
                 ...field.slotProps?.field,
-                InputProps: {
-                  inputComponent: 'textarea',
-                  inputProps: {
-                    rows: textField.rows || 4,
-                  },
-                },
-                slots: {
-                  input: 'textarea',
-                },
               },
             }}
           />
@@ -212,12 +201,16 @@ function FieldRenderer({
             errors={fieldError}
             variant={checkboxField.variant}
             label={
-              <Box sx={{ marginBottom: { md: '5px' } }}>
-                <BodyText>{checkboxField.label}</BodyText>
-                <BodyTextSmall>
-                  {field.description ? translateText(field.description) : undefined}
-                </BodyTextSmall>
-              </Box>
+              !checkboxField.label && !checkboxField.description ? null : (
+                <Box sx={{ marginBottom: { md: '5px' } }}>
+                  {checkboxField.label && <BodyText>{checkboxField.label}</BodyText>}
+                  {checkboxField.description && (
+                    <BodyTextSmall>
+                      {translateText(checkboxField.description)}
+                    </BodyTextSmall>
+                  )}
+                </Box>
+              )
             }
             slotProps={{
               ...field.slotProps,
@@ -242,23 +235,6 @@ function FieldRenderer({
             rules={{ required: true }}
             errors={fieldError}
             clearable={dateField.clearable}
-          />
-        );
-      }
-
-      case 'search': {
-        const customField = field as SearchFieldConfig;
-
-        return (
-          <SearchableField
-            {...customField.props}
-            control={control}
-            id='searchable'
-            label='Teikėjo adresas'
-            name='searchable'
-            rules={{ required: true }}
-            ModalComponent={ObjectIdentifierSearchModal}
-            errors={undefined}
           />
         );
       }
@@ -340,16 +316,32 @@ function FieldRenderer({
       case 'custom': {
         const customField = field as CustomFieldConfig;
         const CustomComponent = customField.component;
-        return (
-          <CustomComponent
-            {...commonProps}
-            control={control}
-            errors={errors}
-            {...customField.props}
-          />
-        );
+        if (customField.shouldRenderConditionally?.shouldRender) {
+          const { checkValue, targetField } = customField.shouldRenderConditionally;
+          const shouldRender = renderIfMatch(checkValue, targetField, watch);
+          if (shouldRender) {
+            return (
+              <CustomComponent
+                {...commonProps}
+                control={control}
+                errors={errors}
+                {...customField.props}
+              />
+            );
+          }
+        } else {
+          return (
+            <CustomComponent
+              {...commonProps}
+              control={control}
+              errors={errors}
+              {...customField.props}
+            />
+          );
+        }
       }
 
+      // eslint-disable-next-line no-fallthrough
       default:
         return null;
     }

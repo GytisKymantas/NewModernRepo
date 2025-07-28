@@ -16,11 +16,19 @@ import { AuthGuard, CallbackHandler, SilentCallback } from './components/auth';
 import { AuthProvider } from './contexts/AuthContext';
 import './i18n/i18n';
 import Home from './pages/Home';
+import {
+  CombinedForm,
+  CombinedFormAccountant,
+  CombinedFormOrderCompleted,
+  CombinedFormOrderConfirmed,
+  CombinedFormOrderDelayed,
+  CombinedFormOrderInProgress,
+  CombinedFormOrderRejected,
+} from './pages/combined-form';
 import OrderForm from './pages/esi-preparation/OrderForm';
 import OrderReviewForm from './pages/esi-preparation/OrderReviewForm';
 import MultiStepServiceFormNotary from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormNotary';
 import MultiStepServiceFormPerson from './pages/form-examples/MultiStepServiceFormVariations/MultiStepServiceFormPerson';
-import CombinedForm from './pages/form-examples/combined-form/CombinedForm';
 import LegalStatementForm from './pages/public-statement/LegalStatementForm';
 import NaturalStatementForm from './pages/public-statement/NaturalStatementForm';
 import './styles.css';
@@ -86,13 +94,63 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path='form-examples/combined-form'
+        path='combined-form/natural'
         element={
           <AuthGuard>
             <CombinedForm />
           </AuthGuard>
         }
       />
+      <Route
+        path='combined-form/accountant'
+        element={
+          <AuthGuard>
+            <CombinedFormAccountant />
+          </AuthGuard>
+        }
+      />
+      {/* combined form order status form start */}
+      <Route
+        path='combined-form/order-in-progress'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderInProgress />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-confirmed'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderConfirmed />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-rejected'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderRejected />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-delayed'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderDelayed />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path='combined-form/order-completed'
+        element={
+          <AuthGuard>
+            <CombinedFormOrderCompleted />
+          </AuthGuard>
+        }
+      />
+      {/* combined form order status form end */}
       <Route
         path='/public-statement/legal'
         element={

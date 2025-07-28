@@ -133,11 +133,12 @@ export interface RadioFieldConfig extends BaseFieldConfig {
   hideNativeRadio?: boolean;
 }
 
-export interface CheckboxFieldConfig extends BaseFieldConfig {
+export interface CheckboxFieldConfig extends Omit<BaseFieldConfig, 'label'> {
   type: 'checkbox';
   variant?: 'flat' | 'outlined';
   title?: string;
-  children?: ReactNode;
+  children: ReactNode;
+  label?: string;
 }
 
 export interface DateFieldConfig extends BaseFieldConfig {
@@ -171,6 +172,11 @@ export interface CustomFieldConfig extends BaseFieldConfig {
   type: 'custom';
   component: ComponentType<CustomFieldProps>;
   props?: Record<string, any>;
+  shouldRenderConditionally?: {
+    shouldRender: boolean;
+    checkValue: string;
+    targetField: string;
+  };
 }
 
 export type FieldConfig =
@@ -184,8 +190,7 @@ export type FieldConfig =
   | PhoneFieldConfig
   | FileFieldConfig
   | AlertFieldConfig
-  | CustomFieldConfig
-  | SearchFieldConfig;
+  | CustomFieldConfig;
 
 // New interfaces for subgroup support
 export interface FieldSubgroup {
@@ -256,6 +261,7 @@ export interface CustomFieldProps {
   required?: boolean;
   disabled?: boolean;
   isWithoutDivider?: boolean;
+  withTriggerText?: boolean;
   [key: string]: any;
   ModalComponent?: React.JSXElementConstructor<ModalComponentProps>;
 }
