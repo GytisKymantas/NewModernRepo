@@ -16,18 +16,19 @@ type Props = {
   open: boolean;
   onSubmit?: (values: FormModel) => void;
   onClose: () => void;
+  onDelete?: () => void; // Optional callback for delete action
 };
 
 // Styled component for visual grouping
 const StyledFormSection = styled.div`
   background-color: #f9fafb;
-  padding: 16px;
-  margin-bottom: 24px;
+  padding: 32px;
+  padding-bottom: 24px;
   display: flex;
   flex-direction: column;
 `;
 
-function DeleteItemModal({ open, onSubmit, onClose }: Props) {
+function DeleteItemModal({ open, onSubmit, onClose, onDelete }: Props) {
   const {
     control,
     handleSubmit,
@@ -76,7 +77,7 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
             <Typography
               sx={{
                 fontSize: '24px',
-                fontWeight: '600',
+                fontWeight: '500',
                 letterSpacing: '-0.24px',
                 textAlign: 'center',
               }}
@@ -86,6 +87,7 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
             <Typography
               sx={{
                 maxWidth: '398px',
+                fontweight: '300',
                 lineHeight: '140%',
                 fontSize: '15px',
                 textAlign: 'center',
@@ -95,9 +97,23 @@ function DeleteItemModal({ open, onSubmit, onClose }: Props) {
               Atkreipiame dėmesį, kad jūsų įkeltas dokumentas bus ištrintas.
             </Typography>
           </StyledFormSection>
-          <DialogActions sx={{ justifyContent: 'center' }}>
-            <Button onClick={onClose}>Taip</Button>
-            <Button color='error' variant='outlined' onClick={onClose}>
+          <DialogActions sx={{ justifyContent: 'center', backgroundColor: '#f9fafb' }}>
+            <Button
+              sx={{ width: '110px', backgroundColor: '#F0F2F5', fontWight: '600' }}
+              color='inherit'
+              onClick={() => {
+                onDelete?.();
+                onClose?.();
+              }}
+            >
+              Taip
+            </Button>
+            <Button
+              sx={{ width: '110px', fontWight: '600' }}
+              color='primary'
+              variant='contained'
+              onClick={onClose}
+            >
               Ne
             </Button>
           </DialogActions>

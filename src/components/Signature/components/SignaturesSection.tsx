@@ -91,9 +91,9 @@ function SignaturesSection({ signedStatusComponent }: SignaturesSectionProps) {
           <Box
             sx={{
               display: 'flex',
-              gap: '10px',
+              gap: '3px',
               alignItems: 'center',
-              margin: ' 0 0 0 -24px',
+              margin: { xs: '0 0 0 -10px', md: '0 0 0 -24px' },
             }}
           >
             <svg
@@ -115,7 +115,7 @@ function SignaturesSection({ signedStatusComponent }: SignaturesSectionProps) {
       >
         <Box sx={{ paddingTop: '24px' }}>
           <AccordionEntry id='entry1' borderPosition='bottom'>
-            <Names>Vardenis Pavardenis (Jus)</Names>
+            <Names>Vardenis Pavardenis (Jūs)</Names>
             <PersonStatus>{signedStatusComponent}</PersonStatus>
           </AccordionEntry>
 

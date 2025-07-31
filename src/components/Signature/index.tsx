@@ -71,7 +71,7 @@
 //         >
 //           <RcSesAlert icon={<InfoIcon />} severity='info'>
 //             <StyledAlertText>
-//               Visi dokumentai yra pasirašomi eilės tvarka.
+//               Dokumentai yra pasirašomi eilės tvarka.
 //             </StyledAlertText>
 //           </RcSesAlert>
 

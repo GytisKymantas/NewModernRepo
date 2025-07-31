@@ -20,20 +20,24 @@ const Wrapper = styled.div`
 const Inner = styled.div<{ isBeingSigned?: boolean }>`
   border-top: 1px solid #eef1f3;
   border-bottom: 1px solid #eef1f3;
-  padding: 20px 2rem;
+  padding: 24px 16px;
   background: ${({ isBeingSigned }) => (isBeingSigned ? '#F9FAFB' : 'white')};
   margin: 0px -24px 0 -24px;
+
+  @media (max-width: 900px) {
+    padding: 1rem;
+    margin: 0 -16px 0 -16px;
+  }
 `;
 const Title = styled.h2`
   color: #1f2733;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   margin: 0;
 `;
 
 const Subtitle = styled.p`
   color: #4a5361;
-  font-family: 'Public Sans';
   font-size: 12px;
   font-weight: 300;
   margin: 4px 0 0 0;
@@ -53,7 +57,7 @@ const Row = styled.div`
 const StatusLabel = styled.div<{ status?: string; noMarginRight?: boolean }>`
   color: #1f2733;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 300;
   background-color: ${({ status }) => status || '#F0F2F5'};
   border-radius: 100px;
   margin-right: ${({ noMarginRight }) => (noMarginRight ? '0' : '40px')};
@@ -85,7 +89,11 @@ const Actions = styled.div`
   justify-content: center;
 `;
 
-function DocumentInfoSection({ index }: { index: number }) {
+type DocumentInfoSectionProps = {
+  index: number;
+  onDelete?: () => void; // optional in case it's not always passed
+};
+function DocumentInfoSection({ index, onDelete }: DocumentInfoSectionProps) {
   const [openModal, setOpenModal] = React.useState<null | 'view' | 'delete'>(null);
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -97,10 +105,10 @@ function DocumentInfoSection({ index }: { index: number }) {
     }
 
     if (index === 2) {
-      return '#F0F2F5';
+      return '#B9E9FA';
     }
 
-    return '#B9E9FA';
+    return '#F0F2F5';
   })();
 
   const getStatusLabel = (() => {
@@ -112,7 +120,7 @@ function DocumentInfoSection({ index }: { index: number }) {
       return 'Pasirašomas';
     }
 
-    return 'Eilėje';
+    return 'Laukiama parašo';
   })();
 
   const handleDownload = () => {
@@ -147,6 +155,22 @@ function DocumentInfoSection({ index }: { index: number }) {
             <StatusLabel status={getStatusLabelColor}>{getStatusLabel}</StatusLabel>
 
             <Actions>
+              <Box onClick={() => handleOpenModal('view')} sx={{ cursor: 'pointer' }}>
+                <PrimaryButton
+                  variant='text'
+                  size='small'
+                  startIcon={<OverviewIcon />}
+                  sx={{
+                    color: '#1F2733',
+                    '&:hover': {
+                      backgroundColor: 'inherit', // Keeps background unchanged
+                      boxShadow: 'none', // Removes shadow on hover
+                    },
+                  }}
+                >
+                  Peržiūrėti
+                </PrimaryButton>
+              </Box>
               <Box sx={{ cursor: 'pointer' }}>
                 <PrimaryButton
                   variant='text'
@@ -162,22 +186,6 @@ function DocumentInfoSection({ index }: { index: number }) {
                   onClick={handleDownload}
                 >
                   Atsisiųsti
-                </PrimaryButton>
-              </Box>
-              <Box onClick={() => handleOpenModal('view')} sx={{ cursor: 'pointer' }}>
-                <PrimaryButton
-                  variant='text'
-                  size='small'
-                  startIcon={<OverviewIcon />}
-                  sx={{
-                    color: '#1F2733',
-                    '&:hover': {
-                      backgroundColor: 'inherit', // Keeps background unchanged
-                      boxShadow: 'none', // Removes shadow on hover
-                    },
-                  }}
-                >
-                  Peržiūrėti
                 </PrimaryButton>
               </Box>
 
@@ -211,7 +219,7 @@ function DocumentInfoSection({ index }: { index: number }) {
           <SignaturesSection
             signedStatusComponent={
               <StatusLabel noMarginRight status={index === 1 ? '#B9E9FA' : '#FCE09F'}>
-                {index === 1 ? 'Pasirašė' : 'Laukiama'}
+                {index === 1 ? 'Pasirašė' : 'Nepasirašė'}
               </StatusLabel>
             }
           />
@@ -240,7 +248,9 @@ function DocumentInfoSection({ index }: { index: number }) {
       {/* Modals */}
 
       {openModal === 'view' && <ViewItemModal open onClose={handleCloseModal} />}
-      {openModal === 'delete' && <DeleteItemModal open onClose={handleCloseModal} />}
+      {openModal === 'delete' && (
+        <DeleteItemModal open onClose={handleCloseModal} onDelete={onDelete} />
+      )}
     </Wrapper>
   );
 }

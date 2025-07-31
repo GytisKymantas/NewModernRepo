@@ -66,6 +66,48 @@ input[type='radio' i]:focus-visible {
   padding-left: 24px !important;
   padding-right: 24px !important;
 }
+@media (max-width: 900px) {
+  .MuiAccordionDetails-root {
+    padding: 16px !important;
+  }
+  .css-1wcp9g1-MuiPaper-root-MuiAccordion-root.Mui-expanded .MuiAccordionSummary-root {
+    padding: 0 16px;
+  }
+  .css-rvh1wf-MuiContainer-root {
+    padding-bottom: 20px !important;
+  }
+  .css-1wcp9g1-MuiPaper-root-MuiAccordion-root.Mui-expanded .MuiAccordionSummary-content {
+    margin: 0 !important;
+    font-size: 20px !important;
+  }
+  .css-6gbqce {
+    font-size: 20px !important;
+  }
+  .css-16kw1zo-MuiTypography-root {
+    font-size: 16px !important;
+  }
+  .css-sa22va-MuiTypography-root {
+    margin-left: 0 !important;
+  }
+  .css-1np9d6z-MuiPaper-root-MuiDialog-paper {
+    margin: 0 !important;
+  }
+  /* .css-19hoja1-MuiModal-root-MuiDialog-root .MuiDialogContent-root {
+  padding:0px !important;
+  } */
+  .css-19hoja1-MuiModal-root-MuiDialog-root .MuiDialogContent-root {
+    padding: 0 !important;
+  }
+  .css-1eqm1bn {
+    border: none !important;
+  }
+  .css-1sep8xo-MuiDialog-container {
+    /* align-items: flex-end !important; */
+  }
+  .css-1np9d6z-MuiPaper-root-MuiDialog-paper {
+    max-height: 90% !important;
+  }
+}
 
 #basicInformation-header {
   background: none !important;

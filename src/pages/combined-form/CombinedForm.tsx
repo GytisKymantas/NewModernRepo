@@ -111,7 +111,7 @@ function CombinedForm() {
             name: 'infoAlert',
             type: 'alert',
             label: 'infoAlert',
-            message: <div>Visi dokumentai yra pasirašomi eilės tvarka.</div>,
+            message: <div>Dokumentai yra pasirašomi eilės tvarka.</div>,
             severity: 'info',
             icon: <InfoIcon />,
           },

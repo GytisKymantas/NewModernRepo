@@ -99,6 +99,9 @@ export default function FormActions({
           sx={{
             alignItems: 'center',
             justifyContent: 'space-between',
+            '@media (max-width:900px)': {
+              flexDirection: 'column-reverse',
+            },
           }}
         >
           {/* Left side - Draft functionality */}
@@ -123,6 +126,10 @@ export default function FormActions({
                   '&:disabled': {
                     color: 'text.disabled',
                   },
+                  '@media (max-width:900px)': {
+                    width: '100%',
+                    paddingTop: '26px',
+                  },
                 }}
               >
                 {getDraftText()}
@@ -141,6 +148,7 @@ export default function FormActions({
                     disabled={isPreviousDisabled()}
                     onClick={onPrevious}
                     sx={{
+                      fontWeight: '400',
                       minWidth: '120px',
                     }}
                   >
@@ -157,7 +165,11 @@ export default function FormActions({
                   size='large'
                   variant='contained'
                   sx={{
+                    fontWeight: '500',
                     minWidth: '120px',
+                    '@media (max-width:900px)': {
+                      minWidth: isFirstStep ? '294px' : null,
+                    },
                   }}
                 >
                   {getSubmitText()}
@@ -173,7 +185,13 @@ export default function FormActions({
         <>
           <Grid
             container
-            sx={{ justifyContent: 'center', py: { xs: '1.5rem', md: '.875rem' } }}
+            sx={{
+              justifyContent: 'center',
+              py: { xs: '1.5rem', md: '.875rem' },
+              '@media (max-width:600px)': {
+                background: '#F3FBFE',
+              },
+            }}
           >
             <Grid item>
               <Button
@@ -181,7 +199,7 @@ export default function FormActions({
                 size='small'
                 disabled={isPreviousDisabled()}
                 sx={{
-                  fontWeight: 400,
+                  fontWeight: '400',
                   textDecoration: 'underline',
                   color: 'text.secondary',
                   textTransform: 'none',
