@@ -37,6 +37,7 @@ type Props = {
   onSubmit: (data: FormModel) => void;
   onClose: () => void;
 };
+
 function NaturalPersonModal({ open, onSubmit, onClose }: Props) {
   const [results, setResults] = React.useState<FormModelOutput[] | FormModel[]>();
   const formRef = useRef(null);
@@ -90,7 +91,12 @@ function NaturalPersonModal({ open, onSubmit, onClose }: Props) {
       <Divider />
 
       <DialogContent>
-        <form ref={formRef} onSubmit={handleSubmit(handleOnSubmit)} noValidate>
+        <form
+          style={{ padding: '0 20px' }}
+          ref={formRef}
+          onSubmit={handleSubmit(handleOnSubmit)}
+          noValidate
+        >
           <Grid container columnSpacing={2} sx={{ mb: 2 }}>
             <Grid item xs={12} md={12}>
               <RcSesTextField

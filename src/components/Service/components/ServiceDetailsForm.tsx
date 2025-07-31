@@ -42,8 +42,9 @@ export const HeaderMain = styled.p`
 `;
 
 export const InfoHeader = styled.p<{ noMargin?: boolean }>`
-  font-size: 16px;
   font-weight: 500;
+  font-size: 13px;
+
   color: #1f2733;
   margin: ${({ noMargin }) => (noMargin ? '0' : '0 0 4px 0')};
 `;
@@ -53,6 +54,11 @@ const UnorderedList = styled.ul`
   marginbottom: 4px;
 `;
 
+export const StyledUnorderedList = styled.ul`
+  @media (max-width: 600px) {
+    padding-left: 10px !important;
+  }
+`;
 const ListItem = styled.li`
   font-size: 15px;
   font-weight: 400;

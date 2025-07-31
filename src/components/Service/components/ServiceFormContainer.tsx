@@ -27,12 +27,17 @@ const ProgressBarFill = styled.div<{ percentage: number }>`
 
 const ProgressTextContainer = styled.div`
   padding-left: 24px;
+
+  @media (max-width: 900px) {
+    padding-left: 16px;
+  }
 `;
 
 const StepInfo = styled.p`
   margin-top: 8px;
   color: #008561;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 function ActiveStepIcon() {
@@ -117,7 +122,7 @@ function ServiceFormContainer({ steps, isVertical }: Props) {
           sx={{
             width: '100%',
             backgroundColor: '#ffffff',
-            margin: '32px 0 -8px 0',
+            margin: '19px 0 -8px 0',
           }}
         >
           <Stepper

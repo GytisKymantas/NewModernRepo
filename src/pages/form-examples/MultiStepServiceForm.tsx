@@ -3,6 +3,7 @@ import FormBuilder from '@/components/FormBuilder/FormBuilder';
 import { commonFieldConfigs } from '@/components/FormBuilder/index';
 import { FormBuilderConfig } from '@/components/FormBuilder/types';
 import ServiceDetails from '@/components/OwnedProperties/ServiceDetails';
+import { StyledUnorderedList } from '@/components/Service/components/ServiceDetailsForm';
 import DocumentCollection from '@/components/Signature/components/DocumentCollection';
 import UploadFile from '@/components/Signature/components/UploadFile';
 import { Box, Typography } from '@mui/material';
@@ -164,11 +165,15 @@ function MultiStepServiceForm() {
                 message: (
                   <Box>
                     <Typography
-                      sx={{ fontWeight: '600', paddingTop: { xs: '4px', md: '0' } }}
+                      sx={{
+                        fontWeight: '500',
+                        fontSize: '13px',
+                        paddingTop: { xs: '4px', md: '0' },
+                      }}
                     >
                       Reikalavimai pavadinimui
                     </Typography>
-                    <ul>
+                    <StyledUnorderedList>
                       <li>
                         pavadinime turi būti teisinę formą nusakantys žodžiai arba jų
                         trumpiniai (pvz., individuali įmonė arba IĮ);
@@ -183,7 +188,7 @@ function MultiStepServiceForm() {
                         filialo pavadinime privalo būti juridinio asmens (steigėjo)
                         pavadinimas ir žodis &bdquo;filialas&ldquo;.
                       </li>
-                    </ul>
+                    </StyledUnorderedList>
                   </Box>
                 ),
                 severity: 'info',
@@ -316,7 +321,7 @@ function MultiStepServiceForm() {
             name: 'infoAlert',
             type: 'alert',
             label: 'infoAlert',
-            message: <div>Visi dokumentai yra pasirašomi eilės tvarka.</div>,
+            message: <div>Dokumentai yra pasirašomi eilės tvarka.</div>,
             severity: 'info',
             icon: <InfoIcon />,
           },

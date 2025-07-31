@@ -79,7 +79,7 @@ export const StyledAccordionWrapper = styled.div`
        border: 1px solid #BEC3CA !important;
 
  &.Mui-expanded:first-of-type {
-      margin-top: 1rem !important;
+      margin-top: -1rem !important;
       margin: 1.5rem 2rem 2rem 2rem !important;
     }
 
@@ -99,7 +99,7 @@ export const StyledAccordionWrapper = styled.div`
       margin: 1rem 0 !important;
 
       &.Mui-expanded:first-of-type {
-        margin-top: 1rem !important;
+        margin-top: -1rem !important;
         margin: 1.5rem 0 !important;
 
       }

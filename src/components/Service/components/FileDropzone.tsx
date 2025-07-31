@@ -1,4 +1,12 @@
-import { Box, IconButton, Stack, SvgIcon, Typography, styled } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Stack,
+  SvgIcon,
+  Typography,
+  styled,
+  useMediaQuery,
+} from '@mui/material';
 import React, { useCallback, useMemo } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { UseControllerProps, useController } from 'react-hook-form';
@@ -12,6 +20,7 @@ import {
   RcSesFormControlWrapperProps,
 } from '@registrucentras/rc-ses-react-components';
 
+import theme from '@/theme';
 import IconWithCircularBackground from './IconWithCircularBackground';
 
 function XCircleFillIcon(props) {
@@ -76,6 +85,7 @@ function RcSesFileDropzone(props: Props) {
   const { control, errors, label, rules, slotProps, required, ...fieldProps } = props;
   const { name } = fieldProps;
   const { description, ...wrapperProps } = slotProps?.wrapper ?? {};
+  const upMd = useMediaQuery(theme.breakpoints.up('md'));
 
   const id = useMemo(() => fieldProps.id ?? uuidv4(), [fieldProps.id]);
 
@@ -148,7 +158,7 @@ function RcSesFileDropzone(props: Props) {
       >
         <input {...getInputProps()} name={fieldControlProps.name} />
 
-        <Stack direction='column' sx={{ alignItems: 'center', gap: 2 }}>
+        <Stack direction={upMd ? 'column' : 'row'} sx={{ alignItems: 'center', gap: 2 }}>
           <IconWithCircularBackground
             color={!fieldProps.disabled && isDragActive ? 'primary' : 'grey'}
             bgShade={!fieldProps.disabled && isDragActive ? '100' : '50'}

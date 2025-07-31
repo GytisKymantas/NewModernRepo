@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 import ObjectIdentifierSearchModal from './ObjectIdentifierSearchModal';
 
@@ -35,7 +35,15 @@ function UploadFile() {
   };
 
   return (
-    <Box sx={{ marginBottom: '0px', marginTop: '-24px' }}>
+    <Box
+      sx={{
+        marginBottom: '0',
+        marginTop: '-24px',
+        borderBottom: '1px solid #eff1f3',
+        marginLeft: '-15px',
+        marginRight: '-15px',
+      }}
+    >
       <UploadWrapper onClick={handleOpenModal}>
         <svg
           width='25'
@@ -49,7 +57,9 @@ function UploadFile() {
             fill='#0079AD'
           />
         </svg>
-        <p>Įkelti dokumentą</p>
+        <Typography sx={{ fontSize: '15px !important', fontWeight: '600 !important' }}>
+          Įkelti dokumentą
+        </Typography>
       </UploadWrapper>
 
       <ObjectIdentifierSearchModal open={modalOpen} onClose={() => setModalOpen(false)} />
