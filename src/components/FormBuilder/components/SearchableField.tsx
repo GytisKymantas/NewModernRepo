@@ -26,7 +26,7 @@ type ModalComponentProps = {
   onSubmit: (value: string) => void;
   onClose: () => void;
 };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
 type TControllerProps = UseControllerProps<any, any>;
 type ImmediateControllerProps = 'control' | 'rules' | 'disabled' | 'name';
 
@@ -77,7 +77,7 @@ const SearchableField = React.forwardRef<HTMLInputElement, CombinedProps>(
     }, [submittedData]);
 
     const {
-      field: { onChange, value },
+      field: { onChange },
     } = useController({
       control,
       name,

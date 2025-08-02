@@ -31,11 +31,8 @@ const StyledFormSection = styled.div`
 
 function ViewItemModal({ open, onSubmit, onClose }: Props) {
   const {
-    control,
     handleSubmit,
-    formState: { errors },
-    register,
-    setValue,
+    // formState: {errors},
     reset,
   } = useForm<FormModel>({
     mode: 'all',
@@ -46,6 +43,7 @@ function ViewItemModal({ open, onSubmit, onClose }: Props) {
       documentFile: [],
     },
   });
+  // console.log(errors, 'errors');
 
   const handleOnSubmit = (data: FormModel) => {
     if (onSubmit) onSubmit(data);

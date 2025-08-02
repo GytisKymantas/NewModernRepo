@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMediaQuery } from '@mui/material';
 import { RcSesServicePage } from '@registrucentras/rc-ses-react-components';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
 import '../../i18n/i18n';
-import theme from '../../theme';
 import ServiceFormAccordion from '../Service/components/ServiceFormAccordion';
 import ServiceHeader from '../Service/components/ServiceHeader';
 import useAccordionController from '../hooks/useAccordionController';
@@ -27,7 +25,6 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [currentStep]);
 
-  const upMd = useMediaQuery(theme.breakpoints.up('md'));
   const { translateValidation } = useFormTranslation();
 
   const currentStepConfig = config.steps[currentStep];
@@ -69,6 +66,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
   const formData = watch();
 
   // Fix: Restore preserved values after form reset - avoid infinite loop by not including preservedFormData in deps
+
   useEffect(() => {
     if (Object.keys(preservedFormData).length > 0) {
       Object.keys(preservedFormData).forEach((key) => {
@@ -84,7 +82,9 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
         }
       });
     }
-  }, [currentStep, setValue]); // Removed preservedFormData from deps to prevent infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep, setValue]);
+  // Removed preservedFormData from deps to prevent infinite loop
 
   // Check if current step is valid for navigation
   const isCurrentStepValid = useCallback(() => {
@@ -163,7 +163,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
           title: step.title,
         };
         return acc;
-      }, {} as any),
+      }, {}),
     [config.steps, currentStep],
   );
 
@@ -211,7 +211,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
           }
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.error('Failed to load draft:', error);
+          // console.error('Failed to load draft:', error);
         } finally {
           setIsDataLoading(false);
         }
@@ -234,7 +234,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
       await config.onSaveDraft(currentData);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Failed to save draft:', error);
+      // console.error('Failed to save draft:', error);
     } finally {
       if (!config.loading?.states?.isSavingDraft) {
         setIsSavingDraft(false);
@@ -328,7 +328,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
             acc[fieldName] = errors[fieldName];
           }
           return acc;
-        }, {} as any);
+        }, {});
 
         await config.onInvalidSubmit(stepErrors, getValues());
       }
@@ -356,7 +356,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
 
   // Handle successful form submission
   const handleFormSubmit = useCallback(
-    async (data: any) => {
+    async (data) => {
       // Don't override external loading state
       if (!config.loading?.states?.isSubmitting) {
         setIsSubmitting(true);
@@ -366,7 +366,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
         await config.onSubmit(formattedData);
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error('Form submission error:', error);
+        // console.error('Form submission error:', error);
       } finally {
         if (!config.loading?.states?.isSubmitting) {
           setIsSubmitting(false);
@@ -395,7 +395,7 @@ function FormBuilder({ config, initialData }: FormBuilderProps) {
   //   [config.multiStep, accordionController, upMd],
   // );
 
-  // console.log(formContainerProps,'formContainerProps')
+  // // console.log(formContainerProps,'formContainerProps')
 
   // Memoize form actions submit handler
   const formActionsSubmitHandler = useMemo(

@@ -140,7 +140,7 @@ function DocumentInfoSection({ index, onDelete }: DocumentInfoSectionProps) {
         document.body.removeChild(link);
       }
     } catch (error) {
-      console.error('Error parsing file from localStorage:', error);
+      // console.error('Error parsing file from localStorage:', error);
     }
   };
 

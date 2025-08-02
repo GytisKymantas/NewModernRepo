@@ -171,7 +171,8 @@ function ObjectIdentifierSearchModal({ open, onSubmit, onClose }: Props) {
             <FileDropzone
               id='documentFile'
               name='documentFile'
-              control={control}
+              // eslint-disable-next-line react-hooks/exhaustive-deps
+              control={control as any}
               rules={{ required: true }}
               label='Dokumentas'
               errors={errors?.documentFile}

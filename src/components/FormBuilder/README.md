@@ -48,7 +48,7 @@ const config: FormBuilderConfig = {
     },
   ],
   onSubmit: async (data) => {
-    console.log('Form data:', data);
+    // console.log('Form data:', data);
   },
 };
 

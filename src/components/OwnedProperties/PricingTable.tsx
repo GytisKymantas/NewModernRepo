@@ -1,4 +1,3 @@
-import theme from '@/theme';
 import {
   Table,
   TableBody,
@@ -7,7 +6,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { SxProps, useMediaQuery } from '@mui/system';
+import { SxProps } from '@mui/system';
 
 type PricingTableProps = {
   sxStyle?: SxProps;
@@ -16,7 +15,6 @@ type PricingTableProps = {
 };
 
 function PricingTable({ sxStyle, document, price }: PricingTableProps) {
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <TableContainer sx={{ borderRadius: '8px', border: '2px solid #c5cad1', ...sxStyle }}>
       <Table

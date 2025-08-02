@@ -46,7 +46,7 @@ function PersonModal({ open, onSubmit, onClose }: Props) {
     register,
     reset,
     handleSubmit,
-    formState: { errors },
+    // formState: {errors},
   } = useForm<FormModel>({
     mode: 'all',
     defaultValues: {
@@ -55,6 +55,7 @@ function PersonModal({ open, onSubmit, onClose }: Props) {
       actions: null,
     },
   });
+  // console.log(errors, 'errors');
 
   const handleOnReset = () => {
     setResults(undefined);

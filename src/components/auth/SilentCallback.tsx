@@ -10,7 +10,7 @@ export function SilentCallback() {
         await userManager.signinSilentCallback();
       } catch (error) {
         if (process.env.NODE_ENV === 'development') {
-          console.error('Silent callback error:', error);
+          // console.error('Silent callback error:', error);
         }
       }
     };

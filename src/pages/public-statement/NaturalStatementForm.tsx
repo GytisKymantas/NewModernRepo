@@ -262,25 +262,31 @@ function NaturalStatementForm() {
       },
     ],
     onSubmit: async (data) => {
-      console.log('Service request submitted:', data);
+      // console.log('Service request submitted:', data);
       localStorage.setItem('submittedData', JSON.stringify(data));
-      alert('Service request submitted successfully!');
+      // alert('Service request submitted successfully!');
     },
-    onInvalidSubmit: async (errors, data) => {
-      console.log('Invalid submit:', errors);
-    },
+    onInvalidSubmit: async () =>
+      // errors, data
+      {
+        // console.log(data, 'data submitted');
+        // console.log('Invalid submit:', errors);
+      },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
-      console.log('Draft saved:', data);
+      // console.log('Draft saved:', data);
     },
-    onStepChange: (step, data) => {
-      console.log(`Moved to step ${step}:`, data);
+    onStepChange: (
+      // step,
+      data,
+    ) => {
+      // console.log(`Moved to step ${step}:`, data);
       // Auto-save on step change
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
     },
     onDiscard: async () => {
       localStorage.removeItem('serviceRequestDraft');
-      console.log('Draft discarded');
+      // console.log('Draft discarded');
     },
     onLoadDraft: async () => {
       const draft = localStorage.getItem('serviceRequestDraft');

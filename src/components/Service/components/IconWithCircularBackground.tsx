@@ -17,7 +17,7 @@ type ThemeColors = Paths<typeof palette>;
 const resolvePaletteColorPath = (path: ThemeColors | 'white') => {
   if (!path) return palette.primary.main;
 
-  const resolved = path.split('.').reduce((a: any, b: any) => a[b], palette);
+  const resolved = path.split('.').reduce((a, b) => a[b], palette);
 
   return resolved ?? path;
 };

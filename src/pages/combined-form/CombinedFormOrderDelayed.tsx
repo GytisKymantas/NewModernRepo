@@ -163,7 +163,7 @@ function CombinedFormOrderDelayed() {
     ],
     onSubmit: async (data) => {
       localStorage.setItem('combinedFormData', JSON.stringify(data));
-      console.log(data);
+      // console.log(data);
       toast.success('Dokumentas sėkmingai pasirašytas', {
         style: {
           border: '1px solid #008561',
@@ -177,22 +177,28 @@ function CombinedFormOrderDelayed() {
         },
       });
     },
-    onInvalidSubmit: async (errors, data) => {
-      console.log('Invalid submit:', errors);
-      toast.error('Yra Klaidų.');
-    },
+    onInvalidSubmit: async () =>
+      // errors, data
+      {
+        // console.log(data, 'submited');
+        // console.log('Invalid submit:', errors);
+        toast.error('Yra Klaidų.');
+      },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
-      console.log('Draft saved:', data);
+      // console.log('Draft saved:', data);
     },
-    onStepChange: (step, data) => {
-      console.log(`Moved to step ${step}:`, data);
+    onStepChange: (
+      // step,
+      data,
+    ) => {
+      // console.log(`Moved to step ${step}:`, data);
       // Auto-save on step change
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
     },
     onDiscard: async () => {
       localStorage.removeItem('serviceRequestDraft');
-      console.log('Draft discarded');
+      // console.log('Draft discarded');
     },
     onLoadDraft: async () => {
       const draft = localStorage.getItem('serviceRequestDraft');

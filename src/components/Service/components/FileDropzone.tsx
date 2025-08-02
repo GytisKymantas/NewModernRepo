@@ -57,7 +57,7 @@ const StyledCloseIcon = styled(XCircleFillIcon)({
   'path fill': palette.grey[950],
 });
 
-type TControllerProps = UseControllerProps<any, any>;
+type TControllerProps = UseControllerProps;
 type ImmediateControllerProps = 'control' | 'rules';
 
 type TFieldProps = React.InputHTMLAttributes<HTMLInputElement>;

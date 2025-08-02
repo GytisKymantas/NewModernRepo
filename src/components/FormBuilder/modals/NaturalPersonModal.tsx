@@ -46,7 +46,7 @@ function NaturalPersonModal({ open, onSubmit, onClose }: Props) {
     register,
     reset,
     handleSubmit,
-    formState: { errors },
+    // formState: {errors},
   } = useForm<FormModel>({
     mode: 'all',
     defaultValues: {
@@ -84,6 +84,7 @@ function NaturalPersonModal({ open, onSubmit, onClose }: Props) {
       },
     ]);
   };
+  // console.log(errors, 'errors');
 
   return (
     <Dialog onClose={onClose} open={open} maxWidth='md'>

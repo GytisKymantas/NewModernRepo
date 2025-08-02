@@ -17,27 +17,8 @@ import {
 // Create commonly used field instances
 const emailField = commonFieldConfigs.email('email');
 const phoneField = commonFieldConfigs.phone('phone');
-const personalCodeField = commonFieldConfigs.personalCode('personalCode');
-
-function CustomField() {
-  return <div>Custom Field</div>;
-}
 
 // Component definitions moved outside render to fix lint errors
-function DocumentTypeField() {
-  return (
-    <ServiceDetails
-      title=''
-      isWithoutDivider
-      rows={[
-        {
-          label: 'Dokumento tipas',
-          value: 'Sutikimas naudoti prekinį ženklą',
-        },
-      ]}
-    />
-  );
-}
 
 function PersonalCodeField() {
   return (
@@ -469,41 +450,48 @@ function MultiStepServiceForm() {
         ],
       },
     ],
-    onSubmit: async (data) => {
-      console.log('Service request submitted:', data);
+    onSubmit: async () =>
+      // data
+      {
+        // console.log('Service request submitted:', data);
 
-      toast.success('Dokumentas sėkmingai pasirašytas.', {
-        style: {
-          border: '1px solid #008561',
-          background: '#008561',
-          padding: '16px',
-          color: 'white',
-          width: '350px',
-          whiteSpace: 'nowrap',
-        },
-        iconTheme: {
-          primary: 'white',
-          secondary: '#008561',
-        },
-      });
-    },
-    onInvalidSubmit: async (errors, data) => {
-      console.log('Invalid submit:', errors, data);
-      toast.error('Yra Klaidų.');
-    },
+        toast.success('Dokumentas sėkmingai pasirašytas.', {
+          style: {
+            border: '1px solid #008561',
+            background: '#008561',
+            padding: '16px',
+            color: 'white',
+            width: '350px',
+            whiteSpace: 'nowrap',
+          },
+          iconTheme: {
+            primary: 'white',
+            secondary: '#008561',
+          },
+        });
+      },
+    onInvalidSubmit: async () =>
+      // errors, data
+      {
+        // console.log('Invalid submit:', errors, data);
+        toast.error('Yra Klaidų.');
+      },
     onSaveDraft: async (data) => {
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
-      console.log('Draft saved:', data);
+      // console.log('Draft saved:', data);
       toast.success('Draft saved successfully!');
     },
-    onStepChange: (step, data) => {
-      console.log(`Moved to step ${step}:`, data);
+    onStepChange: (
+      // step,
+      data,
+    ) => {
+      // console.log(`Moved to step ${step}:`, data);
       // Auto-save on step change
       localStorage.setItem('serviceRequestDraft', JSON.stringify(data));
     },
     onDiscard: async () => {
       localStorage.removeItem('serviceRequestDraft');
-      console.log('Draft discarded');
+      // console.log('Draft discarded');
       toast.error('Draft discarded.');
     },
     onLoadDraft: async () => {

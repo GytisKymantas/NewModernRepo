@@ -43,7 +43,7 @@ export class HttpClient {
             }
           } catch (error) {
             if (process.env.NODE_ENV === 'development') {
-              console.warn('Failed to get user token:', error);
+              // console.warn('Failed to get user token:', error);
             }
           }
         }
@@ -102,7 +102,7 @@ export class HttpClient {
 
     // Log errors in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('API Error:', apiError);
+      // console.error('API Error:', apiError);
     }
 
     return apiError;

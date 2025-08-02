@@ -25,7 +25,10 @@ export default function useFormTranslation() {
   /**
    * Translates validation messages with interpolation support
    */
-  const translateValidation = (message: string, values?: Record<string, any>): string => {
+  const translateValidation = (
+    message: string,
+    values?: Record<string, unknown>,
+  ): string => {
     if (message.startsWith('formBuilder.')) {
       return t(message, values) as string;
     }

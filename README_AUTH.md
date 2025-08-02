@@ -68,9 +68,9 @@ function MyComponent() {
     try {
       // Token automatically included in headers if auth enabled
       const data = await httpClient.get('/api/data');
-      console.log(data);
+      // console.log(data);
     } catch (error) {
-      console.error('API Error:', error);
+      // console.error('API Error:', error);
     }
   };
 
@@ -197,6 +197,6 @@ Enable verbose logging in development:
 ```typescript
 // The HTTP client automatically logs errors in development mode
 if (process.env.NODE_ENV === 'development') {
-  console.error('API Error:', apiError);
+  // console.error('API Error:', apiError);
 }
 ```

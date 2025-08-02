@@ -29,7 +29,7 @@ export function CallbackHandler() {
         }
       } catch (err) {
         if (process.env.NODE_ENV === 'development') {
-          console.error('Callback handling error:', err);
+          // console.error('Callback handling error:', err);
         }
         setError(err instanceof Error ? err.message : 'Authentication callback failed');
       }

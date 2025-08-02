@@ -6,7 +6,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
-function FileView({ fileUploadPath }: any) {
+function FileView({ fileUploadPath }) {
   const [numberOfPages, setNumberOfPages] = useState<number>();
   const [pageNumber] = useState<number>(1);
 

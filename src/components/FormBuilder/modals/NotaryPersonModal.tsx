@@ -42,7 +42,7 @@ type FormModel = {
   apartmentNumber: string;
   radioSelectionPerson: string;
   radioSelectionAddress: string;
-  modalType:string;
+  modalType: string;
 };
 
 export type FormModelOutput = {
@@ -66,8 +66,8 @@ const StyledForm = styled.form`
   }
 `;
 
-function NotaryPersonModal({ open, onSubmit, onClose, currentIndex }: Props) {
-  const [results, setResults] = React.useState<any>();
+function NotaryPersonModal({ open, onSubmit, onClose }: Props) {
+  const [results, setResults] = React.useState([]);
   const formRef = useRef(null);
   const isAddressModal = open === 'address';
   const upMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -88,7 +88,7 @@ function NotaryPersonModal({ open, onSubmit, onClose, currentIndex }: Props) {
       lastName: '',
       actions: null,
       municipality: '',
-      modalType:'Lietuvos adresas',
+      modalType: 'Lietuvos adresas',
       address: 'Vilnius default',
       street: '',
       radioSelectionPerson: 'LRFA',
@@ -122,7 +122,6 @@ function NotaryPersonModal({ open, onSubmit, onClose, currentIndex }: Props) {
   };
 
   const handleOnSubmit = () => {
-    console.log('Submitting form with values:', values);
     onClose();
     onSubmit(values);
     handleOnReset();
@@ -144,9 +143,9 @@ function NotaryPersonModal({ open, onSubmit, onClose, currentIndex }: Props) {
   };
 
   const handleOnSubmitIfAddress = () => {
-    console.log('Submitting form with values:', values);
+    // console.log('Submitting form with values:', values);
     onClose();
-    onSubmit({ address: 'Updated Address' } as any);
+    onSubmit({ address: 'Updated Address' } as FormModel);
     handleOnReset();
     toast.success('Adresas pakeistas.', {
       style: {
@@ -165,8 +164,6 @@ function NotaryPersonModal({ open, onSubmit, onClose, currentIndex }: Props) {
   };
 
   const handleOnSearch = () => {
-    console.log('Searching with form values:', values);
-
     if (isAddressModal) {
       setResults([
         {

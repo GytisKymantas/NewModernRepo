@@ -1,7 +1,5 @@
 import {
   Box,
-  Card,
-  CardContent,
   SxProps,
   Table,
   TableBody,
@@ -9,7 +7,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from '@mui/material';
 
 type ColAlignment = 'left' | 'center' | 'right';
@@ -29,50 +26,50 @@ type FormTableProps<Row> = {
   hasAdditionalRowActions?: boolean;
 };
 
-type MobileTableProps<Row> = {
-  cols: Column<Row>[];
-  rows: Row[];
-};
+// type MobileTableProps<Row> = {
+//   cols: Column<Row>[];
+//   rows: Row[];
+// };
 
-function MobileTable<Row extends Record<string, any>>({
-  cols,
-  rows,
-}: MobileTableProps<Row>) {
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', pb: '34.5px' }}>
-      {rows.map((row, index) => (
-        <Card key={row.id ?? index} sx={{ borderRadius: 0 }}>
-          <CardContent sx={{ paddingTop: 0, paddingBottom: 0 }}>
-            {cols.map((col) => (
-              <Box
-                key={String(col.key)}
-                sx={{
-                  mb: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignSelf: 'flex-start',
-                  pt: '16px',
-                  justifyContent:
-                    typeof col.cellAlign === 'function'
-                      ? col.cellAlign(row)
-                      : col.cellAlign ?? 'left',
-                }}
-              >
-                <Box sx={{ alignSelf: 'flex-start', pt: '16px' }}>
-                  <Typography component='div'>{col.label}</Typography>
-                  <Typography component='div' sx={{ pt: '4px' }}>
-                    {row[col.key]}
-                  </Typography>
-                </Box>
-              </Box>
-            ))}
-          </CardContent>
-        </Card>
-      ))}
-    </Box>
-  );
-}
-
+// function MobileTable<Row extends Record<string, any>>({
+//   cols,
+//   rows,
+// }: MobileTableProps<Row>) {
+//   return (
+//     <Box sx={{ display: 'flex', flexDirection: 'column', pb: '34.5px' }}>
+//       {rows.map((row, index) => (
+//         <Card key={row.id ?? index} sx={{ borderRadius: 0 }}>
+//           <CardContent sx={{ paddingTop: 0, paddingBottom: 0 }}>
+//             {cols.map((col) => (
+//               <Box
+//                 key={String(col.key)}
+//                 sx={{
+//                   mb: 1,
+//                   display: 'flex',
+//                   flexDirection: 'column',
+//                   alignSelf: 'flex-start',
+//                   pt: '16px',
+//                   justifyContent:
+//                     typeof col.cellAlign === 'function'
+//                       ? col.cellAlign(row)
+//                       : col.cellAlign ?? 'left',
+//                 }}
+//               >
+//                 <Box sx={{ alignSelf: 'flex-start', pt: '16px' }}>
+//                   <Typography component='div'>{col.label}</Typography>
+//                   <Typography component='div' sx={{ pt: '4px' }}>
+//                     {row[col.key]}
+//                   </Typography>
+//                 </Box>
+//               </Box>
+//             ))}
+//           </CardContent>
+//         </Card>
+//       ))}
+//     </Box>
+//   );
+// }
+// eslint-disable-next-line react-hooks/exhaustive-deps
 function FormTable<Row extends Record<string, any>>({
   sxStyle,
   cols,

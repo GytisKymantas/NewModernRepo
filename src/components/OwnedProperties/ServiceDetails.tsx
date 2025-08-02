@@ -12,25 +12,25 @@ type ServiceDetailsProps = {
   title: string;
   rows: Row[];
   sxStyle?: SxProps;
-  isWithoutDivider?: boolean;
   withHeading?: boolean;
   textSpacing?: SxProps;
+  isWithoutDivider?: boolean;
 };
 
 function ServiceDetails({
   title,
   rows,
   sxStyle,
-  isWithoutDivider,
   withHeading,
   textSpacing,
+  isWithoutDivider,
 }: ServiceDetailsProps) {
   return (
     <>
       {withHeading && (
         <Box sx={sxStyle}>
           <HeaderMain>{title}</HeaderMain>
-          <Divider />
+          {!isWithoutDivider && <Divider />}
         </Box>
       )}
       {rows && (

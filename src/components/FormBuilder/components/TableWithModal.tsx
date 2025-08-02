@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
 import { RcSesFormControlWrapperProps } from '@registrucentras/rc-ses-react-components';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
+  MenuItem,
   OutlinedTextFieldProps,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -10,7 +13,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 
 import AddIcon from '@/assets/icons/AddIcon';
 import ChangeAddressIcon from '@/assets/icons/ChangeAddressIcon';
@@ -18,15 +21,15 @@ import PrimaryButton from '@/components/common/PrimaryButton';
 import palette from '@/theme/palette';
 import { useController, UseControllerProps } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
 
 type ModalComponentProps = {
-  open: any;
+  open: boolean | string;
   onSubmit: (value: string) => void;
   onClose: () => void;
   currentIndex?: number;
 };
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 type TControllerProps = UseControllerProps<any, any>;
 type ImmediateControllerProps = 'control' | 'rules' | 'disabled' | 'name';
 
@@ -35,7 +38,7 @@ type TFieldProps = Omit<OutlinedTextFieldProps, 'variant'>;
 type TWrapperProps = RcSesFormControlWrapperProps;
 type ImmediateWrapperProps = 'id' | 'label' | 'errors';
 
-type CombinedProps = Pick<TControllerProps, ImmediateControllerProps> &
+export type CombinedProps = Pick<TControllerProps, ImmediateControllerProps> &
   Pick<TWrapperProps, ImmediateWrapperProps> & {
     ModalComponent: React.JSXElementConstructor<ModalComponentProps>;
     slotProps?: {
@@ -46,12 +49,14 @@ type CombinedProps = Pick<TControllerProps, ImmediateControllerProps> &
     withTriggerText?: boolean;
   };
 
-export type ModalStates = 'person' | 'address' | '';
+export type ModalStates =
+  | 'person'
+  | 'address'
+  | 'Lietuvos adresas'
+  | 'Užsienio adresas'
+  | '';
 
-const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) => {
-  const { t } = useTranslation('input', {
-    keyPrefix: 'components.RcSesSearchableField',
-  });
+const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props) => {
   const {
     control,
     errors,
@@ -66,9 +71,10 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
   const [modalOpen, setModalOpen] = useState<ModalStates>('');
   const [currentIndex, setCurrentIndex] = useState(null);
   const [submitedData, setSubmitedData] = useState([]);
+  const selectRef = useRef<HTMLInputElement | null>(null);
 
   const {
-    field: { onChange },
+    field: { value },
   } = useController({
     control,
     name,
@@ -77,7 +83,7 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
     ...slotProps?.controller,
   });
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (data) => {
     if (modalOpen === 'address') {
       setSubmitedData((prev) => {
         const updated = [...prev];
@@ -91,13 +97,17 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
       setSubmitedData((prev) => [...prev, data]);
     }
     setModalOpen('');
-    console.log(data, 'data submitted');
+    // console.log(data, 'data submitted');
   };
 
-
+  // const handleChange = (event) => {
+  //   // console.log(event.target.value, 'Selected address type');
+  //   setModalOpen(event.target.value);
+  // };
 
   return (
     <>
+      <p>{value as string}</p>
       {submitedData.length > 0 && (
         <TableContainer>
           <Table
@@ -118,7 +128,7 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
             <TableBody>
               {submitedData && submitedData.length > 0 ? (
                 submitedData.map((person, index) => (
-                  <TableRow key={index}>
+                  <TableRow key={uuidv4()}>
                     <TableCell
                       sx={{
                         textAlign: 'center',
@@ -184,25 +194,51 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
                       }}
                     >
                       {person.address}
+                      <>
+                        <PrimaryButton
+                          variant='text'
+                          size='small'
+                          onClick={() => {
+                            if (selectRef.current) {
+                              selectRef.current.focus(); // opens the Select dropdown
+                            }
+                          }}
+                          startIcon={<ChangeAddressIcon />}
+                          sx={{
+                            color: '#1F2733',
+                            '&:hover': {
+                              backgroundColor: 'inherit',
+                              boxShadow: 'none',
+                            },
+                          }}
+                        >
+                          Keisti Asmenį
+                        </PrimaryButton>
 
-                      <PrimaryButton
-                        variant='text'
-                        size='small'
-                        onClick={() => {
-                          setModalOpen('address');
-                          setCurrentIndex(index);
-                        }}
-                        startIcon={<ChangeAddressIcon />}
-                        sx={{
-                          color: '#1F2733',
-                          '&:hover': {
-                            backgroundColor: 'inherit',
-                            boxShadow: 'none',
-                          },
-                        }}
-                      >
-                        Keisti Asmenį
-                      </PrimaryButton>
+                        <Select
+                          inputRef={selectRef}
+                          value='Lietuvos adresas'
+                          onChange={(event) => {
+                            const selectedValue = event.target.value as
+                              | 'Lietuvos adresas'
+                              | 'Užsienio adresas';
+                            setCurrentIndex(index);
+                            setModalOpen(selectedValue);
+                          }}
+                          displayEmpty
+                          inputProps={{ 'aria-label': 'Without label' }}
+                          sx={{
+                            position: 'absolute',
+                            opacity: 0,
+                            pointerEvents: 'none',
+                            height: 0,
+                            width: 0,
+                          }}
+                        >
+                          <MenuItem value='Lietuvos adresas'>Lietuvos adresas</MenuItem>
+                          <MenuItem value='Užsienio adresas'>Užsienio adresas</MenuItem>
+                        </Select>
+                      </>
                     </TableCell>
                   </TableRow>
                 ))
@@ -239,6 +275,7 @@ const TableWithModal = forwardRef<HTMLInputElement, CombinedProps>((props, ref) 
         open={modalOpen}
         onClose={() => setModalOpen('')}
         currentIndex={currentIndex}
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         onSubmit={handleSubmit}
       />
     </>

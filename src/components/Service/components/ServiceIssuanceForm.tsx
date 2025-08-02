@@ -14,7 +14,7 @@ type FormModel = {
 function ServiceIssuanceForm() {
   const {
     control,
-    handleSubmit,
+    // handleSubmit,
     formState: { errors },
   } = useForm<FormModel>({
     mode: 'all',
@@ -26,7 +26,7 @@ function ServiceIssuanceForm() {
 
   return (
     // eslint-disable-next-line no-console
-    <form onSubmit={handleSubmit(console.log)} noValidate>
+    <form noValidate>
       <RcSesAlert severity='warning'>
         Primename, kad atsiimant rezultatus padalinyje su savimi privalote turėti asmens
         tapatybę patvirtinantį dokumentą.

@@ -14,7 +14,7 @@ type FormModel = {
 
 type Props = {
   open: boolean;
-  onSubmit?: (values: FormModel) => void;
+  // onSubmit?: (values: FormModel) => void;
   onClose: () => void;
   onDelete?: () => void; // Optional callback for delete action
 };
@@ -28,14 +28,10 @@ const StyledFormSection = styled.div`
   flex-direction: column;
 `;
 
-function DeleteItemModal({ open, onSubmit, onClose, onDelete }: Props) {
+function DeleteItemModal({ open, onClose, onDelete }: Props) {
   const {
-    control,
     handleSubmit,
-    formState: { errors },
-    register,
-    setValue,
-    reset,
+    // formState: {errors},
   } = useForm<FormModel>({
     mode: 'all',
     defaultValues: {
@@ -46,12 +42,16 @@ function DeleteItemModal({ open, onSubmit, onClose, onDelete }: Props) {
     },
   });
 
-  const handleOnSubmit = (data: FormModel) => {
-    // if (onSubmit) onSubmit(data);
-    // reset();
-    console.log('handleOnSubmit');
-    // onClose();
-  };
+  // console.log(errors, 'errors');
+
+  const handleOnSubmit = () =>
+    // data: FormModel
+    {
+      // if (onSubmit) onSubmit(data);
+      // reset();
+      // console.log('handleOnSubmit');
+      // onClose();
+    };
 
   return (
     <Dialog onClose={onClose} open={open} maxWidth='md'>

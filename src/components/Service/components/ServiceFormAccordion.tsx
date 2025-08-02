@@ -6,6 +6,7 @@ import ServiceFormContainer from './ServiceFormContainer';
 
 type Props = {
   children: React.ReactNode;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   initialAccordionStateArray: any;
   multiStep?: boolean;
 };

@@ -57,11 +57,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
 
     manager.events.addAccessTokenExpiring(() => {
-      manager.signinSilent().catch((err) => {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Silent token renewal failed:', err);
-        }
-      });
+      manager.signinSilent().catch(() =>
+        // err
+        {
+          if (process.env.NODE_ENV === 'development') {
+            // console.error('Silent token renewal failed:', err);
+          }
+        },
+      );
     });
 
     manager.events.addAccessTokenExpired(() => {
@@ -69,11 +72,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       manager.removeUser();
     });
 
-    manager.events.addSilentRenewError((error) => {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Silent renew error:', error);
-      }
-    });
+    manager.events.addSilentRenewError(() =>
+      // error
+      {
+        if (process.env.NODE_ENV === 'development') {
+          // console.error('Silent renew error:', error);
+        }
+      },
+    );
 
     // Check if user is already logged in
     manager
@@ -84,12 +90,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
         setIsLoading(false);
       })
-      .catch((error) => {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Error getting user:', error);
-        }
-        setIsLoading(false);
-      });
+      .catch(() =>
+        // error
+        {
+          if (process.env.NODE_ENV === 'development') {
+            // console.error('Error getting user:', error);
+          }
+          setIsLoading(false);
+        },
+      );
 
     // Create HTTP client with user manager
     createHttpClient(manager);
@@ -118,7 +127,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await userManager.signinRedirect();
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('Login error:', error);
+        // console.error('Login error:', error);
       }
       throw error;
     }
@@ -132,7 +141,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await userManager.signoutRedirect();
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('Logout error:', error);
+        // console.error('Logout error:', error);
       }
       throw error;
     }
@@ -146,7 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await userManager.signinSilent();
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('Token renewal error:', error);
+        // console.error('Token renewal error:', error);
       }
       throw error;
     }
